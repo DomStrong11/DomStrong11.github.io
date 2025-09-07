@@ -5,3 +5,5 @@ title: "Dom Strong"
 This is a Quarto website.
 
 To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
+![./images/data.png]{width=75% fig-align="center"}
