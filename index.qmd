@@ -4,6 +4,6 @@ title: "Dominique J Strong"
 
 This is my anaytics website.
 
-![](./images/Portfolio.jpg){width="75%" height="75%" fig-align="center"}
+![](./images/Portfolio.jpg){width="75%" height="75%" fig-align="center"} ![](./images/data.png){width="75%" height="75%" fig-align="center"}
 
-![](./images/data.png){width="75%" height="75%" fig-align="center"}
+
