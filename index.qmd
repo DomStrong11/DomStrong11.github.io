@@ -1,9 +1,9 @@
 ---
-title: "Dom Strong"
+title: "Dominique J Strong"
 ---
 
-This is a Quarto website.
+This is my anaytics website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+![](./images/Portfolio.jpg){width="75%" height="75%" fig-align="center"}
 
-![](./images/data.png){width="75%" fig-align="center"}
+![](./images/data.png){width="75%" height="75%" fig-align="center"}
