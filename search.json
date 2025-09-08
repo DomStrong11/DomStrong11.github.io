@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Dominique J Strong",
     "section": "",
-    "text": "This is my anaytics website."
+    "text": "This is my anaytics website.\nEmbedded Python\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nYear = [\"Year 1\", \"Year 2\", \"Year 3\", \"Year 4\"]\nAmount = [100, 200, 300, 400]\n\n\nplt.bar(Year, Amount, color='blue')\nplt.show()"
   },
   {
     "objectID": "about.html",
