@@ -4,6 +4,20 @@ title: "Dominique J Strong"
 
 This is my anaytics website.
 
+Embedded Python
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+Year = ["Year 1", "Year 2", "Year 3", "Year 4"]
+Amount = [100, 200, 300, 400]
+
+
+plt.bar(Year, Amount, color='blue')
+plt.show()
+```
+
 ![](./images/Portfolio.jpg){width="75%" height="75%" fig-align="center"} ![](./images/data.png){width="75%" height="75%" fig-align="center"}
 
 

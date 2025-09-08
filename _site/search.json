@@ -1,16 +1,23 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Dom Strong",
-    "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n![./images/data.png]"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
     "text": "About this site"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Dominique J Strong",
+    "section": "",
+    "text": "This is my anaytics website.\nEmbedded Python\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nYear = [\"Year 1\", \"Year 2\", \"Year 3\", \"Year 4\"]\nAmount = [100, 200, 300, 400]\n\n\nplt.bar(Year, Amount, color='blue')\nplt.show()"
+  },
+  {
+    "objectID": "index.html#python-example",
+    "href": "index.html#python-example",
+    "title": "Dominique J Strong",
+    "section": "Python Example",
+    "text": "Python Example\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    \"Name\": [\"Alice\", \"Bob\", \"Cara\", \"Dom\"],\n    \"Orders\": [5, 8, 3, 10]\n})\n\nprint(\"DataFrame Head:\")\nprint(df.head())\n\nDataFrame Head:\n    Name  Orders\n0  Alice       5\n1    Bob       8\n2   Cara       3\n3    Dom      10"
   }
 ]
