@@ -3,10 +3,16 @@ project:
 
 website:
   title: "Dominique J Strong"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About
 
 format:
   html:
-    theme: cosmo
+    theme: darkly
 
 # <-- These lines ensure Python chunks run via Jupyter -->
 execute:
