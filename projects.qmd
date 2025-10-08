@@ -7,7 +7,7 @@ title: "Projects"
 ::: {.columns .gutter-5}
 
 ::: {.column width="45%"}
-![](./images/EastBay.jpg){height="225px"}
+![](./images/EastBay.jpg){height="200px"}
 
 **California State University, East Bay**
 
@@ -16,7 +16,7 @@ Bachelor's of Science in Industrial Engineering
 :::
 
 ::: {.column width="45%"}
-![](./images/BUEDU.jpg){height="225px"}
+![](./images/BUEDU.jpg){height="200px"}
 
 **Boston University Metropolitan College**
 
