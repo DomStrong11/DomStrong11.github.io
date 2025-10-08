@@ -124,4 +124,4 @@ format:
 
 Welcome to my analytics website!
 
-![](./images/Portfolio.jpg){width="50%" height="40%" fig-align="center"}
+![](./images/Portfolio.jpg){width="50%" fig-align="center"}
