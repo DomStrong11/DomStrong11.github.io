@@ -4,9 +4,9 @@ title: "Projects"
 
 ## Academic Achievements
 
-::: {.columns .gutter-4}
+::: {.columns .gutter-5}
 
-::: {.column width="50%"}
+::: {.column width="45%"}
 ![](./images/EastBay.jpg){height="225px"}
 
 **California State University, East Bay**
@@ -15,7 +15,7 @@ Bachelor's of Science in Industrial Engineering
 *Minor in Mathematics — Graduated 2017*
 :::
 
-::: {.column width="50%"}
+::: {.column width="45%"}
 ![](./images/BUEDU.jpg){height="225px"}
 
 **Boston University Metropolitan College**
