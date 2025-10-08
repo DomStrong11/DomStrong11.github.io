@@ -1,13 +1,18 @@
-/* --- kill default white backgrounds --- */
-html, body, main, .content, .page-columns, .quarto-content, .quarto-container {
+/* ---- remove default white backgrounds ---- */
+:root { --bs-body-bg: transparent !important; }
+
+html, body,
+main, .content, .quarto-content, .quarto-container,
+.page-columns, .page-layout, .content > .page-columns,
+.quarto-grid, .quarto-article {
   background: transparent !important;
   background-color: transparent !important;
 }
 
-/* keep page content above the animated background */
+/* keep real content above the animated layers */
 body > * { position: relative; z-index: 1; }
 
-/* animated soft color blobs */
+/* animated blobs */
 body::before{
   content:"";
   position:fixed; inset:0;
@@ -21,7 +26,7 @@ body::before{
   filter: saturate(120%);
 }
 
-/* optional subtle moving grid sheen */
+/* optional subtle moving grid */
 body::after{
   content:"";
   position:fixed; inset:0;
@@ -41,7 +46,7 @@ body::after{
   to{ background-position: 300px 0; }
 }
 
-/* accessibility: respect reduced motion */
+/* accessibility */
 @media (prefers-reduced-motion: reduce){
   body::before, body::after { animation: none; }
 }
