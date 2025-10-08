@@ -4,15 +4,15 @@ title: "About"
 
 ## 👋 About Me
 
-I’m **Dominique Strong**, a Principal Business Analyst with **7+ years** across 
+I am **Dominique Strong**, a Principal Business Analyst with **7+ years** across 
 healthcare and membership organizations. I turn data into decisions that improve **customer experience**, 
 **operational performance**, and **financial outcomes**.
 
-I’ve uncovered inefficiencies, optimized processes, and built predictive models 
+I have uncovered inefficiencies, optimized processes, and built predictive models 
 that deliver measurable impact— including initiatives that **safeguarded $3M+ in revenue** 
 and improved decision-making across dozens of business units.
 
-### What I do
+### What I do?
 - **Forecasting & Modeling:** Machine Learning churn models for reliable retention planning  
 - **Dashboards & Storytelling:** Tableau/Power BI for exec-ready insights  
 - **Operations & Data Analytics:** Find defects, reduce leakage, and strengthen member trust

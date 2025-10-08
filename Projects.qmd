@@ -7,16 +7,16 @@ title: "Projects"
 ::: {.columns}
 
 ::: {.column width="50%"}
-![CSU East Bay logo](./images/EastBay.jpg){height="150px"}
+!(./images/EastBay.jpg){height="225px"}
 
 **California State University, East Bay**
 
-Bachelor of Science in Industrial Engineering  
+Bachelor's of Science in Industrial Engineering  
 *Minor in Mathematics — Graduated 2017*
 :::
 
 ::: {.column width="50%"}
-![Boston University logo](./images/BUEDU.jpg){height="150px"}
+!(./images/BUEDU.jpg){height="225px"}
 
 **Boston University Metropolitan College**
 
