@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Dominique J Strong</title>
+<title>Curriculum Vitae – Dominique J Strong</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -70,7 +70,6 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles/home.css">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -93,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -105,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./cv.html"> 
+    <a class="nav-link active" href="./cv.html" aria-current="page"> 
 <span class="menu-text">Curriculum Vitae</span></a>
   </li>  
   <li class="nav-item">
@@ -129,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Dominique J Strong</h1>
+<h1 class="title">Curriculum Vitae</h1>
 </div>
 
 
@@ -146,130 +145,18 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<canvas id="particles-canvas" aria-hidden="true">
-</canvas>
-<script>
-// ======= Dominique's Particles (no libs) =======
-(() => {
-  const cv = document.getElementById('particles-canvas');
-  const ctx = cv.getContext('2d');
-
-  // --- knobs you can tweak ---
-  const CONFIG = {
-    colors: ['#70d6ff', '#4c9df1', '#2445ec'], // brand-y blues
-    speed: 0.6,        // base speed (px per frame)
-    linkDist: 120,     // distance to draw lines
-    linkAlpha: 0.16,   // line opacity factor
-    sizeMin: 1,        // particle radius min
-    sizeMax: 2.4,      // particle radius max
-    maxCount: 180,     // absolute cap
-    densityDesktop: 12000, // pixels per particle (lower = more)
-    densityMobile: 7000,   // denser on small screens? adjust to taste
-    dprCap: 2          // cap devicePixelRatio for perf
-  };
-
-  // respect user's OS "Reduce Motion"
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let running = !reduce.matches;
-  reduce.addEventListener?.('change', e => {
-    running = !e.matches;
-    if (running) animate();
-  });
-
-  let W=0, H=0, DPR=1, P=[];
-  function rand(a,b){ return a + Math.random()*(b-a); }
-  function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
-
-  function resize(){
-    DPR = Math.min(window.devicePixelRatio || 1, CONFIG.dprCap);
-    W = cv.clientWidth = window.innerWidth;
-    H = cv.clientHeight = window.innerHeight;
-    cv.width  = Math.floor(W * DPR);
-    cv.height = Math.floor(H * DPR);
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    initParticles();
-  }
-
-  function countForArea(){
-    const area = W * H;
-    const dense = matchMedia('(max-width: 600px)').matches ?
-                  CONFIG.densityMobile : CONFIG.densityDesktop;
-    return Math.min(CONFIG.maxCount, Math.max(30, Math.floor(area / dense)));
-  }
-
-  function initParticles(){
-    const n = countForArea();
-    P = new Array(n).fill(0).map(() => ({
-      x: Math.random()*W,
-      y: Math.random()*H,
-      vx: rand(-CONFIG.speed, CONFIG.speed),
-      vy: rand(-CONFIG.speed, CONFIG.speed),
-      r: rand(CONFIG.sizeMin, CONFIG.sizeMax),
-      c: pick(CONFIG.colors)
-    }));
-  }
-
-  function step(){
-    ctx.clearRect(0,0,W,H);
-
-    // move & draw particles
-    for(const p of P){
-      p.x += p.vx; p.y += p.vy;
-
-      // bounce at edges
-      if (p.x < 0 || p.x > W) p.vx *= -1;
-      if (p.y < 0 || p.y > H) p.vy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = p.c;
-      ctx.fill();
-    }
-
-    // draw lines between nearby particles
-    for(let i=0;i<P.length;i++){
-      for(let j=i+1;j<P.length;j++){
-        const a = P[i], b = P[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const d2 = dx*dx + dy*dy;
-        const md = CONFIG.linkDist;
-        if (d2 < md*md){
-          const alpha = CONFIG.linkAlpha * (1 - Math.sqrt(d2)/md);
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(112,214,255,${alpha.toFixed(3)})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
-    }
-  }
-
-  function animate(){
-    if (!running) return;
-    step();
-    requestAnimationFrame(animate);
-  }
-
-  // handle resize
-  window.addEventListener('resize', resize, { passive: true });
-
-  // init
-  resize();
-  if (running) animate();
-})();
-</script>
-<div class="home-hero">
-<p>Welcome to my analytics website!</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/Portfolio.jpg" class="hero-img img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
-</div>
+<section id="my-resume" class="level2">
+<h2 class="anchored" data-anchor-id="my-resume">My Resume</h2>
+<blockquote class="blockquote">
+<p>Download a copy: <a href="./images/Dominique_Strong_Resume.pdf">Resume (PDF)</a></p>
+</blockquote>
+<!-- Embedded PDF viewer -->
+<div style="position: relative; padding-top: 0; height: 0;">
+<p><iframe src="./images/Dominique_Strong_Resume.pdf#view=FitH" style="position: relative; width: 100%; height: 900px; border: 1px solid #e5e7eb; border-radius: 8px;"></iframe></p>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

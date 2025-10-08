@@ -1,23 +1,65 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "Contact Me",
     "section": "",
-    "text": "About this site"
+    "text": "📬 Get in Touch\nI am always open to connecting about analytics and data.\nFeel free to reach out anytime!\n\n\n✉️ Email: DominiqueJovonStrong@gmail.com\n💼 LinkedIn: linkedin.com/in/dominiquestrong"
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "Download a copy: Resume (PDF)"
+  },
+  {
+    "objectID": "cv.html#my-resume",
+    "href": "cv.html#my-resume",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "Download a copy: Resume (PDF)"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Dominique J Strong",
     "section": "",
-    "text": "This is my anaytics website.\nEmbedded Python\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nYear = [\"Year 1\", \"Year 2\", \"Year 3\", \"Year 4\"]\nAmount = [100, 200, 300, 400]\n\n\nplt.bar(Year, Amount, color='blue')\nplt.show()"
+    "text": "Welcome to my analytics website!"
   },
   {
-    "objectID": "index.html#python-example",
-    "href": "index.html#python-example",
-    "title": "Dominique J Strong",
-    "section": "Python Example",
-    "text": "Python Example\n\nimport pandas as pd\n\ndf = pd.DataFrame({\n    \"Name\": [\"Alice\", \"Bob\", \"Cara\", \"Dom\"],\n    \"Orders\": [5, 8, 3, 10]\n})\n\nprint(\"DataFrame Head:\")\nprint(df.head())\n\nDataFrame Head:\n    Name  Orders\n0  Alice       5\n1    Bob       8\n2   Cara       3\n3    Dom      10"
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I am Dominique Strong, a Principal Business Analyst with 7+ years across healthcare and membership organizations. I turn data into decisions that improve customer experience, operational performance, and financial outcomes.\nI have uncovered inefficiencies, optimized processes, and built predictive models that deliver measurable impact— including initiatives that safeguarded $3M+ in revenue and improved decision-making across dozens of business units.\n\n\n\nForecasting & Modeling: Machine Learning churn models for reliable retention planning\n\nDashboards & Storytelling: Tableau/Power BI for exec-ready insights\n\nOperations & Data Analytics: Find defects, reduce leakage, and strengthen member trust"
+  },
+  {
+    "objectID": "about.html#about-me",
+    "href": "about.html#about-me",
+    "title": "About",
+    "section": "",
+    "text": "I am Dominique Strong, a Principal Business Analyst with 7+ years across healthcare and membership organizations. I turn data into decisions that improve customer experience, operational performance, and financial outcomes.\nI have uncovered inefficiencies, optimized processes, and built predictive models that deliver measurable impact— including initiatives that safeguarded $3M+ in revenue and improved decision-making across dozens of business units.\n\n\n\nForecasting & Modeling: Machine Learning churn models for reliable retention planning\n\nDashboards & Storytelling: Tableau/Power BI for exec-ready insights\n\nOperations & Data Analytics: Find defects, reduce leakage, and strengthen member trust"
+  },
+  {
+    "objectID": "about.html#professional-experience",
+    "href": "about.html#professional-experience",
+    "title": "About",
+    "section": "Professional Experience",
+    "text": "Professional Experience\n\n\n\n3+ years at AAA Northern California, Nevada & Utah\nMembership & Sales Analytics\n\n\n5 years at Kaiser Permanente\nRisk & Facilities Analytics"
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "California State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
+  },
+  {
+    "objectID": "projects.html#academic-achievements",
+    "href": "projects.html#academic-achievements",
+    "title": "Projects",
+    "section": "",
+    "text": "California State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
   }
 ]
