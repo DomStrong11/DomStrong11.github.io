@@ -18,28 +18,28 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "I’m Dominique Strong, a Principal Business Analyst with 7+ years across healthcare and membership organizations. I turn data into decisions that improve customer experience, operational performance, and financial outcomes.\nI’ve uncovered inefficiencies, optimized processes, and built predictive models that deliver measurable impact— including initiatives that safeguarded $1M+ in revenue and improved decision-making across dozens of business units.\n\n\n\nForecasting & Modeling: Hybrid OLS + XGBoost churn models for reliable retention planning\n\nDashboards & Storytelling: Tableau/Power BI for exec-ready insights\n\nOperations & Data Analytics: Find defects, reduce leakage, and strengthen member trust"
+    "text": "I’m Dominique Strong, a Principal Business Analyst with 7+ years across healthcare and membership organizations. I turn data into decisions that improve customer experience, operational performance, and financial outcomes.\nI’ve uncovered inefficiencies, optimized processes, and built predictive models that deliver measurable impact— including initiatives that safeguarded $1M+ in revenue and improved decision-making across dozens of business units.\n\n\n\nForecasting & Modeling: Machine Learning churn models for reliable retention planning\n\nDashboards & Storytelling: Tableau/Power BI for exec-ready insights\n\nOperations & Data Analytics: Find defects, reduce leakage, and strengthen member trust"
   },
   {
     "objectID": "about.html#about-me",
     "href": "about.html#about-me",
     "title": "About",
     "section": "",
-    "text": "I’m Dominique Strong, a Principal Business Analyst with 7+ years across healthcare and membership organizations. I turn data into decisions that improve customer experience, operational performance, and financial outcomes.\nI’ve uncovered inefficiencies, optimized processes, and built predictive models that deliver measurable impact— including initiatives that safeguarded $1M+ in revenue and improved decision-making across dozens of business units.\n\n\n\nForecasting & Modeling: Hybrid OLS + XGBoost churn models for reliable retention planning\n\nDashboards & Storytelling: Tableau/Power BI for exec-ready insights\n\nOperations & Data Analytics: Find defects, reduce leakage, and strengthen member trust"
+    "text": "I’m Dominique Strong, a Principal Business Analyst with 7+ years across healthcare and membership organizations. I turn data into decisions that improve customer experience, operational performance, and financial outcomes.\nI’ve uncovered inefficiencies, optimized processes, and built predictive models that deliver measurable impact— including initiatives that safeguarded $1M+ in revenue and improved decision-making across dozens of business units.\n\n\n\nForecasting & Modeling: Machine Learning churn models for reliable retention planning\n\nDashboards & Storytelling: Tableau/Power BI for exec-ready insights\n\nOperations & Data Analytics: Find defects, reduce leakage, and strengthen member trust"
   },
   {
     "objectID": "about.html#professional-experience",
     "href": "about.html#professional-experience",
     "title": "About",
     "section": "Professional Experience",
-    "text": "Professional Experience\n\n\n\n3+ years at AAA Northern California, Nevada & Utah\nMembership Analytics & Forecasting\n\n\n5 years at Kaiser Permanente\nRisk & Facilities Analytics"
+    "text": "Professional Experience\n\n\n\n3+ years at AAA Northern California, Nevada & Utah\nMembership & Sales Analytics\n\n\n5 years at Kaiser Permanente\nRisk & Facilities Analytics"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Dominique J Strong",
     "section": "",
-    "text": "Welcome to my analytics website!\n\n \n\nTrend Line by Icon Wizard"
+    "text": "Welcome to my analytics website!"
   },
   {
     "objectID": "contact.html",
@@ -53,6 +53,13 @@
     "href": "Projects.html",
     "title": "Projects",
     "section": "",
-    "text": "Academic Achievements:\n California State University East Bay: Bachelor’s of Science in Industrial Engineering, Minor in Mathematics (2017) Cum Laude Graduate\n Currently Pursuing Master’s in Applied Business analytics (Expected 2026)"
+    "text": "California State University East Bay Bachelor’s of Science in Industrial Engineering | Minor in Mathematics (2017)\n\n\nBoston University Metropolitan College\nCurrently Pursuing Master’s in Applied Business analytics"
+  },
+  {
+    "objectID": "Projects.html#academic-achievements",
+    "href": "Projects.html#academic-achievements",
+    "title": "Projects",
+    "section": "",
+    "text": "California State University East Bay Bachelor’s of Science in Industrial Engineering | Minor in Mathematics (2017)\n\n\nBoston University Metropolitan College\nCurrently Pursuing Master’s in Applied Business analytics"
   }
 ]
