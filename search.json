@@ -4,14 +4,14 @@
     "href": "projects.html",
     "title": "Projects",
     "section": "",
-    "text": "California State University, East Bay\nBachelor’s of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n \n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
+    "text": "::: {.columns .g-5} # &lt;– use .g-5, not .gutter-5\n\n\nCalifornia State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026\n\n:::"
   },
   {
     "objectID": "projects.html#academic-achievements",
     "href": "projects.html#academic-achievements",
     "title": "Projects",
     "section": "",
-    "text": "California State University, East Bay\nBachelor’s of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n \n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
+    "text": "::: {.columns .g-5} # &lt;– use .g-5, not .gutter-5\n\n\nCalifornia State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026\n\n:::"
   },
   {
     "objectID": "cv.html",
