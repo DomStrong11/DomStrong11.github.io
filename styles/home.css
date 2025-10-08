@@ -1,7 +1,8 @@
-/* ---- dark canvas + transparent wrappers ---- */
+/* Dark base under everything */
 html, body { background-color: #0f141e !important; }
 :root { --bs-body-bg: transparent !important; }
 
+/* Make all Quarto wrappers transparent */
 html, body,
 main, .content, .quarto-content, .quarto-container,
 .page-columns, .page-layout, .content > .page-columns,
@@ -10,91 +11,23 @@ main, .content, .quarto-content, .quarto-container,
   background-color: transparent !important;
 }
 
-/* keep real content above background layers */
+/* Keep page content above the background canvas */
 body > * { position: relative; z-index: 1; }
 
-/* wipe ANY generic body::before/::after from other CSS */
+/* Canvas sits behind everything & doesn’t block clicks */
+#particles-canvas{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Kill any old ::before/::after backgrounds from other CSS */
 body::before,
 body::after {
   content: none !important;
   background: none !important;
   animation: none !important;
 }
-
-/* ================= PARTICLES ================= */
-body.particles::before,
-body.particles::after {
-  content: "" !important;            /* <-- override the wipe */
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
-body.particles::before {
-  background-image: radial-gradient(rgba(112,214,255,.75) 1.2px, transparent 1.2px) !important;
-  background-size: 3px 3px !important;
-  opacity: .35 !important;
-  animation: particles-move-1 60s linear infinite !important;
-}
-
-body.particles::after {
-  background-image: radial-gradient(rgba(36,69,236,.65) 1.4px, transparent 1.4px) !important;
-  background-size: 4px 4px !important;
-  opacity: .25 !important;
-  animation: particles-move-2 90s linear infinite !important;
-}
-
-@keyframes particles-move-1 {
-  from { background-position: 0 0; }
-  to   { background-position: 1200px 600px; }
-}
-@keyframes particles-move-2 {
-  from { background-position: 0 0; }
-  to   { background-position: -1000px 500px; }
-}
-
-/* ============ CIRCLES (optional; enable by body-classes: circles) ============ */
-body.circles::before,
-body.circles::after {
-  content: "" !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-body.circles::before{
-  background:
-    radial-gradient(40rem 30rem at 10% 20%, rgba(36,69,236,.35), transparent 70%),
-    radial-gradient(30rem 25rem at 85% 15%, rgba(112,214,255,.30), transparent 70%),
-    radial-gradient(35rem 25rem at 55% 80%, rgba(76,157,241,.30), transparent 70%) !important;
-  opacity:.35 !important; animation: circles-drift 24s ease-in-out infinite alternate !important;
-}
-body.circles::after{
-  background:
-    radial-gradient(14rem 10rem at 30% 60%, rgba(255,255,255,.08), transparent 60%),
-    radial-gradient(18rem 12rem at 70% 50%, rgba(255,255,255,.06), transparent 60%) !important;
-  opacity:.22 !important; animation: circles-drift-2 32s ease-in-out infinite alternate !important;
-}
-@keyframes circles-drift   { from { transform: translate3d(0,0,0) } to { transform: translate3d(30px,-20px,0) } }
-@keyframes circles-drift-2 { from { transform: translate3d(0,0,0) } to { transform: translate3d(-20px,20px,0) } }
-
-/* ============ LINES (optional; enable by body-classes: lines) ============ */
-body.lines::before,
-body.lines::after {
-  content: "" !important;
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-body.lines::before{
-  background-image: repeating-linear-gradient(120deg, rgba(112,214,255,.25) 0 2px, transparent 2px 40px) !important;
-  opacity:.25 !important; animation: lines-slide-1 18s linear infinite !important;
-}
-body.lines::after{
-  background-image: repeating-linear-gradient(300deg, rgba(36,69,236,.18) 0 1px, transparent 1px 36px) !important;
-  opacity:.18 !important; animation: lines-slide-2 24s linear infinite !important;
-}
-@keyframes lines-slide-1 { from { background-position: 0 0; } to { background-position: 800px 0; } }
-@keyframes lines-slide-2 { from { background-position: 0 0; } to { background-position: -600px 0; } }
