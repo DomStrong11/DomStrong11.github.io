@@ -13,7 +13,7 @@ that deliver measurable impact— including initiatives that **safeguarded $1M+ 
 and improved decision-making across dozens of business units.
 
 ### What I do
-- **Forecasting & Modeling:** Hybrid OLS + XGBoost churn models for reliable retention planning  
+- **Forecasting & Modeling:** Machine Learning churn models for reliable retention planning  
 - **Dashboards & Storytelling:** Tableau/Power BI for exec-ready insights  
 - **Operations & Data Analytics:** Find defects, reduce leakage, and strengthen member trust
 
@@ -25,7 +25,7 @@ and improved decision-making across dozens of business units.
 ![](./images/AAA.jpg){height="110px" alt="AAA logo" style="margin-bottom:10px;"}
 
 **3+ years at AAA Northern California, Nevada & Utah**  
-Membership Analytics & Forecasting
+Membership & Sales Analytics
 :::
 
 ::: {.column width="50%" style="text-align:center;"}

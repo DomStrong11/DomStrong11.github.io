@@ -2,13 +2,23 @@
 title: "Projects"
 ---
 
-Academic Achievements:
 
-![](./images/EastBay.jpg){width="75%" height="75%" fig-align="center"}
-California State University East Bay: Bachelor's of Science in Industrial Engineering, Minor in Mathematics (2017)
-Cum Laude Graduate
+## Academic Achievements
 
-![](./images/BUEDU.png){width="75%" height="75%" fig-align="center"}
-Currently Pursuing Master's in Applied Business analytics (Expected 2026)
+::: {.columns}
 
+::: {.column width="50%" style="text-align:center;"}
+![](./images/EastBay.jpg){height="110px" alt="CSUEB" style="margin-bottom:10px;"}
 
+**California State University East Bay** 
+Bachelor's of Science in Industrial Engineering | Minor in Mathematics (2017) 
+:::
+
+::: {.column width="50%" style="text-align:center;"}
+![](./images/BUEDU.jpg){height="110px" alt="BU" style="margin-bottom:10px;"}
+
+**Boston University Metropolitan College**  
+Currently Pursuing Master's in Applied Business analytics
+:::
+
+:::
