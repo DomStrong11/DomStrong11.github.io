@@ -31,3 +31,10 @@ body::after {
   background: none !important;
   animation: none !important;
 }
+
+/* Prevent the canvas from creating stray scrollbars */
+#particles-canvas { display: block; }      /* removes inline baseline gap */
+html, body { overflow-x: hidden; }         /* kill horizontal scrollbar */
+
+/* Optional: keep page width consistent with other tabs (tweak px if you like) */
+.quarto-container { max-width: 1000px; margin: 0 auto; }
