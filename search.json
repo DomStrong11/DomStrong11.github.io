@@ -1,10 +1,17 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "CV.html",
+    "href": "CV.html",
+    "title": "Curriculum Vitae",
     "section": "",
-    "text": "👋 About Me\nMy name is Dominique Strong — a Principal Business Analyst with 7+ years of experience across healthcare and membership industries, I help organizations transform raw data into actionable insights that improve customer experience, operational performance, and financial outcomes.\nI’ve built a strong track record of uncovering inefficiencies, optimizing processes, and developing predictive models that drive measurable impact — including analytics initiatives that have safeguarded over $1 million in revenue and improved decision-making across dozens of business units.\n 3+ years experience at AAA Mountain West Group in Membership Analytics\n 5 years experience at Kaiser Permanente in Risk and Facilities Analytics"
+    "text": "Download a copy: Resume (PDF)"
+  },
+  {
+    "objectID": "CV.html#my-resume",
+    "href": "CV.html#my-resume",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "Download a copy: Resume (PDF)"
   },
   {
     "objectID": "index.html",
@@ -12,5 +19,12 @@
     "title": "Dominique J Strong",
     "section": "",
     "text": "This is my anaytics website.\nEmbedded Python\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nYear = [\"Year 1\", \"Year 2\", \"Year 3\", \"Year 4\"]\nAmount = [100, 200, 300, 400]\n\n\nplt.bar(Year, Amount, color='blue')\nplt.show()"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "👋 About Me\nMy name is Dominique Strong — a Principal Business Analyst with 7+ years of experience across healthcare and membership industries, I help organizations transform raw data into actionable insights that improve customer experience, operational performance, and financial outcomes.\nI’ve built a strong track record of uncovering inefficiencies, optimizing processes, and developing predictive models that drive measurable impact — including analytics initiatives that have safeguarded over $1 million in revenue and improved decision-making across dozens of business units.\n\n\n\n\n3+ years at AAA Northern California, Nevada & Utah\n\n\n\n\n\n\n5 years experience at Kaiser Permanente in Risk and Facilities Analytics"
   }
 ]
