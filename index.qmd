@@ -122,6 +122,8 @@ format:
 </script>
 
 
+::: {.home-hero}
 Welcome to my analytics website!
 
-![](./images/Portfolio.jpg){width="50%" fig-align="center"}
+![](./images/Portfolio.jpg){.hero-img fig-align="center"}
+:::

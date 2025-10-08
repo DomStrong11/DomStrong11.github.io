@@ -1,5 +1,9 @@
 /* Dark base under everything */
-html, body { background-color: #0f141e !important; }
+html, body {
+  margin: 0;
+  height: 100%;
+  background-color: #0f141e !important;
+}
 :root { --bs-body-bg: transparent !important; }
 
 /* Make all Quarto wrappers transparent */
@@ -16,12 +20,11 @@ body > * { position: relative; z-index: 1; }
 
 /* Canvas sits behind everything & doesn’t block clicks */
 #particles-canvas{
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  position: fixed; left: 0; top: 0;
+  width: 100vw; height: 100vh;          /* fallback */
+  height: 100dvh;                        /* better on mobile, if supported */
+  display: block;                        /* remove inline baseline gap */
+  z-index: 0; pointer-events: none;
 }
 
 /* Kill any old ::before/::after backgrounds from other CSS */
@@ -32,9 +35,22 @@ body::after {
   animation: none !important;
 }
 
-/* Prevent the canvas from creating stray scrollbars */
-#particles-canvas { display: block; }      /* removes inline baseline gap */
-html, body { overflow-x: hidden; }         /* kill horizontal scrollbar */
+/* --- Fit the home page to one screen, no scrollbars --- */
+html, body { overflow: hidden; }         /* no vertical or horizontal scroll */
 
-/* Optional: keep page width consistent with other tabs (tweak px if you like) */
-.quarto-container { max-width: 1000px; margin: 0 auto; }
+/* Center your home content like a hero section */
+.home-hero{
+  min-height: 100vh;                     /* fallback */
+  min-height: 100dvh;                    /* better on mobile, if supported */
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 0.75rem;
+  text-align: center;
+  padding: 1.25rem;
+}
+
+/* Image scales to fit without pushing past viewport */
+.hero-img{
+  width: min(520px, 45vw);
+  max-height: 42vh;
+  height: auto; object-fit: contain;
+}
