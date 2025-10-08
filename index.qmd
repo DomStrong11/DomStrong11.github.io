@@ -4,4 +4,4 @@ title: "Dominique J Strong"
 
 Welcome to my analytics website!
 
-![](./images/Portfolio.jpg){width="50%" height="50%" fig-align="center"}
+![](./images/Portfolio.jpg){width="30%" height="30%" fig-align="center"}
