@@ -1,0 +1,15 @@
+---
+title: "Curriculum Vitae"
+---
+
+## My Resume
+
+> Download a copy: [Resume (PDF)](/images/Dominique_Strong_Resume.pdf)
+
+<!-- Embedded PDF viewer -->
+<div style="position: relative; padding-top: 0; height: 0;">
+  <iframe
+    src="/images/Dominique_Strong_Resume.pdf#view=FitH"
+    style="position: relative; width: 100%; height: 900px; border: 1px solid #e5e7eb; border-radius: 8px;"
+  ></iframe>
+</div>

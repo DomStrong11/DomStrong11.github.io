@@ -15,6 +15,26 @@ and developing predictive models that drive measurable impact —
 including analytics initiatives that have safeguarded over $1 million in revenue 
 and improved decision-making across dozens of business units.
 
-![](./images/AAA.jpg){width="75%" height="75%" fig-align="center"} 3+ years experience at AAA Mountain West Group in Membership Analytics
+::: {.columns}
 
-![](./images/KaiserPermanente.jpg){width="75%" height="75%" fig-align="center"} 5 years experience at Kaiser Permanente in Risk and Facilities Analytics
+::: {.column width="25%"}
+![](./images/AAA.jpg)
+:::
+
+::: {.column width="75%"}
+**3+ years at AAA Northern California, Nevada & Utah**
+:::
+
+:::
+
+::: {.columns}
+
+::: {.column width="25%"}
+![](./images/KaiserPermanente.jpg)
+:::
+
+::: {.column width="75%"}
+**5 years experience at Kaiser Permanente in Risk and Facilities Analytics**  
+:::
+
+:::
