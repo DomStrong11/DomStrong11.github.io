@@ -4,19 +4,15 @@ title: "Projects"
 
 ## Academic Achievements
 
-::: {.columns .gutter-5}
+::: {.columns .g-5}   # <-- use .g-5, not .gutter-5
 
 ::: {.column width="45%"}
 ![](./images/EastBay.jpg){height="200px"}
 
 **California State University, East Bay**
 
-Bachelor's of Science in Industrial Engineering  
+Bachelor of Science in Industrial Engineering  
 *Minor in Mathematics — Graduated 2017*
-:::
-
-::: {.column width="10%"}
-&nbsp;
 :::
 
 ::: {.column width="45%"}
