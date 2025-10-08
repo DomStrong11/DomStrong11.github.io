@@ -2,4 +2,19 @@
 title: "About"
 ---
 
-About this site
+👋 About Me
+
+My name is Dominique Strong — a Principal Business Analyst 
+with 7+ years of experience across healthcare and membership industries, 
+I help organizations transform raw data into actionable insights that improve customer
+experience, operational performance, and financial outcomes.
+
+
+I’ve built a strong track record of uncovering inefficiencies, optimizing processes, 
+and developing predictive models that drive measurable impact — 
+including analytics initiatives that have safeguarded over $1 million in revenue 
+and improved decision-making across dozens of business units.
+
+![](./images/AAA.jpg){width="75%" height="75%" fig-align="center"} 3+ years experience at AAA Mountain West Group in Membership Analytics
+
+![](./images/KaiserPermanente.jpg){width="75%" height="75%" fig-align="center"} 5 years experience at Kaiser Permanente in Risk and Facilities Analytics

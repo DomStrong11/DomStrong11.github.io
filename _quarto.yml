@@ -12,7 +12,7 @@ website:
 
 format:
   html:
-    theme: darkly
+    theme: yeti
 
 # <-- These lines ensure Python chunks run via Jupyter -->
 execute:
