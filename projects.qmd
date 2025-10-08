@@ -15,6 +15,10 @@ Bachelor's of Science in Industrial Engineering
 *Minor in Mathematics — Graduated 2017*
 :::
 
+::: {.column width="10%"}
+&nbsp;
+:::
+
 ::: {.column width="45%"}
 ![](./images/BUEDU.jpg){height="200px"}
 
