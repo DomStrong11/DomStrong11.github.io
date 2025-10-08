@@ -7,12 +7,14 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: projects.qmd
+        text: Projects
       - href: about.qmd
         text: About
       - href: CV.qmd
         text: Curriculum Vitae
       - href: contact.qmd
-        text: Curriculum Vitae
+        text: Contact Me
 
 format:
   html:

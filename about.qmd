@@ -2,39 +2,37 @@
 title: "About"
 ---
 
-👋 About Me
+## 👋 About Me
 
-My name is Dominique Strong — a Principal Business Analyst 
-with 7+ years of experience across healthcare and membership industries, 
-I help organizations transform raw data into actionable insights that improve customer
-experience, operational performance, and financial outcomes.
+I’m **Dominique Strong**, a Principal Business Analyst with **7+ years** across 
+healthcare and membership organizations. I turn data into decisions that improve **customer experience**, 
+**operational performance**, and **financial outcomes**.
 
-
-I’ve built a strong track record of uncovering inefficiencies, optimizing processes, 
-and developing predictive models that drive measurable impact — 
-including analytics initiatives that have safeguarded over $1 million in revenue 
+I’ve uncovered inefficiencies, optimized processes, and built predictive models 
+that deliver measurable impact— including initiatives that **safeguarded $1M+ in revenue** 
 and improved decision-making across dozens of business units.
 
-::: {.columns}
+### What I do
+- **Forecasting & Modeling:** Hybrid OLS + XGBoost churn models for reliable retention planning  
+- **Dashboards & Storytelling:** Tableau/Power BI for exec-ready insights  
+- **Operations & Data Analytics:** Find defects, reduce leakage, and strengthen member trust
 
-::: {.column width="25%" style="padding-right:20px;"}
-![](./images/AAA.jpg){height="100px"}
-:::
-
-::: {.column width="75%"}
-**3+ years at AAA Northern California, Nevada & Utah in Membership Analytics**
-:::
-
-:::
+## Professional Experience
 
 ::: {.columns}
 
-::: {.column width="25%"}
-![](./images/KaiserPermanente.jpg)
+::: {.column width="50%" style="text-align:center;"}
+![](./images/AAA.jpg){height="110px" alt="AAA logo" style="margin-bottom:10px;"}
+
+**3+ years at AAA Northern California, Nevada & Utah**  
+Membership Analytics & Forecasting
 :::
 
-::: {.column width="75%" style="padding-right:20px;"}
-**5 years experience at Kaiser Permanente in Risk and Facilities Analytics**  
+::: {.column width="50%" style="text-align:center;"}
+![](./images/KaiserPermanente.jpg){height="110px" alt="Kaiser Permanente logo" style="margin-bottom:10px;"}
+
+**5 years at Kaiser Permanente**  
+Risk & Facilities Analytics
 :::
 
 :::
