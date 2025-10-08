@@ -4,6 +4,7 @@ format:
   html:
     theme: yeti
     css: styles/home.css
+body-classes: particles   # or: circles  |  lines
 ---
 
 Welcome to my analytics website!
