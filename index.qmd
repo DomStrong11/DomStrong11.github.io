@@ -1,5 +1,9 @@
 ---
 title: "Dominique J Strong"
+format:
+  html:
+    theme: yeti
+    css: home.css
 ---
 
 Welcome to my analytics website!
