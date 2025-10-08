@@ -6,8 +6,8 @@ title: "Projects"
 
 ::: {.columns}
 
-::: {.column width="50%"}
-![](./images/EastBay.jpg){height="225px"}
+::: {.column width="45%"}
+![](./images/EastBay.jpg){height="220px"}
 
 **California State University, East Bay**
 
@@ -15,8 +15,8 @@ Bachelor's of Science in Industrial Engineering
 *Minor in Mathematics — Graduated 2017*
 :::
 
-::: {.column width="50%"}
-![](./images/BUEDU.jpg){height="225px"}
+::: {.column width="45%"}
+![](./images/BUEDU.jpg){height="220px"}
 
 **Boston University Metropolitan College**
 
