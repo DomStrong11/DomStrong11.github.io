@@ -1,9 +1,5 @@
-/* 1) Fallback base so nothing looks white */
-html, body {
-  background-color: #0f141e !important;   /* deep navy */
-}
-
-/* 2) Nuke theme/container backgrounds */
+/* ---------- base: make wrappers transparent and set a dark canvas ---------- */
+html, body { background-color: #0f141e !important; }           /* fallback base */
 :root { --bs-body-bg: transparent !important; }
 
 html, body,
@@ -14,45 +10,73 @@ main, .content, .quarto-content, .quarto-container,
   background-color: transparent !important;
 }
 
-/* 3) Put all content above the animated layers */
+/* keep page content above background layers */
 body > * { position: relative; z-index: 1; }
 
-/* 4) Animated background blobs (make it obvious first) */
-body::before{
-  content:"";
-  position:fixed; inset:0;
-  z-index:0; pointer-events:none;
-  opacity:.55;                     /* was .28 — bump so you can see it */
-  background:
-    radial-gradient(60rem 40rem at 10% 20%, rgba(36,69,236,.55), transparent 60%),
-    radial-gradient(50rem 30rem at 90% 10%, rgba(112,214,255,.45), transparent 60%),
-    radial-gradient(40rem 30rem at 50% 80%, rgba(76,157,241,.45), transparent 60%),
-    linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,0));
-  animation: drift 26s ease-in-out infinite alternate;
-  filter: saturate(120%);
-}
-
-/* Optional subtle moving grid */
+/* shared pseudo elements */
+body::before,
 body::after{
   content:"";
   position:fixed; inset:0;
-  z-index:0; pointer-events:none; opacity:.12;
-  background-image: linear-gradient(120deg, rgba(255,255,255,.18) 1px, transparent 1px);
-  background-size: 30px 30px;
-  animation: slide 20s linear infinite;
+  z-index:0;
+  pointer-events:none;
 }
 
-/* Motion */
-@keyframes drift{
-  0%{ transform: translate3d(0,0,0) scale(1); }
-  100%{ transform: translate3d(0,-20px,0) scale(1.03); }
+/* =================== MODE: PARTICLES =================== */
+body.particles::before{
+  /* small fast dots */
+  background-image: radial-gradient(rgba(112,214,255,.75) 1.2px, transparent 1.2px);
+  background-size: 3px 3px;
+  opacity:.35;
+  animation: particles-move-1 60s linear infinite;
 }
-@keyframes slide{
-  from{ background-position: 0 0; }
-  to{ background-position: 300px 0; }
+body.particles::after{
+  /* larger, slower dots */
+  background-image: radial-gradient(rgba(36,69,236,.65) 1.4px, transparent 1.4px);
+  background-size: 4px 4px;
+  opacity:.25;
+  animation: particles-move-2 90s linear infinite;
 }
 
-/* Accessibility */
+@keyframes particles-move-1 { from { background-position: 0 0; } to { background-position: 1200px 600px; } }
+@keyframes particles-move-2 { from { background-position: 0 0; } to { background-position: -1000px 500px; } }
+
+/* =================== MODE: CIRCLES (soft drifting blobs) =================== */
+body.circles::before{
+  background:
+    radial-gradient(40rem 30rem at 10% 20%, rgba(36,69,236,.35), transparent 70%),
+    radial-gradient(30rem 25rem at 85% 15%, rgba(112,214,255,.30), transparent 70%),
+    radial-gradient(35rem 25rem at 55% 80%, rgba(76,157,241,.30), transparent 70%);
+  opacity:.35;
+  animation: circles-drift 24s ease-in-out infinite alternate;
+}
+body.circles::after{
+  background:
+    radial-gradient(14rem 10rem at 30% 60%, rgba(255,255,255,.08), transparent 60%),
+    radial-gradient(18rem 12rem at 70% 50%, rgba(255,255,255,.06), transparent 60%);
+  opacity:.22;
+  animation: circles-drift-2 32s ease-in-out infinite alternate;
+}
+
+@keyframes circles-drift   { from { transform: translate3d(0,0,0)   scale(1); } to { transform: translate3d(30px,-20px,0) scale(1.04); } }
+@keyframes circles-drift-2 { from { transform: translate3d(0,0,0)   scale(1); } to { transform: translate3d(-20px,20px,0) scale(1.03); } }
+
+/* =================== MODE: LINES (moving diagonal lines) =================== */
+body.lines::before{
+  background-image: repeating-linear-gradient(120deg, rgba(112,214,255,.25) 0 2px, transparent 2px 40px);
+  opacity:.25;
+  animation: lines-slide-1 18s linear infinite;
+}
+body.lines::after{
+  background-image: repeating-linear-gradient(300deg, rgba(36,69,236,.18) 0 1px, transparent 1px 36px);
+  opacity:.18;
+  animation: lines-slide-2 24s linear infinite;
+}
+
+@keyframes lines-slide-1 { from { background-position: 0 0; } to { background-position: 800px 0; } }
+@keyframes lines-slide-2 { from { background-position: 0 0; } to { background-position: -600px 0; } }
+
+/* accessibility: respect reduced motion */
 @media (prefers-reduced-motion: reduce){
-  body::before, body::after { animation: none; }
+  body::before, body::after { animation: none !important; }
 }
