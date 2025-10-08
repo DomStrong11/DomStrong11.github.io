@@ -3,7 +3,7 @@ title: "Dominique J Strong"
 format:
   html:
     theme: yeti
-    css: home.css
+    css: styles/home.css
 ---
 
 Welcome to my analytics website!

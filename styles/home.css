@@ -1,7 +1,13 @@
-/* Make theme background transparent so the animation shows */
-:root { --bs-body-bg: transparent; }
+/* --- kill default white backgrounds --- */
+html, body, main, .content, .page-columns, .quarto-content, .quarto-container {
+  background: transparent !important;
+  background-color: transparent !important;
+}
 
-/* Soft animated blobs */
+/* keep page content above the animated background */
+body > * { position: relative; z-index: 1; }
+
+/* animated soft color blobs */
 body::before{
   content:"";
   position:fixed; inset:0;
@@ -15,7 +21,7 @@ body::before{
   filter: saturate(120%);
 }
 
-/* Optional subtle diagonal shimmer */
+/* optional subtle moving grid sheen */
 body::after{
   content:"";
   position:fixed; inset:0;
@@ -25,9 +31,7 @@ body::after{
   animation: slide 20s linear infinite;
 }
 
-/* Keep all page content above the background layers */
-body > * { position: relative; z-index: 1; }
-
+/* motion */
 @keyframes drift{
   0%{ transform: translate3d(0,0,0) scale(1); }
   100%{ transform: translate3d(0,-20px,0) scale(1.03); }
@@ -37,7 +41,7 @@ body > * { position: relative; z-index: 1; }
   to{ background-position: 300px 0; }
 }
 
-/* Respect users who prefer reduced motion */
+/* accessibility: respect reduced motion */
 @media (prefers-reduced-motion: reduce){
   body::before, body::after { animation: none; }
 }
