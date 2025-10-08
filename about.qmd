@@ -17,12 +17,12 @@ and improved decision-making across dozens of business units.
 
 ::: {.columns}
 
-::: {.column width="25%"}
-![](./images/AAA.jpg)
+::: {.column width="25%" style="padding-right:20px;"}
+![](./images/AAA.jpg){height="100px"}
 :::
 
 ::: {.column width="75%"}
-**3+ years at AAA Northern California, Nevada & Utah**
+**3+ years at AAA Northern California, Nevada & Utah in Membership Analytics**
 :::
 
 :::
@@ -33,7 +33,7 @@ and improved decision-making across dozens of business units.
 ![](./images/KaiserPermanente.jpg)
 :::
 
-::: {.column width="75%"}
+::: {.column width="75%" style="padding-right:20px;"}
 **5 years experience at Kaiser Permanente in Risk and Facilities Analytics**  
 :::
 

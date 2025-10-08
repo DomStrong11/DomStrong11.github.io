@@ -1,0 +1,57 @@
+---
+title: "Contact Me"
+---
+
+# 📬 Get in Touch
+
+I am always open to connecting about analytics, forecasting, and data.  
+Reach out anytime through the options below!
+
+---
+
+<div style="display: flex; flex-direction: column; gap: 24px; max-width: 600px; margin-top: 20px;">
+
+  <!-- Email -->
+  <div style="display:flex; align-items:center; gap:14px;">
+    <!-- Mail Icon -->
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M3 5h18v14H3z"/>
+      <path d="M3 7l9 6 9-6"/>
+    </svg>
+    <div>
+      <strong>Email</strong><br>
+      <a href="mailto:DominiqueJovonStrong@gmail.com">DominiqueJovonStrong@gmail.com</a>
+    </div>
+  </div>
+
+  <!-- LinkedIn -->
+  <div style="display:flex; align-items:center; gap:14px;">
+    <!-- LinkedIn Icon -->
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7.5 0h3.84v2.05h.05c.53-.96 1.84-1.98 3.79-1.98C19.86 8.07 22 10 22 13.66V23h-4v-8.16c0-1.94-.03-4.43-2.7-4.43-2.7 0-3.11 2.11-3.11 4.29V23H8V8z"/>
+    </svg>
+    <div>
+      <strong>LinkedIn</strong><br>
+      <a href="https://www.linkedin.com/in/dominiquestrong" target="_blank" rel="noopener">
+        linkedin.com/in/dominiquestrong
+      </a>
+    </div>
+  </div>
+
+</div>
+
+---
+
+<style>
+  a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  svg {
+    color: #2563eb;
+  }
+</style>
