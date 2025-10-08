@@ -4,10 +4,9 @@ title: "Projects"
 
 ## Academic Achievements
 
-:::
 
-::: {.column width="40%"}
-![](./images/EastBay.jpg){height="170px"}
+::: {.column width="45%"}
+![](./images/EastBay.jpg){height="150px"}
 
 **California State University, East Bay**
 
@@ -15,13 +14,11 @@ Bachelor of Science in Industrial Engineering
 *Minor in Mathematics — Graduated 2017*
 :::
 
-::: {.column width="40%"}
-![](./images/BUEDU.jpg){height="170px"}
+::: {.column width="45%"}
+![](./images/BUEDU.jpg){height="150px"}
 
 **Boston University Metropolitan College**
 
 Master of Science in Applied Business Analytics  
 *In Progress — Expected 2026*
-:::
-
 :::
