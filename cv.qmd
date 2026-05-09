@@ -1,5 +1,6 @@
 ---
 title: "Curriculum Vitae"
+css: styles.css
 ---
 
 ## My Resume
