@@ -1,5 +1,5 @@
 ---
-title: "Dominique J Strong"
+title: "Dominique J. Strong"
 format:
   html:
     theme: yeti
@@ -14,21 +14,19 @@ format:
   const cv = document.getElementById('particles-canvas');
   const ctx = cv.getContext('2d');
 
-  // --- knobs you can tweak ---
   const CONFIG = {
-    colors: ['#70d6ff', '#4c9df1', '#2445ec'], // brand-y blues
-    speed: 0.6,        // base speed (px per frame)
-    linkDist: 120,     // distance to draw lines
-    linkAlpha: 0.16,   // line opacity factor
-    sizeMin: 1,        // particle radius min
-    sizeMax: 2.4,      // particle radius max
-    maxCount: 180,     // absolute cap
-    densityDesktop: 12000, // pixels per particle (lower = more)
-    densityMobile: 7000,   // denser on small screens? adjust to taste
-    dprCap: 2          // cap devicePixelRatio for perf
+    colors: ['#70d6ff', '#4c9df1', '#2445ec'],
+    speed: 0.6,
+    linkDist: 120,
+    linkAlpha: 0.16,
+    sizeMin: 1,
+    sizeMax: 2.4,
+    maxCount: 180,
+    densityDesktop: 12000,
+    densityMobile: 7000,
+    dprCap: 2
   };
 
-  // respect user's OS "Reduce Motion"
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   let running = !reduce.matches;
   reduce.addEventListener?.('change', e => {
@@ -72,11 +70,9 @@ format:
   function step(){
     ctx.clearRect(0,0,W,H);
 
-    // move & draw particles
     for(const p of P){
       p.x += p.vx; p.y += p.vy;
 
-      // bounce at edges
       if (p.x < 0 || p.x > W) p.vx *= -1;
       if (p.y < 0 || p.y > H) p.vy *= -1;
 
@@ -86,7 +82,6 @@ format:
       ctx.fill();
     }
 
-    // draw lines between nearby particles
     for(let i=0;i<P.length;i++){
       for(let j=i+1;j<P.length;j++){
         const a = P[i], b = P[j];
@@ -112,18 +107,94 @@ format:
     requestAnimationFrame(animate);
   }
 
-  // handle resize
   window.addEventListener('resize', resize, { passive: true });
 
-  // init
   resize();
   if (running) animate();
 })();
 </script>
 
-
 ::: {.home-hero}
-Welcome to my analytics website!
 
+::: {.hero-text}
+
+# Dominique J. Strong
+
+## Analytics Leader | Business Intelligence | Predictive Modeling | Strategy
+
+I build executive-ready analytics, KPI frameworks, dashboards, and predictive models that help organizations improve retention, revenue, and operational decision-making.
+
+My work combines **SQL, Tableau, Python, machine learning, forecasting, and business strategy** to turn complex data into clear decisions.
+
+::: {.hero-buttons}
+[View Projects](projects.qmd){.btn .btn-primary}
+[View Resume](resume.qmd){.btn .btn-secondary}
+[Contact Me](contact.qmd){.btn .btn-secondary}
+:::
+
+:::
+
+::: {.hero-image}
 ![](./images/Portfolio.jpg){.hero-img fig-align="center"}
 :::
+
+:::
+
+## Featured Analytics Work
+
+::: {.project-grid}
+
+::: {.project-card}
+### Membership Churn Forecasting
+
+Built predictive models to estimate future churn using renewal populations, payment behavior, tenure mix, and retention signals.
+
+**Focus:** Python, forecasting, machine learning, model evaluation
+:::
+
+::: {.project-card}
+### Executive Retention KPI Framework
+
+Developed enterprise-level retention KPIs used to monitor early churn indicators and guide leadership decisions.
+
+**Focus:** KPI design, SQL, Tableau, executive reporting
+:::
+
+::: {.project-card}
+### Campaign A/B Testing
+
+Measured the incremental impact of outbound retention campaigns through treatment/control analysis.
+
+**Focus:** A/B testing, campaign analytics, business impact
+:::
+
+:::
+
+## Business Impact
+
+::: {.impact-grid}
+
+::: {.impact-card}
+### 7+ Years
+Analytics, operations, and business strategy experience
+:::
+
+::: {.impact-card}
+### Executive Reporting
+Built dashboards and KPI frameworks for senior leadership decision-making
+:::
+
+::: {.impact-card}
+### Predictive Analytics
+Applied machine learning and forecasting to retention and churn strategy
+:::
+
+:::
+
+## Core Skills
+
+**Analytics:** KPI Development, Forecasting, A/B Testing, Churn Analysis, Retention Strategy, Dashboard Design  
+
+**Technical:** SQL, Tableau, Python, pandas, scikit-learn, statsmodels, Excel, PowerPoint  
+
+**Business:** Executive Storytelling, Performance Measurement, Process Improvement, Strategic Decision Support
