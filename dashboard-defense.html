@@ -262,7 +262,7 @@ function spawnEnemy() {
     y: -40,
     w: label.length > 7 ? 120 : 82,
     h: 34,
-    speed: 0.35 + wave * 0.10 + Math.random() * 0.25,
+    speed: 0.28 + wave * 0.045 + Math.random() * 0.18,
     label,
     hp: label.length > 7 ? 2 : 1
   });
@@ -276,7 +276,7 @@ function spawnBoss() {
     y: 40,
     w: 300,
     h: 70,
-    vx: 2.1 + wave * 0.08,
+    vx: 1.2 + wave * 0.03,
     label,
     maxHp: 14 + wave * 3,
     hp: 14 + wave * 3,
@@ -511,9 +511,9 @@ function update() {
 
   if (player.cooldown > 0) player.cooldown--;
 
-  wave = Math.floor(score / 400) + 1;
+  wave = Math.floor(score / 900) + 1;
 
-  if (wave % 5 === 0 && !boss && !bossWaveTriggered) {
+  if (wave > 1 && wave % 7 === 0 && !boss && !bossWaveTriggered) {
     spawnBoss();
     bossWaveTriggered = true;
   }
@@ -522,7 +522,7 @@ function update() {
     bossWaveTriggered = false;
   }
 
-  if (!boss && frame % Math.max(32, 120 - wave * 8) === 0) {
+  if (!boss && frame % Math.max(48, 150 - wave * 4) === 0) {
     spawnEnemy();
   }
 
