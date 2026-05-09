@@ -6,195 +6,178 @@ format:
     css: styles.css
 ---
 
-<canvas id="particles-canvas" aria-hidden="true"></canvas>
+# Dominique J. Strong {.hero-name}
 
-<script>
-// ======= Dominique's Particles (no libs) =======
-(() => {
-  const cv = document.getElementById('particles-canvas');
-  const ctx = cv.getContext('2d');
+## Analytics Leader with 7+ years of experience turning customer, operational, and financial data into executive-ready decisions. {.hero-subtitle}
 
-  const CONFIG = {
-    colors: ['#70d6ff', '#4c9df1', '#2445ec'],
-    speed: 0.6,
-    linkDist: 120,
-    linkAlpha: 0.16,
-    sizeMin: 1,
-    sizeMax: 2.4,
-    maxCount: 180,
-    densityDesktop: 12000,
-    densityMobile: 7000,
-    dprCap: 2
-  };
+Currently driving **membership analytics, retention strategy, KPI development, forecasting, and machine learning initiatives** at **AAA Mountain West Group**.
 
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let running = !reduce.matches;
-  reduce.addEventListener?.('change', e => {
-    running = !e.matches;
-    if (running) animate();
-  });
+[Explore My Work](#work-experience){.btn .btn-primary}
 
-  let W=0, H=0, DPR=1, P=[];
-  function rand(a,b){ return a + Math.random()*(b-a); }
-  function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
+---
 
-  function resize(){
-    DPR = Math.min(window.devicePixelRatio || 1, CONFIG.dprCap);
-    W = cv.clientWidth = window.innerWidth;
-    H = cv.clientHeight = window.innerHeight;
-    cv.width  = Math.floor(W * DPR);
-    cv.height = Math.floor(H * DPR);
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    initParticles();
-  }
+## Work Experience {#work-experience}
 
-  function countForArea(){
-    const area = W * H;
-    const dense = matchMedia('(max-width: 600px)').matches ?
-                  CONFIG.densityMobile : CONFIG.densityDesktop;
-    return Math.min(CONFIG.maxCount, Math.max(30, Math.floor(area / dense)));
-  }
+::: {.career-section}
 
-  function initParticles(){
-    const n = countForArea();
-    P = new Array(n).fill(0).map(() => ({
-      x: Math.random()*W,
-      y: Math.random()*H,
-      vx: rand(-CONFIG.speed, CONFIG.speed),
-      vy: rand(-CONFIG.speed, CONFIG.speed),
-      r: rand(CONFIG.sizeMin, CONFIG.sizeMax),
-      c: pick(CONFIG.colors)
-    }));
-  }
+::: {.career-logo}
+![](./images/AAA.jpg){alt="AAA logo"}
+:::
 
-  function step(){
-    ctx.clearRect(0,0,W,H);
+::: {.career-content}
+### Lead Business Analyst — Membership & Sales Analytics  
+#### AAA Mountain West Group | Aug 2022 – Present
 
-    for(const p of P){
-      p.x += p.vx; p.y += p.vy;
+I lead analytics initiatives across membership, billing, product, and operations, helping the business understand customer behavior, retention risk, renewal performance, and revenue opportunities.
 
-      if (p.x < 0 || p.x > W) p.vx *= -1;
-      if (p.y < 0 || p.y > H) p.vy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = p.c;
-      ctx.fill();
-    }
-
-    for(let i=0;i<P.length;i++){
-      for(let j=i+1;j<P.length;j++){
-        const a = P[i], b = P[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const d2 = dx*dx + dy*dy;
-        const md = CONFIG.linkDist;
-        if (d2 < md*md){
-          const alpha = CONFIG.linkAlpha * (1 - Math.sqrt(d2)/md);
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(112,214,255,${alpha.toFixed(3)})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
-    }
-  }
-
-  function animate(){
-    if (!running) return;
-    step();
-    requestAnimationFrame(animate);
-  }
-
-  window.addEventListener('resize', resize, { passive: true });
-
-  resize();
-  if (running) animate();
-})();
-</script>
-
-::: {.home-hero}
-
-::: {.hero-text}
-
-# Dominique J. Strong
-
-## Analytics Leader | Business Intelligence | Predictive Modeling | Strategy
-
-I build executive-ready analytics, KPI frameworks, dashboards, and predictive models that help organizations improve retention, revenue, and operational decision-making.
-
-My work combines **SQL, Tableau, Python, machine learning, forecasting, and business strategy** to turn complex data into clear decisions.
-
-::: {.hero-buttons}
-[View Projects](projects.qmd){.btn .btn-primary}
-[View Resume](cv.qmd){.btn .btn-secondary}
-[Contact Me](contact.qmd){.btn .btn-secondary}
+**Core work:** churn forecasting, executive KPI frameworks, Tableau dashboards, SQL analysis, A/B testing, retention strategy, and cross-functional analytics leadership.
 :::
 
 :::
 
-::: {.hero-image}
-![](./images/Portfolio.jpg){.hero-img fig-align="center"}
+::: {.career-section}
+
+::: {.career-logo}
+![](./images/KaiserPermanente.jpg){alt="Kaiser Permanente logo"}
+:::
+
+::: {.career-content}
+### Senior Business Process Analyst — Operations Risk & Facilities Analytics  
+#### Kaiser Permanente | May 2018 – Aug 2022
+
+I supported operational risk management and facilities analytics through dashboards, statistical analysis, anomaly detection, and process improvement across large-scale healthcare operations.
+
+**Core work:** operational analytics, risk detection, Tableau reporting, facilities planning, process improvement, and executive-ready insights.
 :::
 
 :::
+
+---
 
 ## Featured Analytics Work
 
-::: {.project-grid}
+::: {.feature-grid}
 
-::: {.project-card}
-### Membership Churn Forecasting
+::: {.feature-card}
+### Churn Forecasting
 
-Built predictive models to estimate future churn using renewal populations, payment behavior, tenure mix, and retention signals.
+Built predictive forecasting approaches to estimate future churn using renewal populations, billing behavior, tenure mix, and retention signals.
 
-**Focus:** Python, forecasting, machine learning, model evaluation
+**Tools:** Python, pandas, scikit-learn, statsmodels
 :::
 
-::: {.project-card}
-### Executive Retention KPI Framework
+::: {.feature-card}
+### Executive KPI Frameworks
 
-Developed enterprise-level retention KPIs used to monitor early churn indicators and guide leadership decisions.
+Designed KPI structures that help leadership monitor performance, detect churn risk, and understand customer lifecycle movement.
 
-**Focus:** KPI design, SQL, Tableau, executive reporting
+**Tools:** SQL, Tableau, Excel, PowerPoint
 :::
 
-::: {.project-card}
-### Campaign A/B Testing
+::: {.feature-card}
+### A/B Testing & Campaign Analytics
 
-Measured the incremental impact of outbound retention campaigns through treatment/control analysis.
+Evaluated retention campaign effectiveness using treatment/control logic and business impact measurement.
 
-**Focus:** A/B testing, campaign analytics, business impact
-:::
-
-:::
-
-## Business Impact
-
-::: {.impact-grid}
-
-::: {.impact-card}
-### 7+ Years
-Analytics, operations, and business strategy experience
-:::
-
-::: {.impact-card}
-### Executive Reporting
-Built dashboards and KPI frameworks for senior leadership decision-making
-:::
-
-::: {.impact-card}
-### Predictive Analytics
-Applied machine learning and forecasting to retention and churn strategy
+**Tools:** SQL, Python, experimentation design
 :::
 
 :::
 
-## Core Skills
+---
 
-**Analytics:** KPI Development, Forecasting, A/B Testing, Churn Analysis, Retention Strategy, Dashboard Design  
+## Education
 
-**Technical:** SQL, Tableau, Python, pandas, scikit-learn, statsmodels, Excel, PowerPoint  
+::: {.career-section}
 
-**Business:** Executive Storytelling, Performance Measurement, Process Improvement, Strategic Decision Support
+::: {.career-logo}
+![](./images/BU.jpg){alt="Boston University logo"}
+:::
+
+::: {.career-content}
+### Boston University Metropolitan College  
+#### M.S. Applied Business Analytics
+
+Graduate training focused on business analytics, machine learning, data visualization, applied statistics, and analytical decision-making.
+:::
+
+:::
+
+::: {.career-section}
+
+::: {.career-logo}
+![](./images/CSUEB.jpg){alt="CSU East Bay logo"}
+:::
+
+::: {.career-content}
+### California State University, East Bay  
+#### B.S. Industrial Engineering, Minor in Mathematics
+
+Foundation in systems thinking, optimization, process improvement, statistics, and quantitative problem-solving.
+:::
+
+:::
+
+---
+
+## Projects
+
+::: {.project-list}
+
+[Membership Churn Forecasting • Machine Learning • Forecasting • Retention Strategy](projects.qmd)
+
+[Executive Retention KPI Dashboard • Tableau • SQL • Executive Reporting](projects.qmd)
+
+[Outbound Campaign A/B Test • Experimentation • Incremental Lift Analysis](projects.qmd)
+
+[Customer Segmentation • K-Means Clustering • Behavioral Analytics](projects.qmd)
+
+[Marketing Analytics Projects • Python • Regression • Business Insights](projects.qmd)
+
+:::
+
+---
+
+## Technical Skills
+
+::: {.skills-grid}
+
+::: {.skill-category}
+### Programming & Data
+
+SQL, BigQuery, SQL Server, Python, pandas, NumPy
+:::
+
+::: {.skill-category}
+### Analytics & Modeling
+
+Forecasting, Churn Modeling, Regression, Random Forest, Classification, Clustering, A/B Testing
+:::
+
+::: {.skill-category}
+### Visualization & BI
+
+Tableau, Power BI, Excel, Google Sheets, Dashboard Design
+:::
+
+::: {.skill-category}
+### Business Strengths
+
+KPI Development, Executive Storytelling, Product Analytics, Retention Strategy, Stakeholder Influence
+:::
+
+:::
+
+---
+
+## Get In Touch
+
+::: {.contact-panel}
+
+I’m interested in analytics, business intelligence, product analytics, machine learning, and strategy roles where data directly influences business decisions.
+
+[LinkedIn](https://www.linkedin.com/){.btn .btn-secondary}
+[GitHub](https://github.com/DomStrong11){.btn .btn-secondary}
+[Resume](cv.qmd){.btn .btn-primary}
+
+:::
