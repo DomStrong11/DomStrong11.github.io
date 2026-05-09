@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
 
 <head>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,9 +10,6 @@
 <link rel="stylesheet" href="styles.css">
 
 <style>
-
-/* ===== GLOBAL ===== */
-
 html {
   scroll-behavior: smooth;
 }
@@ -31,8 +27,6 @@ main {
   z-index: 2;
 }
 
-/* ===== PARTICLE BACKGROUND ===== */
-
 #particles-canvas {
   position: fixed;
   inset: 0;
@@ -42,21 +36,16 @@ main {
   background: #000;
 }
 
-/* ===== NAVBAR ===== */
-
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 1000;
-
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
-
   padding: 1.2rem 1rem;
-
   background: rgba(0,0,0,0.6);
   backdrop-filter: blur(12px);
 }
@@ -73,18 +62,13 @@ main {
   color: #86efac;
 }
 
-/* ===== HERO ===== */
-
 .hero-section {
   min-height: 100vh;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   text-align: center;
-
   padding: 2rem;
 }
 
@@ -120,21 +104,14 @@ main {
 
 .explore-btn {
   margin-top: 2rem;
-
   display: inline-block;
-
   padding: 1rem 2rem;
-
   border-radius: 999px;
-
   border: 1px solid rgba(255,255,255,0.2);
-
   color: white;
   text-decoration: none;
   font-weight: 700;
-
   background: rgba(255,255,255,0.05);
-
   transition: all 0.3s ease;
 }
 
@@ -142,8 +119,6 @@ main {
   transform: translateY(-2px);
   background: rgba(255,255,255,0.1);
 }
-
-/* ===== SECTIONS ===== */
 
 section {
   padding: 5rem 8%;
@@ -157,57 +132,110 @@ h2 {
   text-underline-offset: 0.4rem;
 }
 
-/* ===== TIMELINE ===== */
+/* ===== EXPERIENCE TIMELINE ===== */
 
-.timeline-row {
+.experience-timeline {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.experience-row {
   display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 2rem;
-
+  grid-template-columns: 180px 1fr;
+  gap: 2.5rem;
   align-items: center;
-
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
+  position: relative;
 }
 
-.timeline-logo img {
-  width: 120px;
-  height: 120px;
+.experience-row::before {
+  content: "";
+  position: absolute;
+  left: 165px;
+  top: 50%;
+  width: 65px;
+  height: 3px;
+  background: rgba(255,255,255,0.18);
+}
+
+.experience-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.experience-logo img {
+  width: 145px;
+  height: 145px;
   object-fit: contain;
-
   border-radius: 50%;
-
-  background: rgba(255,255,255,0.9);
-
-  padding: 0.8rem;
+  background: rgba(255,255,255,0.96);
+  padding: 0.9rem;
+  box-shadow: 0 0 35px rgba(255,255,255,0.14);
+  transition: transform 0.25s ease;
 }
 
-.timeline-card {
-  background: rgba(20,20,20,0.92);
+.experience-logo img:hover {
+  transform: scale(1.05);
+}
 
+.experience-card {
   border-radius: 24px;
-
-  padding: 2rem;
-
-  box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+  padding: 2.25rem;
+  box-shadow: 0 22px 55px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
 }
 
-.green-border {
-  border-left: 6px solid #86efac;
-}
-
-.yellow-border {
-  border-left: 6px solid #fde047;
-}
-
-.timeline-card h3 {
+.experience-card h3 {
   margin-top: 0;
+  margin-bottom: 0.8rem;
   font-size: 2rem;
 }
 
+.experience-card h3 a {
+  text-decoration: none;
+}
+
+.experience-card h3 a:hover {
+  text-decoration: underline;
+}
+
+.experience-card p {
+  color: #e5e7eb;
+}
+
 .role {
-  color: #cbd5e1;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   margin-bottom: 1rem;
+  color: #cbd5e1;
+}
+
+.aaa-card {
+  background: linear-gradient(
+    135deg,
+    rgba(180, 35, 40, 0.36),
+    rgba(50, 12, 14, 0.82)
+  );
+  border-left: 7px solid #ff5f67;
+}
+
+.aaa-card h3 a {
+  color: #ffb3b8;
+}
+
+.kaiser-card {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 115, 207, 0.34),
+    rgba(8, 36, 66, 0.84)
+  );
+  border-left: 7px solid #5cbcff;
+}
+
+.kaiser-card h3 a {
+  color: #a9d8ff;
 }
 
 /* ===== FEATURE CARDS ===== */
@@ -220,13 +248,9 @@ h2 {
 
 .feature-card {
   background: rgba(20,20,20,0.92);
-
   border-radius: 24px;
-
   padding: 2rem;
-
   border: 1px solid rgba(255,255,255,0.1);
-
   box-shadow: 0 20px 45px rgba(0,0,0,0.4);
 }
 
@@ -239,17 +263,11 @@ h2 {
 .education-block {
   max-width: 900px;
   margin: 0 auto;
-
   background: rgba(20,20,20,0.92);
-
   border-radius: 24px;
-
   padding: 3rem;
-
   box-shadow: 0 20px 45px rgba(0,0,0,0.4);
 }
-
-/* ===== CUSTOM SCROLLBAR ===== */
 
 ::-webkit-scrollbar {
   width: 12px;
@@ -264,29 +282,19 @@ h2 {
   border-radius: 999px;
 }
 
-/* ===== PIXIE CURSOR ===== */
-
 .cursor-sparkle {
   position: fixed;
-
   width: 6px;
   height: 6px;
-
   border-radius: 50%;
-
   pointer-events: none;
-
   background: radial-gradient(circle, #fff 0%, #86efac 45%, transparent 75%);
-
   box-shadow: 0 0 10px rgba(134,239,172,0.9);
-
   z-index: 99999;
-
   animation: sparkleFade 650ms ease-out forwards;
 }
 
 @keyframes sparkleFade {
-
   0% {
     opacity: 1;
     transform: scale(1);
@@ -296,16 +304,27 @@ h2 {
     opacity: 0;
     transform: translateY(-20px) scale(0.1);
   }
-
 }
 
-/* ===== MOBILE ===== */
-
 @media (max-width: 850px) {
+  .navbar {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
 
-  .timeline-row {
+  .experience-row {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 1rem;
+  }
+
+  .experience-row::before {
+    display: none;
+  }
+
+  .experience-logo img {
+    width: 120px;
+    height: 120px;
   }
 
   .feature-grid {
@@ -315,11 +334,8 @@ h2 {
   .hero-name {
     margin-top: 4rem;
   }
-
 }
-
 </style>
-
 </head>
 
 <body>
@@ -337,237 +353,193 @@ h2 {
 <main>
 
 <section class="hero-section">
+  <h1 class="hero-name">Dominique J. Strong</h1>
 
-<h1 class="hero-name">Dominique J. Strong</h1>
+  <p class="hero-subtitle">
+    <span class="green-text">Analytics Leader</span> with over
+    <span class="yellow-text">7 years</span>
+    of experience turning customer, operational, and financial data into
+    <span class="green-text">executive-ready decisions</span>.
+  </p>
 
-<p class="hero-subtitle">
-<span class="green-text">Analytics Leader</span> with over
-<span class="yellow-text">7 years</span>
-of experience turning customer, operational, and financial data into
-<span class="green-text">executive-ready decisions</span>.
-</p>
+  <p class="hero-subtitle hero-subtitle-small">
+    Currently driving retention strategy, KPI development, forecasting, and machine learning initiatives at
+    <span class="orange-text">AAA Mountain West Group</span>.
+  </p>
 
-<p class="hero-subtitle hero-subtitle-small">
-Currently driving retention strategy, KPI development, forecasting, and machine learning initiatives at
-<span class="orange-text">AAA Mountain West Group</span>.
-</p>
-
-<a href="#work-experience" class="explore-btn">
-Explore My Work ↓
-</a>
-
+  <a href="#work-experience" class="explore-btn">Explore My Work ↓</a>
 </section>
 
 <section id="work-experience">
+  <h2>Work Experience</h2>
 
-<h2>Work Experience</h2>
+  <div class="experience-timeline">
 
-<div class="timeline-row">
+    <div class="experience-row">
+      <div class="experience-logo">
+        <a href="https://mwg.aaa.com/" target="_blank">
+          <img src="./images/AAA.jpg" alt="AAA logo">
+        </a>
+      </div>
 
-<div class="timeline-logo">
-<img src="./images/AAA.jpg">
-</div>
+      <div class="experience-card aaa-card">
+        <h3>
+          <a href="https://mwg.aaa.com/" target="_blank">
+            AAA Mountain West Group
+          </a>
+        </h3>
 
-<div class="timeline-card green-border">
-<h3>AAA Mountain West Group</h3>
+        <p class="role">
+          Lead Business Analyst — Membership & Sales Analytics
+        </p>
 
-<p class="role">
-Lead Business Analyst — Membership & Sales Analytics
-</p>
+        <p>
+          Leading analytics initiatives across membership, billing, product, and operations with a focus on retention strategy, churn forecasting, KPI development, Tableau dashboards, experimentation, SQL analysis, and executive reporting.
+        </p>
+      </div>
+    </div>
 
-<p>
-Leading analytics initiatives across membership, billing, product, and operations with a focus on retention strategy, churn forecasting, KPI development, Tableau dashboards, experimentation, and executive reporting.
-</p>
+    <div class="experience-row">
+      <div class="experience-logo">
+        <a href="https://healthy.kaiserpermanente.org/learn" target="_blank">
+          <img src="./images/KaiserPermanente.jpg" alt="Kaiser Permanente logo">
+        </a>
+      </div>
 
-</div>
-</div>
+      <div class="experience-card kaiser-card">
+        <h3>
+          <a href="https://healthy.kaiserpermanente.org/learn" target="_blank">
+            Kaiser Permanente
+          </a>
+        </h3>
 
-<div class="timeline-row">
+        <p class="role">
+          Senior Business Process Analyst — Operations Risk & Facilities Analytics
+        </p>
 
-<div class="timeline-logo">
-<img src="./images/KaiserPermanente.jpg">
-</div>
+        <p>
+          Supported operational risk management and facilities analytics through dashboarding, anomaly detection, process improvement, statistical analysis, and strategic reporting across large-scale healthcare operations.
+        </p>
+      </div>
+    </div>
 
-<div class="timeline-card yellow-border">
-<h3>Kaiser Permanente</h3>
-
-<p class="role">
-Senior Business Process Analyst — Operations Risk & Facilities Analytics
-</p>
-
-<p>
-Supported operational risk management and facilities analytics through dashboarding, anomaly detection, process improvement, statistical analysis, and strategic reporting across large-scale healthcare operations.
-</p>
-
-</div>
-</div>
-
+  </div>
 </section>
 
 <section>
+  <h2>Featured Analytics Work</h2>
 
-<h2>Featured Analytics Work</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h3>Churn Forecasting</h3>
+      <p>
+        Predictive modeling framework using renewal populations, payment behavior, tenure mix, and retention signals for future churn estimation.
+      </p>
+    </div>
 
-<div class="feature-grid">
+    <div class="feature-card">
+      <h3>Executive KPI Frameworks</h3>
+      <p>
+        Built KPI structures and dashboards that help leadership monitor retention risk and customer lifecycle performance.
+      </p>
+    </div>
 
-<div class="feature-card">
-<h3>Churn Forecasting</h3>
-
-<p>
-Predictive modeling framework using renewal populations, payment behavior, tenure mix, and retention signals for future churn estimation.
-</p>
-</div>
-
-<div class="feature-card">
-<h3>Executive KPI Frameworks</h3>
-
-<p>
-Built KPI structures and dashboards that help leadership monitor retention risk and customer lifecycle performance.
-</p>
-</div>
-
-<div class="feature-card">
-<h3>A/B Testing & Experimentation</h3>
-
-<p>
-Measured campaign effectiveness using treatment/control logic and incremental business impact analysis.
-</p>
-</div>
-
-</div>
-
+    <div class="feature-card">
+      <h3>A/B Testing & Experimentation</h3>
+      <p>
+        Measured campaign effectiveness using treatment/control logic and incremental business impact analysis.
+      </p>
+    </div>
+  </div>
 </section>
 
 <section>
+  <h2>Education</h2>
 
-<h2>Education</h2>
+  <div class="education-block">
+    <h3>Boston University Metropolitan College</h3>
+    <p>M.S. Applied Business Analytics</p>
 
-<div class="education-block">
+    <br>
 
-<h3>Boston University Metropolitan College</h3>
-<p>M.S. Applied Business Analytics</p>
-
-<br>
-
-<h3>California State University, East Bay</h3>
-<p>B.S. Industrial Engineering, Minor in Mathematics</p>
-
-</div>
-
+    <h3>California State University, East Bay</h3>
+    <p>B.S. Industrial Engineering, Minor in Mathematics</p>
+  </div>
 </section>
 
 </main>
 
 <script>
-
-/* ===== PARTICLES ===== */
-
 (() => {
+  const canvas = document.getElementById("particles-canvas");
+  const ctx = canvas.getContext("2d");
 
-const canvas = document.getElementById("particles-canvas");
-const ctx = canvas.getContext("2d");
+  let w, h, particles;
 
-let w,h,particles;
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
 
-const mouse = {
-  x:null,
-  y:null
-};
-
-function resize() {
-
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-
-  particles = Array.from({length:90}, () => ({
-
-    x: Math.random()*w,
-    y: Math.random()*h,
-
-    vx:(Math.random()-0.5)*0.4,
-    vy:(Math.random()-0.5)*0.4,
-
-    r: Math.random()*2+1
-
-  }));
-
-}
-
-function animate() {
-
-  ctx.clearRect(0,0,w,h);
-
-  particles.forEach(p => {
-
-    p.x += p.vx;
-    p.y += p.vy;
-
-    if(p.x < 0 || p.x > w) p.vx *= -1;
-    if(p.y < 0 || p.y > h) p.vy *= -1;
-
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle = "rgba(255,255,255,0.6)";
-    ctx.fill();
-
-  });
-
-  for(let i=0;i<particles.length;i++) {
-
-    for(let j=i+1;j<particles.length;j++) {
-
-      const a = particles[i];
-      const b = particles[j];
-
-      const dx = a.x-b.x;
-      const dy = a.y-b.y;
-
-      const dist = Math.sqrt(dx*dx+dy*dy);
-
-      if(dist < 160) {
-
-        ctx.beginPath();
-
-        ctx.moveTo(a.x,a.y);
-        ctx.lineTo(b.x,b.y);
-
-        ctx.strokeStyle = "rgba(255,255,255,0.1)";
-        ctx.stroke();
-
-      }
-
-    }
-
+    particles = Array.from({length: 90}, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1
+    }));
   }
 
-  requestAnimationFrame(animate);
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
 
-}
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
 
-window.addEventListener("resize", resize);
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
 
-resize();
-animate();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,255,255,0.6)";
+      ctx.fill();
+    });
 
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i];
+        const b = particles[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 160) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = "rgba(255,255,255,0.1)";
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", resize);
+
+  resize();
+  animate();
 })();
 
-/* ===== PIXIE CURSOR ===== */
-
 document.addEventListener("mousemove", e => {
-
-const sparkle = document.createElement("span");
-
-sparkle.className = "cursor-sparkle";
-
-sparkle.style.left = `${e.clientX}px`;
-sparkle.style.top = `${e.clientY}px`;
-
-document.body.appendChild(sparkle);
-
-setTimeout(() => sparkle.remove(), 650);
-
+  const sparkle = document.createElement("span");
+  sparkle.className = "cursor-sparkle";
+  sparkle.style.left = `${e.clientX}px`;
+  sparkle.style.top = `${e.clientY}px`;
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 650);
 });
-
 </script>
 
 </body>
