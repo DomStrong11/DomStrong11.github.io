@@ -146,177 +146,135 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<canvas id="particles-canvas" aria-hidden="true">
-</canvas>
-<script>
-// ======= Dominique's Particles (no libs) =======
-(() => {
-  const cv = document.getElementById('particles-canvas');
-  const ctx = cv.getContext('2d');
-
-  const CONFIG = {
-    colors: ['#70d6ff', '#4c9df1', '#2445ec'],
-    speed: 0.6,
-    linkDist: 120,
-    linkAlpha: 0.16,
-    sizeMin: 1,
-    sizeMax: 2.4,
-    maxCount: 180,
-    densityDesktop: 12000,
-    densityMobile: 7000,
-    dprCap: 2
-  };
-
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  let running = !reduce.matches;
-  reduce.addEventListener?.('change', e => {
-    running = !e.matches;
-    if (running) animate();
-  });
-
-  let W=0, H=0, DPR=1, P=[];
-  function rand(a,b){ return a + Math.random()*(b-a); }
-  function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
-
-  function resize(){
-    DPR = Math.min(window.devicePixelRatio || 1, CONFIG.dprCap);
-    W = cv.clientWidth = window.innerWidth;
-    H = cv.clientHeight = window.innerHeight;
-    cv.width  = Math.floor(W * DPR);
-    cv.height = Math.floor(H * DPR);
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    initParticles();
-  }
-
-  function countForArea(){
-    const area = W * H;
-    const dense = matchMedia('(max-width: 600px)').matches ?
-                  CONFIG.densityMobile : CONFIG.densityDesktop;
-    return Math.min(CONFIG.maxCount, Math.max(30, Math.floor(area / dense)));
-  }
-
-  function initParticles(){
-    const n = countForArea();
-    P = new Array(n).fill(0).map(() => ({
-      x: Math.random()*W,
-      y: Math.random()*H,
-      vx: rand(-CONFIG.speed, CONFIG.speed),
-      vy: rand(-CONFIG.speed, CONFIG.speed),
-      r: rand(CONFIG.sizeMin, CONFIG.sizeMax),
-      c: pick(CONFIG.colors)
-    }));
-  }
-
-  function step(){
-    ctx.clearRect(0,0,W,H);
-
-    for(const p of P){
-      p.x += p.vx; p.y += p.vy;
-
-      if (p.x < 0 || p.x > W) p.vx *= -1;
-      if (p.y < 0 || p.y > H) p.vy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = p.c;
-      ctx.fill();
-    }
-
-    for(let i=0;i<P.length;i++){
-      for(let j=i+1;j<P.length;j++){
-        const a = P[i], b = P[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const d2 = dx*dx + dy*dy;
-        const md = CONFIG.linkDist;
-        if (d2 < md*md){
-          const alpha = CONFIG.linkAlpha * (1 - Math.sqrt(d2)/md);
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(112,214,255,${alpha.toFixed(3)})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
-    }
-  }
-
-  function animate(){
-    if (!running) return;
-    step();
-    requestAnimationFrame(animate);
-  }
-
-  window.addEventListener('resize', resize, { passive: true });
-
-  resize();
-  if (running) animate();
-})();
-</script>
-<div class="home-hero">
-<section id="dominique-j.-strong" class="level1 hero-text">
-<h1>Dominique J. Strong</h1>
-<section id="analytics-leader-business-intelligence-predictive-modeling-strategy" class="level2">
-<h2 class="anchored" data-anchor-id="analytics-leader-business-intelligence-predictive-modeling-strategy">Analytics Leader | Business Intelligence | Predictive Modeling | Strategy</h2>
-<p>I build executive-ready analytics, KPI frameworks, dashboards, and predictive models that help organizations improve retention, revenue, and operational decision-making.</p>
-<p>My work combines <strong>SQL, Tableau, Python, machine learning, forecasting, and business strategy</strong> to turn complex data into clear decisions.</p>
-<div class="hero-buttons">
-<p><a href="./projects.html" class="btn btn-primary">View Projects</a> <a href="./cv.html" class="btn btn-secondary">View Resume</a> <a href="./contact.html" class="btn btn-secondary">Contact Me</a></p>
+<section id="dominique-j.-strong" class="level1 hero-name">
+<h1 class="hero-name">Dominique J. Strong</h1>
+<section id="analytics-leader-with-7-years-of-experience-turning-customer-operational-and-financial-data-into-executive-ready-decisions." class="level2 hero-subtitle">
+<h2 class="hero-subtitle anchored" data-anchor-id="analytics-leader-with-7-years-of-experience-turning-customer-operational-and-financial-data-into-executive-ready-decisions.">Analytics Leader with 7+ years of experience turning customer, operational, and financial data into executive-ready decisions.</h2>
+<p>Currently driving <strong>membership analytics, retention strategy, KPI development, forecasting, and machine learning initiatives</strong> at <strong>AAA Mountain West Group</strong>.</p>
+<p><a href="#work-experience" class="btn btn-primary">Explore My Work</a></p>
+<hr>
+</section>
+<section id="work-experience" class="level2">
+<h2 class="anchored" data-anchor-id="work-experience">Work Experience</h2>
+<div class="career-section">
+<div class="career-logo">
+<p><img src="./images/AAA.jpg" class="img-fluid" alt="AAA logo"></p>
 </div>
+<section id="lead-business-analyst-membership-sales-analytics" class="level3 career-content">
+<h3 class="anchored" data-anchor-id="lead-business-analyst-membership-sales-analytics">Lead Business Analyst — Membership &amp; Sales Analytics</h3>
+<section id="aaa-mountain-west-group-aug-2022-present" class="level4">
+<h4 class="anchored" data-anchor-id="aaa-mountain-west-group-aug-2022-present">AAA Mountain West Group | Aug 2022 – Present</h4>
+<p>I lead analytics initiatives across membership, billing, product, and operations, helping the business understand customer behavior, retention risk, renewal performance, and revenue opportunities.</p>
+<p><strong>Core work:</strong> churn forecasting, executive KPI frameworks, Tableau dashboards, SQL analysis, A/B testing, retention strategy, and cross-functional analytics leadership.</p>
 </section>
 </section>
-<div class="hero-image">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="./images/Portfolio.jpg" class="hero-img img-fluid quarto-figure quarto-figure-center figure-img"></p>
-</figure>
 </div>
+<div class="career-section">
+<div class="career-logo">
+<p><img src="./images/KaiserPermanente.jpg" class="img-fluid" alt="Kaiser Permanente logo"></p>
 </div>
+<section id="senior-business-process-analyst-operations-risk-facilities-analytics" class="level3 career-content">
+<h3 class="anchored" data-anchor-id="senior-business-process-analyst-operations-risk-facilities-analytics">Senior Business Process Analyst — Operations Risk &amp; Facilities Analytics</h3>
+<section id="kaiser-permanente-may-2018-aug-2022" class="level4">
+<h4 class="anchored" data-anchor-id="kaiser-permanente-may-2018-aug-2022">Kaiser Permanente | May 2018 – Aug 2022</h4>
+<p>I supported operational risk management and facilities analytics through dashboards, statistical analysis, anomaly detection, and process improvement across large-scale healthcare operations.</p>
+<p><strong>Core work:</strong> operational analytics, risk detection, Tableau reporting, facilities planning, process improvement, and executive-ready insights.</p>
+</section>
+</section>
 </div>
+<hr>
+</section>
 <section id="featured-analytics-work" class="level2">
 <h2 class="anchored" data-anchor-id="featured-analytics-work">Featured Analytics Work</h2>
-<div class="project-grid">
-<section id="membership-churn-forecasting" class="level3 project-card">
-<h3 class="anchored" data-anchor-id="membership-churn-forecasting">Membership Churn Forecasting</h3>
-<p>Built predictive models to estimate future churn using renewal populations, payment behavior, tenure mix, and retention signals.</p>
-<p><strong>Focus:</strong> Python, forecasting, machine learning, model evaluation</p>
+<div class="feature-grid">
+<section id="churn-forecasting" class="level3 feature-card">
+<h3 class="anchored" data-anchor-id="churn-forecasting">Churn Forecasting</h3>
+<p>Built predictive forecasting approaches to estimate future churn using renewal populations, billing behavior, tenure mix, and retention signals.</p>
+<p><strong>Tools:</strong> Python, pandas, scikit-learn, statsmodels</p>
 </section>
-<section id="executive-retention-kpi-framework" class="level3 project-card">
-<h3 class="anchored" data-anchor-id="executive-retention-kpi-framework">Executive Retention KPI Framework</h3>
-<p>Developed enterprise-level retention KPIs used to monitor early churn indicators and guide leadership decisions.</p>
-<p><strong>Focus:</strong> KPI design, SQL, Tableau, executive reporting</p>
+<section id="executive-kpi-frameworks" class="level3 feature-card">
+<h3 class="anchored" data-anchor-id="executive-kpi-frameworks">Executive KPI Frameworks</h3>
+<p>Designed KPI structures that help leadership monitor performance, detect churn risk, and understand customer lifecycle movement.</p>
+<p><strong>Tools:</strong> SQL, Tableau, Excel, PowerPoint</p>
 </section>
-<section id="campaign-ab-testing" class="level3 project-card">
-<h3 class="anchored" data-anchor-id="campaign-ab-testing">Campaign A/B Testing</h3>
-<p>Measured the incremental impact of outbound retention campaigns through treatment/control analysis.</p>
-<p><strong>Focus:</strong> A/B testing, campaign analytics, business impact</p>
-</section>
-</div>
-</section>
-<section id="business-impact" class="level2">
-<h2 class="anchored" data-anchor-id="business-impact">Business Impact</h2>
-<div class="impact-grid">
-<section id="years" class="level3 impact-card">
-<h3 class="anchored" data-anchor-id="years">7+ Years</h3>
-<p>Analytics, operations, and business strategy experience</p>
-</section>
-<section id="executive-reporting" class="level3 impact-card">
-<h3 class="anchored" data-anchor-id="executive-reporting">Executive Reporting</h3>
-<p>Built dashboards and KPI frameworks for senior leadership decision-making</p>
-</section>
-<section id="predictive-analytics" class="level3 impact-card">
-<h3 class="anchored" data-anchor-id="predictive-analytics">Predictive Analytics</h3>
-<p>Applied machine learning and forecasting to retention and churn strategy</p>
+<section id="ab-testing-campaign-analytics" class="level3 feature-card">
+<h3 class="anchored" data-anchor-id="ab-testing-campaign-analytics">A/B Testing &amp; Campaign Analytics</h3>
+<p>Evaluated retention campaign effectiveness using treatment/control logic and business impact measurement.</p>
+<p><strong>Tools:</strong> SQL, Python, experimentation design</p>
 </section>
 </div>
+<hr>
 </section>
-<section id="core-skills" class="level2">
-<h2 class="anchored" data-anchor-id="core-skills">Core Skills</h2>
-<p><strong>Analytics:</strong> KPI Development, Forecasting, A/B Testing, Churn Analysis, Retention Strategy, Dashboard Design</p>
-<p><strong>Technical:</strong> SQL, Tableau, Python, pandas, scikit-learn, statsmodels, Excel, PowerPoint</p>
-<p><strong>Business:</strong> Executive Storytelling, Performance Measurement, Process Improvement, Strategic Decision Support</p>
+<section id="education" class="level2">
+<h2 class="anchored" data-anchor-id="education">Education</h2>
+<div class="career-section">
+<div class="career-logo">
+<p><img src="./images/BU.jpg" class="img-fluid" alt="Boston University logo"></p>
+</div>
+<section id="boston-university-metropolitan-college" class="level3 career-content">
+<h3 class="anchored" data-anchor-id="boston-university-metropolitan-college">Boston University Metropolitan College</h3>
+<section id="m.s.-applied-business-analytics" class="level4">
+<h4 class="anchored" data-anchor-id="m.s.-applied-business-analytics">M.S. Applied Business Analytics</h4>
+<p>Graduate training focused on business analytics, machine learning, data visualization, applied statistics, and analytical decision-making.</p>
+</section>
+</section>
+</div>
+<div class="career-section">
+<div class="career-logo">
+<p><img src="./images/CSUEB.jpg" class="img-fluid" alt="CSU East Bay logo"></p>
+</div>
+<section id="california-state-university-east-bay" class="level3 career-content">
+<h3 class="anchored" data-anchor-id="california-state-university-east-bay">California State University, East Bay</h3>
+<section id="b.s.-industrial-engineering-minor-in-mathematics" class="level4">
+<h4 class="anchored" data-anchor-id="b.s.-industrial-engineering-minor-in-mathematics">B.S. Industrial Engineering, Minor in Mathematics</h4>
+<p>Foundation in systems thinking, optimization, process improvement, statistics, and quantitative problem-solving.</p>
+</section>
+</section>
+</div>
+<hr>
+</section>
+<section id="projects" class="level2">
+<h2 class="anchored" data-anchor-id="projects">Projects</h2>
+<div class="project-list">
+<p><a href="./projects.html">Membership Churn Forecasting • Machine Learning • Forecasting • Retention Strategy</a></p>
+<p><a href="./projects.html">Executive Retention KPI Dashboard • Tableau • SQL • Executive Reporting</a></p>
+<p><a href="./projects.html">Outbound Campaign A/B Test • Experimentation • Incremental Lift Analysis</a></p>
+<p><a href="./projects.html">Customer Segmentation • K-Means Clustering • Behavioral Analytics</a></p>
+<p><a href="./projects.html">Marketing Analytics Projects • Python • Regression • Business Insights</a></p>
+</div>
+<hr>
+</section>
+<section id="technical-skills" class="level2">
+<h2 class="anchored" data-anchor-id="technical-skills">Technical Skills</h2>
+<div class="skills-grid">
+<section id="programming-data" class="level3 skill-category">
+<h3 class="anchored" data-anchor-id="programming-data">Programming &amp; Data</h3>
+<p>SQL, BigQuery, SQL Server, Python, pandas, NumPy</p>
+</section>
+<section id="analytics-modeling" class="level3 skill-category">
+<h3 class="anchored" data-anchor-id="analytics-modeling">Analytics &amp; Modeling</h3>
+<p>Forecasting, Churn Modeling, Regression, Random Forest, Classification, Clustering, A/B Testing</p>
+</section>
+<section id="visualization-bi" class="level3 skill-category">
+<h3 class="anchored" data-anchor-id="visualization-bi">Visualization &amp; BI</h3>
+<p>Tableau, Power BI, Excel, Google Sheets, Dashboard Design</p>
+</section>
+<section id="business-strengths" class="level3 skill-category">
+<h3 class="anchored" data-anchor-id="business-strengths">Business Strengths</h3>
+<p>KPI Development, Executive Storytelling, Product Analytics, Retention Strategy, Stakeholder Influence</p>
+</section>
+</div>
+<hr>
+</section>
+<section id="get-in-touch" class="level2">
+<h2 class="anchored" data-anchor-id="get-in-touch">Get In Touch</h2>
+<div class="contact-panel">
+<p>I’m interested in analytics, business intelligence, product analytics, machine learning, and strategy roles where data directly influences business decisions.</p>
+<p><a href="https://www.linkedin.com/" class="btn btn-secondary">LinkedIn</a> <a href="https://github.com/DomStrong11" class="btn btn-secondary">GitHub</a> <a href="./cv.html" class="btn btn-primary">Resume</a></p>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
