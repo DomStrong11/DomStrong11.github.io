@@ -3,7 +3,7 @@ title: "Dominique J. Strong"
 format:
   html:
     theme: yeti
-    css: styles/home.css
+    css: styles.css
 ---
 
 <canvas id="particles-canvas" aria-hidden="true"></canvas>
