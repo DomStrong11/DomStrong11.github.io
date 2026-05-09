@@ -56,10 +56,31 @@
     "text": "California State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Dominique J Strong",
-    "section": "",
-    "text": "Welcome to my analytics website!"
+    "objectID": "index.html#analytics-leader-business-intelligence-predictive-modeling-strategy",
+    "href": "index.html#analytics-leader-business-intelligence-predictive-modeling-strategy",
+    "title": "Dominique J. Strong",
+    "section": "Analytics Leader | Business Intelligence | Predictive Modeling | Strategy",
+    "text": "Analytics Leader | Business Intelligence | Predictive Modeling | Strategy\nI build executive-ready analytics, KPI frameworks, dashboards, and predictive models that help organizations improve retention, revenue, and operational decision-making.\nMy work combines SQL, Tableau, Python, machine learning, forecasting, and business strategy to turn complex data into clear decisions.\n\nView Projects View Resume Contact Me"
+  },
+  {
+    "objectID": "index.html#featured-analytics-work",
+    "href": "index.html#featured-analytics-work",
+    "title": "Dominique J. Strong",
+    "section": "Featured Analytics Work",
+    "text": "Featured Analytics Work\n\n\nMembership Churn Forecasting\nBuilt predictive models to estimate future churn using renewal populations, payment behavior, tenure mix, and retention signals.\nFocus: Python, forecasting, machine learning, model evaluation\n\n\nExecutive Retention KPI Framework\nDeveloped enterprise-level retention KPIs used to monitor early churn indicators and guide leadership decisions.\nFocus: KPI design, SQL, Tableau, executive reporting\n\n\nCampaign A/B Testing\nMeasured the incremental impact of outbound retention campaigns through treatment/control analysis.\nFocus: A/B testing, campaign analytics, business impact"
+  },
+  {
+    "objectID": "index.html#business-impact",
+    "href": "index.html#business-impact",
+    "title": "Dominique J. Strong",
+    "section": "Business Impact",
+    "text": "Business Impact\n\n\n7+ Years\nAnalytics, operations, and business strategy experience\n\n\nExecutive Reporting\nBuilt dashboards and KPI frameworks for senior leadership decision-making\n\n\nPredictive Analytics\nApplied machine learning and forecasting to retention and churn strategy"
+  },
+  {
+    "objectID": "index.html#core-skills",
+    "href": "index.html#core-skills",
+    "title": "Dominique J. Strong",
+    "section": "Core Skills",
+    "text": "Core Skills\nAnalytics: KPI Development, Forecasting, A/B Testing, Churn Analysis, Retention Strategy, Dashboard Design\nTechnical: SQL, Tableau, Python, pandas, scikit-learn, statsmodels, Excel, PowerPoint\nBusiness: Executive Storytelling, Performance Measurement, Process Improvement, Strategic Decision Support"
   }
 ]
