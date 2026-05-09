@@ -11,11 +11,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background: #000;
   color: #f8fafc;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .game-wrap {
-  height: 100vh;
+  min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 1rem;
@@ -106,15 +107,6 @@ button:hover, a:hover {
 }
 
 @media (max-width: 700px) {
-  body {
-    overflow-y: auto;
-  }
-
-  .game-wrap {
-    height: auto;
-    min-height: 100vh;
-  }
-
   .stats {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -134,7 +126,7 @@ button:hover, a:hover {
 
     <p class="hint">
       Move with ← / → or A / D. Press <strong>Space Bar</strong> to shoot SQL queries.
-      Boss waves appear every 5 levels.
+      Collect <strong>HEALTH</strong>, <strong>POWER</strong>, and <strong>COPY</strong> boosts.
     </p>
 
     <div class="stats">
@@ -142,7 +134,7 @@ button:hover, a:hover {
       <div class="stat"><span>Best</span><strong id="best">0</strong></div>
       <div class="stat"><span>Pipeline Health</span><strong id="health">100%</strong></div>
       <div class="stat"><span>Wave</span><strong id="wave">1</strong></div>
-      <div class="stat"><span>Boss</span><strong id="bossStatus">None</strong></div>
+      <div class="stat"><span>Power-Up</span><strong id="powerStatus">None</strong></div>
     </div>
 
     <canvas id="game" width="960" height="520"></canvas>
@@ -157,7 +149,7 @@ button:hover, a:hover {
 
 <script>
 window.addEventListener("keydown", e => {
-  if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," ","a","d","A","D"].includes(e.key)) {
+  if (["ArrowLeft","ArrowRight"," ","a","d","A","D"].includes(e.key)) {
     e.preventDefault();
   }
 }, { passive: false });
@@ -169,21 +161,29 @@ const scoreEl = document.getElementById("score");
 const bestEl = document.getElementById("best");
 const healthEl = document.getElementById("health");
 const waveEl = document.getElementById("wave");
-const bossStatusEl = document.getElementById("bossStatus");
+const powerStatusEl = document.getElementById("powerStatus");
 
 let keys = {};
 let score = 0;
 let health = 100;
 let wave = 1;
 let best = Number(localStorage.getItem("sqlInvadersBest") || 0);
+
 let bullets = [];
 let enemies = [];
 let particles = [];
+let powerUps = [];
 let boss = null;
+
 let bossWaveTriggered = false;
 let gameOver = false;
 let frame = 0;
 let animationId;
+
+let powerMode = false;
+let powerTimer = 0;
+let copyMode = false;
+let copyTimer = 0;
 
 bestEl.textContent = best;
 
@@ -214,6 +214,8 @@ const bossLabels = [
   "REVENUE LEAKAGE"
 ];
 
+const powerTypes = ["HEALTH", "POWER", "COPY"];
+
 function reset() {
   score = 0;
   health = 100;
@@ -221,13 +223,18 @@ function reset() {
   bullets = [];
   enemies = [];
   particles = [];
+  powerUps = [];
   boss = null;
   bossWaveTriggered = false;
   gameOver = false;
   frame = 0;
+  powerMode = false;
+  powerTimer = 0;
+  copyMode = false;
+  copyTimer = 0;
   player.x = canvas.width / 2 - player.w / 2;
-  updateStats();
 
+  updateStats();
   cancelAnimationFrame(animationId);
   loop();
 }
@@ -237,12 +244,18 @@ function updateStats() {
   healthEl.textContent = Math.max(0, health) + "%";
   waveEl.textContent = wave;
 
-  if (boss) {
-    bossStatusEl.textContent = boss.hp + "/" + boss.maxHp;
-    bossStatusEl.style.color = "#fb7185";
+  if (copyMode) {
+    powerStatusEl.textContent = "COPY";
+    powerStatusEl.style.color = "#fde047";
+  } else if (powerMode) {
+    powerStatusEl.textContent = "POWER";
+    powerStatusEl.style.color = "#38bdf8";
+  } else if (boss) {
+    powerStatusEl.textContent = "BOSS";
+    powerStatusEl.style.color = "#fb7185";
   } else {
-    bossStatusEl.textContent = "None";
-    bossStatusEl.style.color = "#86efac";
+    powerStatusEl.textContent = "None";
+    powerStatusEl.style.color = "#86efac";
   }
 
   if (score > best) {
@@ -262,9 +275,22 @@ function spawnEnemy() {
     y: -40,
     w: label.length > 7 ? 120 : 82,
     h: 34,
-    speed: 0.28 + wave * 0.045 + Math.random() * 0.18,
+    speed: 0.22 + wave * 0.025 + Math.random() * 0.12,
     label,
     hp: label.length > 7 ? 2 : 1
+  });
+}
+
+function spawnPowerUp() {
+  const type = powerTypes[Math.floor(Math.random() * powerTypes.length)];
+
+  powerUps.push({
+    x: Math.random() * (canvas.width - 100) + 40,
+    y: -35,
+    w: 86,
+    h: 32,
+    speed: 0.7,
+    type
   });
 }
 
@@ -273,13 +299,13 @@ function spawnBoss() {
 
   boss = {
     x: canvas.width / 2 - 150,
-    y: 40,
+    y: 42,
     w: 300,
     h: 70,
-    vx: 1.2 + wave * 0.03,
+    vx: 0.85 + wave * 0.015,
     label,
-    maxHp: 14 + wave * 3,
-    hp: 14 + wave * 3,
+    maxHp: 12 + wave * 2,
+    hp: 12 + wave * 2,
     attackTimer: 0
   };
 
@@ -289,15 +315,37 @@ function spawnBoss() {
 function shoot() {
   if (player.cooldown > 0) return;
 
-  bullets.push({
-    x: player.x + player.w / 2 - 4,
-    y: player.y - 12,
-    w: 8,
-    h: 18,
-    speed: 9
+  const shots = powerMode ? [-14, 14] : [0];
+
+  shots.forEach(offset => {
+    bullets.push({
+      x: player.x + player.w / 2 - 4 + offset,
+      y: player.y - 12,
+      w: 8,
+      h: 18,
+      speed: 9
+    });
   });
 
-  player.cooldown = 13;
+  if (copyMode) {
+    bullets.push({
+      x: player.x + player.w / 2 - 72,
+      y: player.y - 20,
+      w: 8,
+      h: 18,
+      speed: 9
+    });
+
+    bullets.push({
+      x: player.x + player.w / 2 + 64,
+      y: player.y - 20,
+      w: 8,
+      h: 18,
+      speed: 9
+    });
+  }
+
+  player.cooldown = powerMode ? 9 : 13;
 }
 
 function collide(a, b) {
@@ -357,22 +405,23 @@ function drawBackground() {
   ctx.fillRect(0, canvas.height - 88, canvas.width, 88);
 
   ctx.fillStyle = "#94a3b8";
-  ctx.font = "bold 13px Arial";
-  ctx.fillText("EXECUTIVE DASHBOARD DEFENSE LINE", 24, canvas.height - 24);
+  ctx.font = "bold 12px Arial";
+  ctx.textAlign = "left";
+  ctx.fillText("EXECUTIVE DASHBOARD DEFENSE LINE", 30, canvas.height - 32);
 }
 
-function drawPlayer() {
+function drawPlayerShip(x, y, label) {
   ctx.save();
 
   ctx.shadowColor = "#86efac";
   ctx.shadowBlur = 20;
 
-  const grad = ctx.createLinearGradient(player.x, player.y, player.x + player.w, player.y + player.h);
+  const grad = ctx.createLinearGradient(x, y, x + player.w, y + player.h);
   grad.addColorStop(0, "#86efac");
   grad.addColorStop(1, "#38bdf8");
 
   ctx.fillStyle = grad;
-  roundRect(player.x, player.y, player.w, player.h, 12);
+  roundRect(x, y, player.w, player.h, 12);
   ctx.fill();
 
   ctx.shadowBlur = 0;
@@ -380,9 +429,18 @@ function drawPlayer() {
   ctx.font = "bold 13px Arial";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("SQL", player.x + player.w / 2, player.y + player.h / 2);
+  ctx.fillText(label, x + player.w / 2, y + player.h / 2);
 
   ctx.restore();
+}
+
+function drawPlayer() {
+  drawPlayerShip(player.x, player.y, "SQL");
+
+  if (copyMode) {
+    drawPlayerShip(player.x - 72, player.y + 10, "COPY");
+    drawPlayerShip(player.x + 72, player.y + 10, "COPY");
+  }
 }
 
 function drawBullet(b) {
@@ -415,6 +473,31 @@ function drawEnemy(e) {
   ctx.restore();
 }
 
+function drawPowerUp(p) {
+  ctx.save();
+
+  const color =
+    p.type === "HEALTH" ? "#22c55e" :
+    p.type === "POWER" ? "#38bdf8" :
+    "#fde047";
+
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 18;
+  ctx.fillStyle = color;
+
+  roundRect(p.x, p.y, p.w, p.h, 14);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 12px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(p.type, p.x + p.w / 2, p.y + p.h / 2);
+
+  ctx.restore();
+}
+
 function drawBoss() {
   if (!boss) return;
 
@@ -434,16 +517,14 @@ function drawBoss() {
   ctx.textBaseline = "middle";
   ctx.fillText(boss.label, boss.x + boss.w / 2, boss.y + boss.h / 2);
 
-  const barW = boss.w;
-  const barH = 10;
   const pct = boss.hp / boss.maxHp;
 
   ctx.fillStyle = "rgba(255,255,255,0.18)";
-  roundRect(boss.x, boss.y - 18, barW, barH, 6);
+  roundRect(boss.x, boss.y - 18, boss.w, 10, 6);
   ctx.fill();
 
   ctx.fillStyle = "#86efac";
-  roundRect(boss.x, boss.y - 18, barW * pct, barH, 6);
+  roundRect(boss.x, boss.y - 18, boss.w * pct, 10, 6);
   ctx.fill();
 
   ctx.restore();
@@ -485,7 +566,7 @@ function updateBoss() {
 
   boss.attackTimer++;
 
-  if (boss.attackTimer > 75) {
+  if (boss.attackTimer > 115) {
     boss.attackTimer = 0;
 
     enemies.push({
@@ -493,10 +574,22 @@ function updateBoss() {
       y: boss.y + boss.h + 20,
       w: 100,
       h: 34,
-      speed: 1.1 + wave * 0.08,
+      speed: 0.75 + wave * 0.025,
       label: "BAD KPI",
       hp: 1
     });
+  }
+}
+
+function updatePowerTimers() {
+  if (powerMode) {
+    powerTimer--;
+    if (powerTimer <= 0) powerMode = false;
+  }
+
+  if (copyMode) {
+    copyTimer--;
+    if (copyTimer <= 0) copyMode = false;
   }
 }
 
@@ -507,31 +600,37 @@ function update() {
   if (keys["ArrowRight"] || keys["d"] || keys["D"]) player.x += player.speed;
   if (keys[" "]) shoot();
 
-  player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+  player.x = Math.max(80, Math.min(canvas.width - player.w - 80, player.x));
 
   if (player.cooldown > 0) player.cooldown--;
 
-  wave = Math.floor(score / 900) + 1;
+  wave = Math.floor(score / 1300) + 1;
 
-  if (wave > 1 && wave % 7 === 0 && !boss && !bossWaveTriggered) {
+  if (wave > 1 && wave % 8 === 0 && !boss && !bossWaveTriggered) {
     spawnBoss();
     bossWaveTriggered = true;
   }
 
-  if (wave % 5 !== 0) {
+  if (wave % 8 !== 0) {
     bossWaveTriggered = false;
   }
 
-  if (!boss && frame % Math.max(48, 150 - wave * 4) === 0) {
+  if (!boss && frame % Math.max(72, 170 - wave * 3) === 0) {
     spawnEnemy();
   }
 
+  if (frame % 720 === 0) {
+    spawnPowerUp();
+  }
+
   updateBoss();
+  updatePowerTimers();
 
   bullets.forEach(b => b.y -= b.speed);
   bullets = bullets.filter(b => b.y > -30);
 
   enemies.forEach(e => e.y += e.speed);
+  powerUps.forEach(p => p.y += p.speed);
 
   if (boss) {
     for (let j = bullets.length - 1; j >= 0; j--) {
@@ -576,9 +675,32 @@ function update() {
     }
   }
 
+  for (let i = powerUps.length - 1; i >= 0; i--) {
+    const p = powerUps[i];
+
+    if (collide(player, p)) {
+      if (p.type === "HEALTH") {
+        health = Math.min(100, health + 25);
+      }
+
+      if (p.type === "POWER") {
+        powerMode = true;
+        powerTimer = 600;
+      }
+
+      if (p.type === "COPY") {
+        copyMode = true;
+        copyTimer = 520;
+      }
+
+      addParticles(p.x + p.w / 2, p.y + p.h / 2, "#fde047");
+      powerUps.splice(i, 1);
+    }
+  }
+
   enemies = enemies.filter(e => {
     if (e.y + e.h >= canvas.height - 88) {
-      health -= e.label.length > 7 ? 15 : 10;
+      health -= e.label.length > 7 ? 12 : 8;
       addParticles(e.x + e.w / 2, e.y + e.h / 2, "#fb7185");
 
       if (health <= 0) {
@@ -591,6 +713,8 @@ function update() {
 
     return true;
   });
+
+  powerUps = powerUps.filter(p => p.y < canvas.height + 40);
 
   particles.forEach(p => {
     p.x += p.vx;
@@ -607,6 +731,7 @@ function draw() {
   drawBackground();
   bullets.forEach(drawBullet);
   enemies.forEach(drawEnemy);
+  powerUps.forEach(drawPowerUp);
   drawBoss();
   drawPlayer();
   drawParticles();
