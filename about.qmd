@@ -2,37 +2,147 @@
 title: "About"
 ---
 
-## 👋 About Me
+::: {.about-hero}
 
-I am **Dominique Strong**, a Principal Business Analyst with **7+ years** across 
-healthcare and membership organizations. I turn data into decisions that improve **customer experience**, 
-**operational performance**, and **financial outcomes**.
+::: {.about-text}
 
-I have uncovered inefficiencies, optimized processes, and built predictive models 
-that deliver measurable impact— including initiatives that **safeguarded $3M+ in revenue** 
-and improved decision-making across dozens of business units.
+# 👋 About Me
 
-### What I do?
-- **Forecasting & Modeling:** Machine Learning churn models for reliable retention planning  
-- **Dashboards & Storytelling:** Tableau/Power BI for exec-ready insights  
-- **Operations & Data Analytics:** Find defects, reduce leakage, and strengthen member trust
+I’m **Dominique J. Strong**, an analytics leader with **7+ years of experience** using data, business intelligence, experimentation, and predictive modeling to improve customer retention, operational performance, and executive decision-making.
+
+My background spans **membership analytics, product analytics, operations risk, facilities analytics, and machine learning**. I specialize in turning complex business problems into clear analytical frameworks, dashboards, KPIs, and models that help leaders act with confidence.
+
+I currently work in **Membership & Sales Analytics at AAA Mountain West Group**, where I analyze large-scale customer lifecycle data across **6M+ members**, build churn forecasting models, evaluate retention campaigns, and deliver executive-ready insights through Tableau, SQL, and Python.
+
+:::
+
+::: {.about-photo}
+![](./images/Portfolio.jpg){.profile-img alt="Dominique Strong portfolio photo"}
+:::
+
+:::
+
+## What I Bring
+
+::: {.impact-grid}
+
+::: {.impact-card}
+### 7+ Years
+Business intelligence, analytics, operations, and strategy experience
+:::
+
+::: {.impact-card}
+### 6M+ Members
+Large-scale customer analytics across membership and retention data
+:::
+
+::: {.impact-card}
+### 20+ Dashboards
+Tableau dashboards supporting KPI tracking and executive reporting
+:::
+
+::: {.impact-card}
+### ~98% Accuracy
+Churn forecasting framework using statistical and machine learning techniques
+:::
+
+::: {.impact-card}
+### ~7K Renewals
+Incremental renewals identified through outbound campaign A/B testing
+:::
+
+::: {.impact-card}
+### $0.9M Protected
+Annual revenue loss prevented through process defect investigation
+:::
+
+:::
 
 ## Professional Experience
 
-::: {.columns}
+::: {.experience-grid}
 
-::: {.column width="50%" style="text-align:center;"}
-![](./images/AAA.jpg){height="110px" alt="AAA logo" style="margin-bottom:10px;"}
+::: {.experience-card}
+![](./images/AAA.jpg){height="90px" alt="AAA logo"}
 
-**3+ years at AAA Northern California, Nevada & Utah**  
-Membership & Sales Analytics
+### AAA Mountain West Group  
+**Lead Business Analyst | Membership & Sales Analytics**  
+*Aug 2022 – Present*
+
+I lead analytics initiatives across Membership, Billing, Product, and Operations, translating customer lifecycle data into retention strategy, KPI frameworks, forecasting models, and executive dashboards.
+
+**Focus Areas:**  
+SQL, Python, Tableau, churn forecasting, A/B testing, retention strategy, KPI development, executive reporting
 :::
 
-::: {.column width="50%" style="text-align:center;"}
-![](./images/KaiserPermanente.jpg){height="110px" alt="Kaiser Permanente logo" style="margin-bottom:10px;"}
+::: {.experience-card}
+![](./images/KaiserPermanente.jpg){height="90px" alt="Kaiser Permanente logo"}
 
-**5 years at Kaiser Permanente**  
-Risk & Facilities Analytics
+### Kaiser Permanente  
+**Senior Business Process Analyst | Operations Risk Management & Facilities Analytics**  
+*May 2018 – Aug 2022*
+
+I used analytics, dashboards, statistical methods, and anomaly detection to identify operational risk, improve facilities planning, and support strategic decision-making across large-scale healthcare operations.
+
+**Focus Areas:**  
+Operational analytics, facilities analytics, risk detection, Tableau dashboards, process improvement, capital planning
 :::
 
 :::
+
+## Analytics Philosophy
+
+I believe analytics should do more than describe what happened. It should help organizations decide what to do next.
+
+My approach combines:
+
+::: {.skill-grid}
+
+::: {.skill-card}
+### Business Framing
+Start with the decision, risk, opportunity, or KPI that matters most.
+:::
+
+::: {.skill-card}
+### Technical Execution
+Use SQL, Python, Tableau, statistics, and machine learning to build reliable analysis.
+:::
+
+::: {.skill-card}
+### Executive Storytelling
+Translate complex findings into clear recommendations leaders can act on.
+:::
+
+:::
+
+## Core Skills
+
+::: {.skills-list}
+
+**Business Analytics:** KPI Development, Retention Strategy, Product Analytics, Customer Lifecycle Analytics, Forecasting, Campaign Measurement  
+
+**Machine Learning & Statistics:** Churn Modeling, Regression, Random Forest, Classification, Clustering, A/B Testing, Experimentation Design  
+
+**Tools:** SQL, BigQuery, SQL Server, Python, pandas, NumPy, scikit-learn, statsmodels, Tableau, Power BI, Excel, Google Sheets  
+
+**Leadership:** Stakeholder Influence, Executive Reporting, Data Storytelling, Mentoring Junior Analysts, Cross-Functional Partnership  
+
+:::
+
+## Education
+
+::: {.education-card}
+
+### Boston University Metropolitan College  
+**M.S. Applied Business Analytics**  
+Expected May 2026
+
+### California State University, East Bay  
+**B.S. Industrial Engineering, Minor in Mathematics**  
+Cum Laude
+
+:::
+
+## Beyond Analytics
+
+Before my analytics career, I also worked as a **Lead Tutor in Mathematics and STEM subjects**, helping students build confidence in algebra, calculus, statistics, and physics. That experience still shapes how I communicate today: break complex problems into simple, structured, actionable steps.
