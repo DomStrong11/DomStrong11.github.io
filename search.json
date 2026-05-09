@@ -11,21 +11,49 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "I am Dominique Strong, a Principal Business Analyst with 7+ years across healthcare and membership organizations. I turn data into decisions that improve customer experience, operational performance, and financial outcomes.\nI have uncovered inefficiencies, optimized processes, and built predictive models that deliver measurable impact— including initiatives that safeguarded $3M+ in revenue and improved decision-making across dozens of business units.\n\n\n\nForecasting & Modeling: Machine Learning churn models for reliable retention planning\n\nDashboards & Storytelling: Tableau/Power BI for exec-ready insights\n\nOperations & Data Analytics: Find defects, reduce leakage, and strengthen member trust"
+    "text": "I’m Dominique J. Strong, an analytics leader with 7+ years of experience using data, business intelligence, experimentation, and predictive modeling to improve customer retention, operational performance, and executive decision-making.\nMy background spans membership analytics, product analytics, operations risk, facilities analytics, and machine learning. I specialize in turning complex business problems into clear analytical frameworks, dashboards, KPIs, and models that help leaders act with confidence.\nI currently work in Membership & Sales Analytics at AAA Mountain West Group, where I analyze large-scale customer lifecycle data across 6M+ members, build churn forecasting models, evaluate retention campaigns, and deliver executive-ready insights through Tableau, SQL, and Python."
   },
   {
-    "objectID": "about.html#about-me",
-    "href": "about.html#about-me",
+    "objectID": "about.html#what-i-bring",
+    "href": "about.html#what-i-bring",
     "title": "About",
-    "section": "",
-    "text": "I am Dominique Strong, a Principal Business Analyst with 7+ years across healthcare and membership organizations. I turn data into decisions that improve customer experience, operational performance, and financial outcomes.\nI have uncovered inefficiencies, optimized processes, and built predictive models that deliver measurable impact— including initiatives that safeguarded $3M+ in revenue and improved decision-making across dozens of business units.\n\n\n\nForecasting & Modeling: Machine Learning churn models for reliable retention planning\n\nDashboards & Storytelling: Tableau/Power BI for exec-ready insights\n\nOperations & Data Analytics: Find defects, reduce leakage, and strengthen member trust"
+    "section": "What I Bring",
+    "text": "What I Bring\n\n\n7+ Years\nBusiness intelligence, analytics, operations, and strategy experience\n\n\n6M+ Members\nLarge-scale customer analytics across membership and retention data\n\n\n20+ Dashboards\nTableau dashboards supporting KPI tracking and executive reporting\n\n\n~98% Accuracy\nChurn forecasting framework using statistical and machine learning techniques\n\n\n~7K Renewals\nIncremental renewals identified through outbound campaign A/B testing\n\n\n$0.9M Protected\nAnnual revenue loss prevented through process defect investigation"
   },
   {
     "objectID": "about.html#professional-experience",
     "href": "about.html#professional-experience",
     "title": "About",
     "section": "Professional Experience",
-    "text": "Professional Experience\n\n\n\n3+ years at AAA Northern California, Nevada & Utah\nMembership & Sales Analytics\n\n\n5 years at Kaiser Permanente\nRisk & Facilities Analytics"
+    "text": "Professional Experience\n\n\n\n\nAAA Mountain West Group\nLead Business Analyst | Membership & Sales Analytics\nAug 2022 – Present\nI lead analytics initiatives across Membership, Billing, Product, and Operations, translating customer lifecycle data into retention strategy, KPI frameworks, forecasting models, and executive dashboards.\nFocus Areas:\nSQL, Python, Tableau, churn forecasting, A/B testing, retention strategy, KPI development, executive reporting\n\n\n\n\n\nKaiser Permanente\nSenior Business Process Analyst | Operations Risk Management & Facilities Analytics\nMay 2018 – Aug 2022\nI used analytics, dashboards, statistical methods, and anomaly detection to identify operational risk, improve facilities planning, and support strategic decision-making across large-scale healthcare operations.\nFocus Areas:\nOperational analytics, facilities analytics, risk detection, Tableau dashboards, process improvement, capital planning"
+  },
+  {
+    "objectID": "about.html#analytics-philosophy",
+    "href": "about.html#analytics-philosophy",
+    "title": "About",
+    "section": "Analytics Philosophy",
+    "text": "Analytics Philosophy\nI believe analytics should do more than describe what happened. It should help organizations decide what to do next.\nMy approach combines:\n\n\nBusiness Framing\nStart with the decision, risk, opportunity, or KPI that matters most.\n\n\nTechnical Execution\nUse SQL, Python, Tableau, statistics, and machine learning to build reliable analysis.\n\n\nExecutive Storytelling\nTranslate complex findings into clear recommendations leaders can act on."
+  },
+  {
+    "objectID": "about.html#core-skills",
+    "href": "about.html#core-skills",
+    "title": "About",
+    "section": "Core Skills",
+    "text": "Core Skills\n\nBusiness Analytics: KPI Development, Retention Strategy, Product Analytics, Customer Lifecycle Analytics, Forecasting, Campaign Measurement\nMachine Learning & Statistics: Churn Modeling, Regression, Random Forest, Classification, Clustering, A/B Testing, Experimentation Design\nTools: SQL, BigQuery, SQL Server, Python, pandas, NumPy, scikit-learn, statsmodels, Tableau, Power BI, Excel, Google Sheets\nLeadership: Stakeholder Influence, Executive Reporting, Data Storytelling, Mentoring Junior Analysts, Cross-Functional Partnership"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "Education",
+    "text": "Education\n\n\nBoston University Metropolitan College\nM.S. Applied Business Analytics\nExpected May 2026\n\n\nCalifornia State University, East Bay\nB.S. Industrial Engineering, Minor in Mathematics\nCum Laude"
+  },
+  {
+    "objectID": "about.html#beyond-analytics",
+    "href": "about.html#beyond-analytics",
+    "title": "About",
+    "section": "Beyond Analytics",
+    "text": "Beyond Analytics\nBefore my analytics career, I also worked as a Lead Tutor in Mathematics and STEM subjects, helping students build confidence in algebra, calculus, statistics, and physics. That experience still shapes how I communicate today: break complex problems into simple, structured, actionable steps."
   },
   {
     "objectID": "cv.html",
