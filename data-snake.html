@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Data Snake | Dominique J. Strong</title>
+
+<style>
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #f8fafc;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  background: #000;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.2rem 1rem;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(12px);
+}
+
+.navbar a {
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.navbar a:hover {
+  color: #86efac;
+}
+
+.game-wrap {
+  min-height: 100vh;
+  padding: 5rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+  margin: 0 0 1rem;
+}
+
+.subtitle {
+  max-width: 800px;
+  color: #cbd5e1;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.scoreboard {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.score-card {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 18px;
+  padding: 0.9rem 1.2rem;
+  min-width: 130px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+}
+
+.score-card strong {
+  display: block;
+  color: #86efac;
+  font-size: 1.5rem;
+}
+
+.game-shell {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 28px;
+  padding: 1.25rem;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+}
+
+canvas#game {
+  display: block;
+  background: #020617;
+  border-radius: 20px;
+  border: 2px solid rgba(134,239,172,0.45);
+  box-shadow: 0 0 40px rgba(134,239,172,0.18);
+}
+
+.controls {
+  max-width: 720px;
+  color: #cbd5e1;
+  margin-top: 1.5rem;
+  line-height: 1.6;
+}
+
+.btn-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.2rem;
+  flex-wrap: wrap;
+}
+
+button, .back-btn {
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: #f8fafc;
+  border-radius: 999px;
+  padding: 0.85rem 1.25rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover, .back-btn:hover {
+  background: rgba(134,239,172,0.18);
+}
+
+.skill-tag {
+  color: #fde047;
+  font-weight: 800;
+}
+
+.mobile-controls {
+  display: none;
+  grid-template-columns: repeat(3, 64px);
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.mobile-controls button {
+  border-radius: 16px;
+  padding: 1rem;
+  font-size: 1.2rem;
+}
+
+.cursor-sparkle {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, #fff 0%, #86efac 45%, transparent 75%);
+  box-shadow: 0 0 10px rgba(134,239,172,0.9);
+  z-index: 99999;
+  animation: sparkleFade 650ms ease-out forwards;
+}
+
+@keyframes sparkleFade {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: translateY(-20px) scale(0.1); }
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+  }
+
+  canvas#game {
+    width: 320px;
+    height: 320px;
+  }
+
+  .mobile-controls {
+    display: grid;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles-canvas"></canvas>
+
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="game.html">Game</a>
+  <a href="dashboard-defense.html">Dashboard Defense</a>
+</nav>
+
+<main class="game-wrap">
+  <h1>Data Snake</h1>
+
+  <p class="subtitle">
+    Collect analytics skills, grow your impact, and avoid crashing the workflow.
+    Use arrow keys or WASD to play.
+  </p>
+
+  <div class="scoreboard">
+    <div class="score-card">
+      Score
+      <strong id="score">0</strong>
+    </div>
+    <div class="score-card">
+      Best
+      <strong id="best">0</strong>
+    </div>
+    <div class="score-card">
+      Collect
+      <strong id="skill">SQL</strong>
+    </div>
+  </div>
+
+  <div class="game-shell">
+    <canvas id="game" width="480" height="480"></canvas>
+  </div>
+
+  <div class="mobile-controls">
+    <span></span>
+    <button data-dir="up">↑</button>
+    <span></span>
+    <button data-dir="left">←</button>
+    <button data-dir="down">↓</button>
+    <button data-dir="right">→</button>
+  </div>
+
+  <div class="btn-row">
+    <button id="restart">Restart Game</button>
+    <a class="back-btn" href="index.html">Back to Portfolio</a>
+  </div>
+
+  <p class="controls">
+    Goal: collect <span class="skill-tag">SQL</span>, <span class="skill-tag">Python</span>,
+    <span class="skill-tag">Tableau</span>, <span class="skill-tag">ML</span>, and
+    <span class="skill-tag">KPIs</span>. Each skill increases your score.
+  </p>
+</main>
+
+<script>
+/* ===== Background particles ===== */
+(() => {
+  const canvas = document.getElementById("particles-canvas");
+  const ctx = canvas.getContext("2d");
+  let w, h, particles;
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    particles = Array.from({length: 85}, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: Math.random() * 2 + 1
+    }));
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.fill();
+    });
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 155) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = "rgba(255,255,255,0.1)";
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+  animate();
+})();
+
+/* ===== Pixie cursor ===== */
+document.addEventListener("mousemove", e => {
+  const sparkle = document.createElement("span");
+  sparkle.className = "cursor-sparkle";
+  sparkle.style.left = `${e.clientX}px`;
+  sparkle.style.top = `${e.clientY}px`;
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 650);
+});
+
+/* ===== Data Snake game ===== */
+(() => {
+  const canvas = document.getElementById("game");
+  const ctx = canvas.getContext("2d");
+
+  const scoreEl = document.getElementById("score");
+  const bestEl = document.getElementById("best");
+  const skillEl = document.getElementById("skill");
+
+  const grid = 24;
+  const cells = canvas.width / grid;
+  const skills = ["SQL", "Python", "Tableau", "ML", "KPIs", "Forecast", "A/B", "Dashboards"];
+
+  let snake, food, dir, nextDir, score, gameOver, loop;
+  let best = Number(localStorage.getItem("dataSnakeBest") || 0);
+  bestEl.textContent = best;
+
+  function randomCell() {
+    return {
+      x: Math.floor(Math.random() * cells),
+      y: Math.floor(Math.random() * cells),
+      skill: skills[Math.floor(Math.random() * skills.length)]
+    };
+  }
+
+  function reset() {
+    snake = [
+      {x: 10, y: 10},
+      {x: 9, y: 10},
+      {x: 8, y: 10}
+    ];
+
+    dir = {x: 1, y: 0};
+    nextDir = {x: 1, y: 0};
+    score = 0;
+    gameOver = false;
+    food = randomCell();
+
+    scoreEl.textContent = score;
+    skillEl.textContent = food.skill;
+
+    clearInterval(loop);
+    loop = setInterval(tick, 115);
+    draw();
+  }
+
+  function tick() {
+    dir = nextDir;
+
+    const head = {
+      x: snake[0].x + dir.x,
+      y: snake[0].y + dir.y
+    };
+
+    if (
+      head.x < 0 || head.y < 0 ||
+      head.x >= cells || head.y >= cells ||
+      snake.some(part => part.x === head.x && part.y === head.y)
+    ) {
+      endGame();
+      return;
+    }
+
+    snake.unshift(head);
+
+    if (head.x === food.x && head.y === food.y) {
+      score += 10;
+      scoreEl.textContent = score;
+
+      if (score > best) {
+        best = score;
+        localStorage.setItem("dataSnakeBest", best);
+        bestEl.textContent = best;
+      }
+
+      do {
+        food = randomCell();
+      } while (snake.some(part => part.x === food.x && part.y === food.y));
+
+      skillEl.textContent = food.skill;
+    } else {
+      snake.pop();
+    }
+
+    draw();
+  }
+
+  function endGame() {
+    gameOver = true;
+    clearInterval(loop);
+    draw();
+  }
+
+  function drawGrid() {
+    ctx.strokeStyle = "rgba(255,255,255,0.04)";
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i <= cells; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * grid, 0);
+      ctx.lineTo(i * grid, canvas.height);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(0, i * grid);
+      ctx.lineTo(canvas.width, i * grid);
+      ctx.stroke();
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#020617";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    drawGrid();
+
+    ctx.fillStyle = "#fde047";
+    ctx.shadowColor = "#fde047";
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.arc(food.x * grid + grid / 2, food.y * grid + grid / 2, grid / 2.7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = "#020617";
+    ctx.font = "bold 10px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(food.skill.slice(0, 3), food.x * grid + grid / 2, food.y * grid + grid / 2);
+
+    snake.forEach((part, index) => {
+      const gradient = ctx.createLinearGradient(
+        part.x * grid,
+        part.y * grid,
+        part.x * grid + grid,
+        part.y * grid + grid
+      );
+
+      gradient.addColorStop(0, index === 0 ? "#86efac" : "#38bdf8");
+      gradient.addColorStop(1, index === 0 ? "#22c55e" : "#2563eb");
+
+      ctx.fillStyle = gradient;
+      ctx.shadowColor = index === 0 ? "#86efac" : "#38bdf8";
+      ctx.shadowBlur = index === 0 ? 16 : 7;
+      ctx.fillRect(part.x * grid + 2, part.y * grid + 2, grid - 4, grid - 4);
+      ctx.shadowBlur = 0;
+    });
+
+    if (gameOver) {
+      ctx.fillStyle = "rgba(0,0,0,0.72)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#f8fafc";
+      ctx.font = "bold 38px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Workflow Crashed", canvas.width / 2, canvas.height / 2 - 20);
+
+      ctx.font = "18px Arial";
+      ctx.fillStyle = "#cbd5e1";
+      ctx.fillText("Press Restart to try again", canvas.width / 2, canvas.height / 2 + 24);
+    }
+  }
+
+  function setDirection(direction) {
+    if (direction === "up" && dir.y !== 1) nextDir = {x: 0, y: -1};
+    if (direction === "down" && dir.y !== -1) nextDir = {x: 0, y: 1};
+    if (direction === "left" && dir.x !== 1) nextDir = {x: -1, y: 0};
+    if (direction === "right" && dir.x !== -1) nextDir = {x: 1, y: 0};
+  }
+window.addEventListener("keydown", function(e) {
+
+  if(
+    ["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","w","a","s","d","W","A","S","D"].includes(e.key)
+  ) {
+    e.preventDefault();
+  }
+
+}, { passive:false });
+
+  document.addEventListener("keydown", e => {
+    if (["ArrowUp", "w", "W"].includes(e.key)) setDirection("up");
+    if (["ArrowDown", "s", "S"].includes(e.key)) setDirection("down");
+    if (["ArrowLeft", "a", "A"].includes(e.key)) setDirection("left");
+    if (["ArrowRight", "d", "D"].includes(e.key)) setDirection("right");
+  });
+
+  document.querySelectorAll(".mobile-controls button").forEach(btn => {
+    btn.addEventListener("click", () => setDirection(btn.dataset.dir));
+  });
+
+  document.getElementById("restart").addEventListener("click", reset);
+
+  reset();
+})();
+</script>
+
+</body>
+</html>
