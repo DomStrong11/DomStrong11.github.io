@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dominique J. Strong | Analytics Portfolio</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --border: rgba(255,255,255,0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #111827 50%, #020617 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      padding: 88px 0 64px;
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      line-height: 1.05;
+      margin: 0 0 20px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.15rem;
+      max-width: 720px;
+      margin-bottom: 28px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #020617;
+      border-color: var(--accent);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+    }
+
+    .hero-card {
+      background: rgba(17, 24, 39, 0.78);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+    }
+
+    .metric {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .metric:last-child { border-bottom: none; }
+
+    .metric strong {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--accent-2);
+    }
+
+    section { padding: 56px 0; }
+
+    .section-title {
+      font-size: 2rem;
+      margin: 0 0 14px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      max-width: 780px;
+      margin-bottom: 28px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .card p, .card li {
+      color: var(--muted);
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+    }
+
+    .project-card {
+      grid-column: span 1;
+    }
+
+    .project-card .impact {
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 850px) {
+      .hero, .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-inner {
+        align-items: flex-start;
+        gap: 12px;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container nav-inner">
+      <div class="brand">Dominique J. Strong</div>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero container">
+      <div>
+        <div class="eyebrow">Business Analytics • Data Science • Strategy</div>
+        <h1>I turn complex data into executive-ready decisions.</h1>
+        <p>
+          Analytics leader with 7+ years of experience building KPI frameworks, forecasting models,
+          dashboards, and business insights across membership, sales, retention, operations, and growth strategy.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#projects">View Projects</a>
+          <a class="btn btn-secondary" href="Dominique_Strong_Resume.pdf">Download Resume</a>
+          <a class="btn btn-secondary" href="mailto:your.email@example.com">Contact Me</a>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div class="metric">
+          <strong>7+ years</strong>
+          Analytics, operations, and business strategy experience
+        </div>
+        <div class="metric">
+          <strong>$18.7M</strong>
+          Estimated incremental revenue impact from retention improvement
+        </div>
+        <div class="metric">
+          <strong>SQL • Tableau • Python</strong>
+          Core analytics toolkit
+        </div>
+      </aside>
+    </section>
+
+    <section id="projects" class="container">
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-subtitle">
+        A portfolio should prove how you think, not just list tools. These projects are written to show business context,
+        analytical method, and measurable impact.
+      </p>
+
+      <div class="grid">
+        <article class="card project-card">
+          <h3>Membership Churn Forecasting Model</h3>
+          <p>
+            Built a forecasting approach to estimate monthly churn using future renewal populations,
+            billing behavior, tenure mix, and intervention signals.
+          </p>
+          <p class="impact">Impact: Improved planning visibility for retention strategy.</p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">Random Forest</span>
+            <span class="tag">Forecasting</span>
+            <span class="tag">Model Evaluation</span>
+          </div>
+        </article>
+
+        <article class="card project-card">
+          <h3>Executive Retention KPI Framework</h3>
+          <p>
+            Created an enterprise-level KPI framework to monitor early churn indicators and renewal performance
+            across membership populations.
+          </p>
+          <p class="impact">Impact: Adopted into executive reporting and decision-making.</p>
+          <div class="tag-row">
+            <span class="tag">KPI Design</span>
+            <span class="tag">Tableau</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Executive Reporting</span>
+          </div>
+        </article>
+
+        <article class="card project-card">
+          <h3>Outbound Calling A/B Test</h3>
+          <p>
+            Evaluated the incremental impact of a third-party outbound calling campaign using treatment and control groups.
+          </p>
+          <p class="impact">Impact: Quantified incremental renewals and campaign effectiveness.</p>
+          <div class="tag-row">
+            <span class="tag">A/B Testing</span>
+            <span class="tag">Causal Thinking</span>
+            <span class="tag">Campaign Analytics</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="container">
+      <h2 class="section-title">Skills</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Analytics & Strategy</h3>
+          <ul>
+            <li>KPI development</li>
+            <li>Executive dashboards</li>
+            <li>Retention and churn analysis</li>
+            <li>Campaign performance measurement</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Technical Toolkit</h3>
+          <ul>
+            <li>SQL</li>
+            <li>Python: pandas, scikit-learn, statsmodels</li>
+            <li>Tableau</li>
+            <li>Excel and PowerPoint storytelling</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Machine Learning</h3>
+          <ul>
+            <li>Regression and classification</li>
+            <li>Random forest and decision trees</li>
+            <li>Clustering and segmentation</li>
+            <li>Model evaluation and calibration</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="container">
+      <h2 class="section-title">Professional Focus</h2>
+      <p class="section-subtitle">
+        I specialize in translating analytical work into business decisions: identifying risk, measuring impact,
+        forecasting future outcomes, and communicating findings clearly to senior leaders.
+      </p>
+      <div class="card">
+        <h3>Lead Business Analyst — Membership & Sales/Product Analytics</h3>
+        <p>
+          Current focus areas include retention analytics, executive KPI development, business performance reporting,
+          SQL-based analysis, Tableau dashboards, and predictive modeling for churn and renewals.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="container">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-subtitle">
+        Interested in analytics, business intelligence, product analytics, or data science opportunities.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:your.email@example.com">Email Me</a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/your-linkedin/">LinkedIn</a>
+        <a class="btn btn-secondary" href="https://github.com/DomStrong11">GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 Dominique J. Strong. Built with HTML, CSS, and analytics storytelling.
+    </div>
+  </footer>
+</body>
+</html>
