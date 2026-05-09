@@ -3,11 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SQL Runner | Dominique J. Strong</title>
+<title>SQL Invaders | Dominique J. Strong</title>
 
 <style>
-html { scroll-behavior: smooth; }
-
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -16,46 +14,32 @@ body {
   overflow: hidden;
 }
 
-#particles-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -10;
-  background: #000;
-}
-
 .game-wrap {
   height: 100vh;
-  padding: 1rem;
   display: grid;
   place-items: center;
+  padding: 1rem;
 }
 
 .game-panel {
   width: min(1100px, 96vw);
-  background: rgba(15,23,42,0.78);
+  background: rgba(15,23,42,0.82);
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: 28px;
-  padding: 1.2rem;
+  padding: 1rem;
   box-shadow: 0 25px 70px rgba(0,0,0,0.5);
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
 h1 {
-  font-size: clamp(2.6rem, 6vw, 5rem);
-  margin: 0;
+  text-align: center;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  margin: 0.25rem 0;
 }
 
 .subtitle {
+  text-align: center;
   color: #cbd5e1;
-  margin: 0.5rem auto 1rem;
-  max-width: 780px;
-  line-height: 1.5;
+  margin: 0.4rem 0 1rem;
 }
 
 .stats {
@@ -68,81 +52,64 @@ h1 {
 .stat {
   background: rgba(2,6,23,0.72);
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 18px;
-  padding: 0.75rem;
+  border-radius: 16px;
+  padding: 0.7rem;
   text-align: center;
 }
 
 .stat span {
   display: block;
   color: #94a3b8;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 .stat strong {
   color: #86efac;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
-canvas#game {
+canvas {
   width: 100%;
   height: auto;
   display: block;
   background: #020617;
-  border-radius: 22px;
+  border-radius: 20px;
   border: 2px solid rgba(56,189,248,0.35);
-  box-shadow: 0 0 45px rgba(56,189,248,0.16);
 }
 
 .controls {
+  margin-top: 1rem;
   display: flex;
   gap: 0.75rem;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 1rem;
 }
 
-button, .link-btn {
+button, a {
   border: 1px solid rgba(255,255,255,0.18);
   background: rgba(255,255,255,0.08);
   color: #f8fafc;
   border-radius: 999px;
-  padding: 0.8rem 1.1rem;
+  padding: 0.75rem 1rem;
   font-weight: 900;
   cursor: pointer;
   text-decoration: none;
 }
 
-button:hover, .link-btn:hover {
+button:hover, a:hover {
   background: rgba(134,239,172,0.18);
 }
 
 .hint {
-  color: #cbd5e1;
   text-align: center;
-  margin-top: 0.8rem;
-  font-size: 0.95rem;
+  color: #cbd5e1;
+  font-size: 0.9rem;
 }
 
-.cursor-sparkle {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle, #fff 0%, #86efac 45%, transparent 75%);
-  box-shadow: 0 0 10px rgba(134,239,172,0.9);
-  z-index: 99999;
-  animation: sparkleFade 650ms ease-out forwards;
-}
-
-@keyframes sparkleFade {
-  0% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: translateY(-20px) scale(0.1); }
-}
-
-@media (max-width: 760px) {
-  body { overflow-y: auto; }
+@media (max-width: 700px) {
+  body {
+    overflow-y: auto;
+  }
 
   .game-wrap {
     height: auto;
@@ -157,367 +124,361 @@ button:hover, .link-btn:hover {
 </head>
 
 <body>
-<canvas id="particles-canvas"></canvas>
 
 <main class="game-wrap">
   <section class="game-panel">
-    <div class="header">
-      <h1>SQL Runner</h1>
-      <p class="subtitle">
-        Dodge bad data, collect clean queries, and keep the pipeline alive.
-        Use <strong>← / →</strong> or <strong>A / D</strong> to move.
-      </p>
-    </div>
+    <h1>SQL Invaders</h1>
+
+    <p class="subtitle">
+      Defend the data pipeline. Shoot bad data before it reaches the executive dashboard.
+    </p>
 
     <div class="stats">
       <div class="stat"><span>Score</span><strong id="score">0</strong></div>
       <div class="stat"><span>Best</span><strong id="best">0</strong></div>
       <div class="stat"><span>Pipeline Health</span><strong id="health">100%</strong></div>
-      <div class="stat"><span>Level</span><strong id="level">1</strong></div>
+      <div class="stat"><span>Wave</span><strong id="wave">1</strong></div>
     </div>
 
-    <canvas id="game" width="960" height="460"></canvas>
+    <canvas id="game" width="960" height="520"></canvas>
 
     <div class="controls">
       <button id="restart">Restart</button>
-      <a class="link-btn" href="index.html">Back to Portfolio</a>
-      <a class="link-btn" href="game.html">Data Snake</a>
-      <a class="link-btn" href="dashboard-defense.html">Dashboard Defense</a>
+      <a href="index.html">Back to Portfolio</a>
+      <a href="game.html">Data Snake</a>
+      <a href="dashboard-defense.html">Dashboard Defense</a>
     </div>
 
     <p class="hint">
-      Collect: SELECT, JOIN, KPI, CLEAN DATA. Avoid: NULL, DUPES, BAD JOIN, BROKEN ETL.
+      Move with ← / → or A / D. Shoot with Space. Destroy NULLs, DUPES, BAD JOINs, DRIFT, and BROKEN ETL.
     </p>
   </section>
 </main>
 
 <script>
-/* ===== Prevent arrow/WASD page movement ===== */
 window.addEventListener("keydown", e => {
-  if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","a","d","A","D","w","s","W","S"].includes(e.key)) {
+  if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," ","a","d","A","D"].includes(e.key)) {
     e.preventDefault();
   }
 }, { passive: false });
 
-/* ===== Background particles ===== */
-(() => {
-  const canvas = document.getElementById("particles-canvas");
-  const ctx = canvas.getContext("2d");
-  let w, h, particles;
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-    particles = Array.from({length: 80}, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.32,
-      vy: (Math.random() - 0.5) * 0.32,
-      r: Math.random() * 2 + 1
-    }));
+const scoreEl = document.getElementById("score");
+const bestEl = document.getElementById("best");
+const healthEl = document.getElementById("health");
+const waveEl = document.getElementById("wave");
+
+let keys = {};
+let score = 0;
+let health = 100;
+let wave = 1;
+let best = Number(localStorage.getItem("sqlInvadersBest") || 0);
+let bullets = [];
+let enemies = [];
+let particles = [];
+let gameOver = false;
+let frame = 0;
+let animationId;
+
+bestEl.textContent = best;
+
+const player = {
+  x: canvas.width / 2 - 34,
+  y: canvas.height - 64,
+  w: 68,
+  h: 34,
+  speed: 7,
+  cooldown: 0
+};
+
+const enemyLabels = ["NULL", "DUPES", "BAD JOIN", "DRIFT", "LAG", "BROKEN ETL", "MISSING KPI", "BAD DATE"];
+
+function reset() {
+  score = 0;
+  health = 100;
+  wave = 1;
+  bullets = [];
+  enemies = [];
+  particles = [];
+  gameOver = false;
+  frame = 0;
+  player.x = canvas.width / 2 - player.w / 2;
+  updateStats();
+
+  cancelAnimationFrame(animationId);
+  loop();
+}
+
+function updateStats() {
+  scoreEl.textContent = score;
+  healthEl.textContent = Math.max(0, health) + "%";
+  waveEl.textContent = wave;
+
+  if (score > best) {
+    best = score;
+    localStorage.setItem("sqlInvadersBest", best);
+    bestEl.textContent = best;
   }
+}
 
-  function animate() {
-    ctx.clearRect(0, 0, w, h);
+function spawnEnemy() {
+  const label = enemyLabels[Math.floor(Math.random() * enemyLabels.length)];
 
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
+  enemies.push({
+    x: Math.random() * (canvas.width - 120) + 40,
+    y: -40,
+    w: label.length > 7 ? 116 : 82,
+    h: 34,
+    speed: 0.8 + wave * 0.18 + Math.random() * 0.6,
+    label,
+    hp: label.length > 7 ? 2 : 1
+  });
+}
 
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
+function shoot() {
+  if (player.cooldown > 0) return;
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255,255,255,0.55)";
-      ctx.fill();
-    });
+  bullets.push({
+    x: player.x + player.w / 2 - 4,
+    y: player.y - 12,
+    w: 8,
+    h: 18,
+    speed: 9
+  });
 
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const a = particles[i], b = particles[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+  player.cooldown = 13;
+}
 
-        if (dist < 150) {
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = "rgba(255,255,255,0.1)";
-          ctx.stroke();
-        }
-      }
-    }
+function collide(a, b) {
+  return (
+    a.x < b.x + b.w &&
+    a.x + a.w > b.x &&
+    a.y < b.y + b.h &&
+    a.y + a.h > b.y
+  );
+}
 
-    requestAnimationFrame(animate);
-  }
-
-  window.addEventListener("resize", resize);
-  resize();
-  animate();
-})();
-
-/* ===== Pixie cursor ===== */
-document.addEventListener("mousemove", e => {
-  const sparkle = document.createElement("span");
-  sparkle.className = "cursor-sparkle";
-  sparkle.style.left = `${e.clientX}px`;
-  sparkle.style.top = `${e.clientY}px`;
-  document.body.appendChild(sparkle);
-  setTimeout(() => sparkle.remove(), 650);
-});
-
-/* ===== SQL Runner Game ===== */
-(() => {
-  const canvas = document.getElementById("game");
-  const ctx = canvas.getContext("2d");
-
-  const scoreEl = document.getElementById("score");
-  const bestEl = document.getElementById("best");
-  const healthEl = document.getElementById("health");
-  const levelEl = document.getElementById("level");
-
-  let best = Number(localStorage.getItem("sqlRunnerBest") || 0);
-  bestEl.textContent = best;
-
-  const player = {
-    x: canvas.width / 2 - 28,
-    y: canvas.height - 72,
-    w: 56,
-    h: 44,
-    speed: 8
-  };
-
-  let keys = {};
-  let items = [];
-  let score = 0;
-  let health = 100;
-  let level = 1;
-  let frame = 0;
-  let gameOver = false;
-  let animationId;
-
-  const goodItems = [
-    { label: "SELECT", points: 10 },
-    { label: "JOIN", points: 15 },
-    { label: "KPI", points: 20 },
-    { label: "CLEAN", points: 25 },
-    { label: "INDEX", points: 15 },
-    { label: "QA", points: 20 }
-  ];
-
-  const badItems = [
-    { label: "NULL", damage: 12 },
-    { label: "DUPES", damage: 15 },
-    { label: "BAD JOIN", damage: 18 },
-    { label: "BROKEN ETL", damage: 20 },
-    { label: "DRIFT", damage: 16 },
-    { label: "LAG", damage: 12 }
-  ];
-
-  function reset() {
-    player.x = canvas.width / 2 - player.w / 2;
-    items = [];
-    score = 0;
-    health = 100;
-    level = 1;
-    frame = 0;
-    gameOver = false;
-    updateStats();
-
-    cancelAnimationFrame(animationId);
-    loop();
-  }
-
-  function updateStats() {
-    scoreEl.textContent = score;
-    healthEl.textContent = Math.max(0, health) + "%";
-    levelEl.textContent = level;
-
-    if (score > best) {
-      best = score;
-      localStorage.setItem("sqlRunnerBest", best);
-      bestEl.textContent = best;
-    }
-  }
-
-  function spawnItem() {
-    const isGood = Math.random() > 0.46;
-    const source = isGood ? goodItems : badItems;
-    const pick = source[Math.floor(Math.random() * source.length)];
-
-    items.push({
-      x: Math.random() * (canvas.width - 120) + 30,
-      y: -40,
-      w: isGood ? 76 : 96,
-      h: 36,
-      speed: 2.6 + level * 0.45 + Math.random() * 1.3,
-      type: isGood ? "good" : "bad",
-      ...pick
+function addParticles(x, y, color) {
+  for (let i = 0; i < 14; i++) {
+    particles.push({
+      x,
+      y,
+      vx: (Math.random() - 0.5) * 5,
+      vy: (Math.random() - 0.5) * 5,
+      life: 24,
+      color
     });
   }
+}
 
-  function collide(a, b) {
-    return (
-      a.x < b.x + b.w &&
-      a.x + a.w > b.x &&
-      a.y < b.y + b.h &&
-      a.y + a.h > b.y
-    );
-  }
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
 
-  function drawBackground() {
-    ctx.fillStyle = "#020617";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+function drawBackground() {
+  ctx.fillStyle = "#020617";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = "rgba(255,255,255,0.05)";
-    ctx.lineWidth = 1;
+  ctx.strokeStyle = "rgba(255,255,255,0.045)";
+  ctx.lineWidth = 1;
 
-    for (let x = 0; x < canvas.width; x += 48) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, canvas.height);
-      ctx.stroke();
-    }
-
-    for (let y = 0; y < canvas.height; y += 48) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(canvas.width, y);
-      ctx.stroke();
-    }
-
-    ctx.fillStyle = "rgba(56,189,248,0.08)";
-    ctx.fillRect(0, canvas.height - 92, canvas.width, 92);
-  }
-
-  function drawPlayer() {
-    ctx.save();
-
-    ctx.shadowColor = "#86efac";
-    ctx.shadowBlur = 18;
-
-    const grad = ctx.createLinearGradient(player.x, player.y, player.x + player.w, player.y + player.h);
-    grad.addColorStop(0, "#86efac");
-    grad.addColorStop(1, "#38bdf8");
-
-    ctx.fillStyle = grad;
-    roundRect(player.x, player.y, player.w, player.h, 12);
-    ctx.fill();
-
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = "#020617";
-    ctx.font = "bold 14px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("SQL", player.x + player.w / 2, player.y + player.h / 2);
-
-    ctx.restore();
-  }
-
-  function drawItem(item) {
-    ctx.save();
-
-    ctx.shadowColor = item.type === "good" ? "#86efac" : "#fb7185";
-    ctx.shadowBlur = 14;
-
-    ctx.fillStyle = item.type === "good" ? "#86efac" : "#fb7185";
-    roundRect(item.x, item.y, item.w, item.h, 14);
-    ctx.fill();
-
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = "#020617";
-    ctx.font = "bold 13px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(item.label, item.x + item.w / 2, item.y + item.h / 2);
-
-    ctx.restore();
-  }
-
-  function roundRect(x, y, w, h, r) {
+  for (let x = 0; x < canvas.width; x += 48) {
     ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, canvas.height);
+    ctx.stroke();
   }
 
-  function drawGameOver() {
-    ctx.fillStyle = "rgba(0,0,0,0.74)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#f8fafc";
-    ctx.font = "bold 46px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("Pipeline Failed", canvas.width / 2, canvas.height / 2 - 30);
-
-    ctx.fillStyle = "#cbd5e1";
-    ctx.font = "20px Arial";
-    ctx.fillText("Restart and clean the data flow", canvas.width / 2, canvas.height / 2 + 16);
+  for (let y = 0; y < canvas.height; y += 48) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
   }
 
-  function loop() {
-    animationId = requestAnimationFrame(loop);
+  ctx.fillStyle = "rgba(134,239,172,0.07)";
+  ctx.fillRect(0, canvas.height - 88, canvas.width, 88);
 
-    if (gameOver) {
-      drawGameOver();
-      return;
-    }
+  ctx.fillStyle = "#94a3b8";
+  ctx.font = "bold 13px Arial";
+  ctx.fillText("EXECUTIVE DASHBOARD DEFENSE LINE", 24, canvas.height - 24);
+}
 
-    frame++;
+function drawPlayer() {
+  ctx.save();
 
-    if (keys["ArrowLeft"] || keys["a"] || keys["A"]) player.x -= player.speed;
-    if (keys["ArrowRight"] || keys["d"] || keys["D"]) player.x += player.speed;
+  ctx.shadowColor = "#86efac";
+  ctx.shadowBlur = 20;
 
-    player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+  const grad = ctx.createLinearGradient(player.x, player.y, player.x + player.w, player.y + player.h);
+  grad.addColorStop(0, "#86efac");
+  grad.addColorStop(1, "#38bdf8");
 
-    level = Math.floor(score / 180) + 1;
+  ctx.fillStyle = grad;
+  roundRect(player.x, player.y, player.w, player.h, 12);
+  ctx.fill();
 
-    if (frame % Math.max(22, 55 - level * 4) === 0) {
-      spawnItem();
-    }
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 13px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("SQL", player.x + player.w / 2, player.y + player.h / 2);
 
-    items.forEach(item => item.y += item.speed);
+  ctx.restore();
+}
 
-    items = items.filter(item => {
-      const hit = collide(player, item);
+function drawBullet(b) {
+  ctx.save();
+  ctx.shadowColor = "#38bdf8";
+  ctx.shadowBlur = 14;
+  ctx.fillStyle = "#38bdf8";
+  roundRect(b.x, b.y, b.w, b.h, 5);
+  ctx.fill();
+  ctx.restore();
+}
 
-      if (hit) {
-        if (item.type === "good") {
-          score += item.points;
-        } else {
-          health -= item.damage;
+function drawEnemy(e) {
+  ctx.save();
+
+  ctx.shadowColor = "#fb7185";
+  ctx.shadowBlur = 16;
+
+  ctx.fillStyle = e.hp > 1 ? "#f97316" : "#fb7185";
+  roundRect(e.x, e.y, e.w, e.h, 14);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 12px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(e.label, e.x + e.w / 2, e.y + e.h / 2);
+
+  ctx.restore();
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.globalAlpha = p.life / 24;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+}
+
+function drawGameOver() {
+  ctx.fillStyle = "rgba(0,0,0,0.78)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#f8fafc";
+  ctx.font = "bold 48px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Pipeline Breached", canvas.width / 2, canvas.height / 2 - 35);
+
+  ctx.fillStyle = "#cbd5e1";
+  ctx.font = "20px Arial";
+  ctx.fillText("Restart and defend the dashboard", canvas.width / 2, canvas.height / 2 + 14);
+}
+
+function update() {
+  frame++;
+
+  if (keys["ArrowLeft"] || keys["a"] || keys["A"]) player.x -= player.speed;
+  if (keys["ArrowRight"] || keys["d"] || keys["D"]) player.x += player.speed;
+  if (keys[" "]) shoot();
+
+  player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+
+  if (player.cooldown > 0) player.cooldown--;
+
+  wave = Math.floor(score / 400) + 1;
+
+  if (frame % Math.max(22, 72 - wave * 5) === 0) {
+    spawnEnemy();
+  }
+
+  bullets.forEach(b => b.y -= b.speed);
+  bullets = bullets.filter(b => b.y > -30);
+
+  enemies.forEach(e => e.y += e.speed);
+
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i];
+
+    for (let j = bullets.length - 1; j >= 0; j--) {
+      const b = bullets[j];
+
+      if (collide(b, e)) {
+        bullets.splice(j, 1);
+        e.hp--;
+
+        if (e.hp <= 0) {
+          score += e.label.length > 7 ? 80 : 50;
+          addParticles(e.x + e.w / 2, e.y + e.h / 2, "#86efac");
+          enemies.splice(i, 1);
         }
-        updateStats();
 
-        if (health <= 0) {
-          health = 0;
-          gameOver = true;
-          updateStats();
-        }
-
-        return false;
+        break;
       }
-
-      return item.y < canvas.height + 60;
-    });
-
-    drawBackground();
-    items.forEach(drawItem);
-    drawPlayer();
-    updateStats();
+    }
   }
 
-  document.addEventListener("keydown", e => keys[e.key] = true);
-  document.addEventListener("keyup", e => keys[e.key] = false);
+  enemies = enemies.filter(e => {
+    if (e.y + e.h >= canvas.height - 88) {
+      health -= e.label.length > 7 ? 15 : 10;
+      addParticles(e.x + e.w / 2, e.y + e.h / 2, "#fb7185");
+      if (health <= 0) gameOver = true;
+      return false;
+    }
+    return true;
+  });
 
-  document.getElementById("restart").addEventListener("click", reset);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+  });
 
-  reset();
-})();
+  particles = particles.filter(p => p.life > 0);
+
+  updateStats();
+}
+
+function draw() {
+  drawBackground();
+  bullets.forEach(drawBullet);
+  enemies.forEach(drawEnemy);
+  drawPlayer();
+  drawParticles();
+
+  if (gameOver) drawGameOver();
+}
+
+function loop() {
+  animationId = requestAnimationFrame(loop);
+
+  if (!gameOver) update();
+  draw();
+}
+
+document.addEventListener("keydown", e => keys[e.key] = true);
+document.addEventListener("keyup", e => keys[e.key] = false);
+
+document.getElementById("restart").addEventListener("click", reset);
+
+reset();
 </script>
+
 </body>
 </html>
