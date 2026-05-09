@@ -1,8 +1,9 @@
 project:
   type: website
+  output-dir: docs
 
 website:
-  title: "Dominique J Strong"
+  title: "Dominique J. Strong"
   navbar:
     left:
       - href: index.qmd
@@ -11,21 +12,12 @@ website:
         text: About
       - href: projects.qmd
         text: Projects
-      - href: cv.qmd
-        text: Curriculum Vitae
+      - href: resume.qmd
+        text: Resume
       - href: contact.qmd
-        text: Contact Me
+        text: Contact
 
 format:
   html:
     theme: yeti
-
-execute:
-  enabled: true
-  echo: true
-  warning: false
-  message: false
-jupyter: python3
-
-
-
+    css: styles.css
