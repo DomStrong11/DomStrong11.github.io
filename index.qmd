@@ -128,7 +128,7 @@ My work combines **SQL, Tableau, Python, machine learning, forecasting, and busi
 
 ::: {.hero-buttons}
 [View Projects](projects.qmd){.btn .btn-primary}
-[View Resume](resume.qmd){.btn .btn-secondary}
+[View Resume](cv.qmd){.btn .btn-secondary}
 [Contact Me](contact.qmd){.btn .btn-secondary}
 :::
 
