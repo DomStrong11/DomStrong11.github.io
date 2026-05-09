@@ -32,19 +32,24 @@ body {
 
 h1 {
   text-align: center;
-  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
   margin: 0.25rem 0;
 }
 
-.subtitle {
+.subtitle,
+.hint {
   text-align: center;
   color: #cbd5e1;
   margin: 0.4rem 0 1rem;
 }
 
+.hint strong {
+  color: #86efac;
+}
+
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0.75rem;
   margin-bottom: 1rem;
 }
@@ -65,7 +70,7 @@ h1 {
 
 .stat strong {
   color: #86efac;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
 }
 
 canvas {
@@ -100,12 +105,6 @@ button:hover, a:hover {
   background: rgba(134,239,172,0.18);
 }
 
-.hint {
-  text-align: center;
-  color: #cbd5e1;
-  font-size: 0.9rem;
-}
-
 @media (max-width: 700px) {
   body {
     overflow-y: auto;
@@ -130,7 +129,12 @@ button:hover, a:hover {
     <h1>SQL Invaders</h1>
 
     <p class="subtitle">
-      Defend the data pipeline. Shoot bad data before it reaches the executive dashboard.
+      Defend the data pipeline from bad data, broken joins, KPI drift, and executive dashboard chaos.
+    </p>
+
+    <p class="hint">
+      Move with ← / → or A / D. Press <strong>Space Bar</strong> to shoot SQL queries.
+      Boss waves appear every 5 levels.
     </p>
 
     <div class="stats">
@@ -138,6 +142,7 @@ button:hover, a:hover {
       <div class="stat"><span>Best</span><strong id="best">0</strong></div>
       <div class="stat"><span>Pipeline Health</span><strong id="health">100%</strong></div>
       <div class="stat"><span>Wave</span><strong id="wave">1</strong></div>
+      <div class="stat"><span>Boss</span><strong id="bossStatus">None</strong></div>
     </div>
 
     <canvas id="game" width="960" height="520"></canvas>
@@ -146,12 +151,7 @@ button:hover, a:hover {
       <button id="restart">Restart</button>
       <a href="index.html">Back to Portfolio</a>
       <a href="game.html">Data Snake</a>
-      <a href="dashboard-defense.html">Dashboard Defense</a>
     </div>
-
-    <p class="hint">
-      Move with ← / → or A / D. Shoot with Space. Destroy NULLs, DUPES, BAD JOINs, DRIFT, and BROKEN ETL.
-    </p>
   </section>
 </main>
 
@@ -169,6 +169,7 @@ const scoreEl = document.getElementById("score");
 const bestEl = document.getElementById("best");
 const healthEl = document.getElementById("health");
 const waveEl = document.getElementById("wave");
+const bossStatusEl = document.getElementById("bossStatus");
 
 let keys = {};
 let score = 0;
@@ -178,6 +179,8 @@ let best = Number(localStorage.getItem("sqlInvadersBest") || 0);
 let bullets = [];
 let enemies = [];
 let particles = [];
+let boss = null;
+let bossWaveTriggered = false;
 let gameOver = false;
 let frame = 0;
 let animationId;
@@ -193,7 +196,23 @@ const player = {
   cooldown: 0
 };
 
-const enemyLabels = ["NULL", "DUPES", "BAD JOIN", "DRIFT", "LAG", "BROKEN ETL", "MISSING KPI", "BAD DATE"];
+const enemyLabels = [
+  "NULL",
+  "DUPES",
+  "BAD JOIN",
+  "DRIFT",
+  "LAG",
+  "BROKEN ETL",
+  "MISSING KPI",
+  "BAD DATE"
+];
+
+const bossLabels = [
+  "MODEL DRIFT BOSS",
+  "BAD DATA PIPELINE",
+  "EXECUTIVE ESCALATION",
+  "REVENUE LEAKAGE"
+];
 
 function reset() {
   score = 0;
@@ -202,6 +221,8 @@ function reset() {
   bullets = [];
   enemies = [];
   particles = [];
+  boss = null;
+  bossWaveTriggered = false;
   gameOver = false;
   frame = 0;
   player.x = canvas.width / 2 - player.w / 2;
@@ -216,6 +237,14 @@ function updateStats() {
   healthEl.textContent = Math.max(0, health) + "%";
   waveEl.textContent = wave;
 
+  if (boss) {
+    bossStatusEl.textContent = boss.hp + "/" + boss.maxHp;
+    bossStatusEl.style.color = "#fb7185";
+  } else {
+    bossStatusEl.textContent = "None";
+    bossStatusEl.style.color = "#86efac";
+  }
+
   if (score > best) {
     best = score;
     localStorage.setItem("sqlInvadersBest", best);
@@ -224,17 +253,37 @@ function updateStats() {
 }
 
 function spawnEnemy() {
+  if (boss) return;
+
   const label = enemyLabels[Math.floor(Math.random() * enemyLabels.length)];
 
   enemies.push({
-    x: Math.random() * (canvas.width - 120) + 40,
+    x: Math.random() * (canvas.width - 130) + 40,
     y: -40,
-    w: label.length > 7 ? 116 : 82,
+    w: label.length > 7 ? 120 : 82,
     h: 34,
-    speed: 0.8 + wave * 0.18 + Math.random() * 0.6,
+    speed: 0.35 + wave * 0.10 + Math.random() * 0.25,
     label,
     hp: label.length > 7 ? 2 : 1
   });
+}
+
+function spawnBoss() {
+  const label = bossLabels[Math.floor(Math.random() * bossLabels.length)];
+
+  boss = {
+    x: canvas.width / 2 - 150,
+    y: 40,
+    w: 300,
+    h: 70,
+    vx: 2.1 + wave * 0.08,
+    label,
+    maxHp: 14 + wave * 3,
+    hp: 14 + wave * 3,
+    attackTimer: 0
+  };
+
+  enemies = [];
 }
 
 function shoot() {
@@ -261,7 +310,7 @@ function collide(a, b) {
 }
 
 function addParticles(x, y, color) {
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 16; i++) {
     particles.push({
       x,
       y,
@@ -366,6 +415,40 @@ function drawEnemy(e) {
   ctx.restore();
 }
 
+function drawBoss() {
+  if (!boss) return;
+
+  ctx.save();
+
+  ctx.shadowColor = "#f43f5e";
+  ctx.shadowBlur = 25;
+
+  ctx.fillStyle = "#fb7185";
+  roundRect(boss.x, boss.y, boss.w, boss.h, 20);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 18px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(boss.label, boss.x + boss.w / 2, boss.y + boss.h / 2);
+
+  const barW = boss.w;
+  const barH = 10;
+  const pct = boss.hp / boss.maxHp;
+
+  ctx.fillStyle = "rgba(255,255,255,0.18)";
+  roundRect(boss.x, boss.y - 18, barW, barH, 6);
+  ctx.fill();
+
+  ctx.fillStyle = "#86efac";
+  roundRect(boss.x, boss.y - 18, barW * pct, barH, 6);
+  ctx.fill();
+
+  ctx.restore();
+}
+
 function drawParticles() {
   particles.forEach(p => {
     ctx.globalAlpha = p.life / 24;
@@ -391,6 +474,32 @@ function drawGameOver() {
   ctx.fillText("Restart and defend the dashboard", canvas.width / 2, canvas.height / 2 + 14);
 }
 
+function updateBoss() {
+  if (!boss) return;
+
+  boss.x += boss.vx;
+
+  if (boss.x < 30 || boss.x + boss.w > canvas.width - 30) {
+    boss.vx *= -1;
+  }
+
+  boss.attackTimer++;
+
+  if (boss.attackTimer > 75) {
+    boss.attackTimer = 0;
+
+    enemies.push({
+      x: boss.x + boss.w / 2 - 50,
+      y: boss.y + boss.h + 20,
+      w: 100,
+      h: 34,
+      speed: 1.1 + wave * 0.08,
+      label: "BAD KPI",
+      hp: 1
+    });
+  }
+}
+
 function update() {
   frame++;
 
@@ -404,14 +513,47 @@ function update() {
 
   wave = Math.floor(score / 400) + 1;
 
-  if (frame % Math.max(22, 72 - wave * 5) === 0) {
+  if (wave % 5 === 0 && !boss && !bossWaveTriggered) {
+    spawnBoss();
+    bossWaveTriggered = true;
+  }
+
+  if (wave % 5 !== 0) {
+    bossWaveTriggered = false;
+  }
+
+  if (!boss && frame % Math.max(32, 120 - wave * 8) === 0) {
     spawnEnemy();
   }
+
+  updateBoss();
 
   bullets.forEach(b => b.y -= b.speed);
   bullets = bullets.filter(b => b.y > -30);
 
   enemies.forEach(e => e.y += e.speed);
+
+  if (boss) {
+    for (let j = bullets.length - 1; j >= 0; j--) {
+      const b = bullets[j];
+
+      if (collide(b, boss)) {
+        bullets.splice(j, 1);
+        boss.hp--;
+        addParticles(b.x, b.y, "#38bdf8");
+
+        if (boss.hp <= 0) {
+          score += 900;
+          addParticles(boss.x + boss.w / 2, boss.y + boss.h / 2, "#86efac");
+          boss = null;
+          wave += 1;
+          bossWaveTriggered = false;
+        }
+
+        break;
+      }
+    }
+  }
 
   for (let i = enemies.length - 1; i >= 0; i--) {
     const e = enemies[i];
@@ -438,9 +580,15 @@ function update() {
     if (e.y + e.h >= canvas.height - 88) {
       health -= e.label.length > 7 ? 15 : 10;
       addParticles(e.x + e.w / 2, e.y + e.h / 2, "#fb7185");
-      if (health <= 0) gameOver = true;
+
+      if (health <= 0) {
+        health = 0;
+        gameOver = true;
+      }
+
       return false;
     }
+
     return true;
   });
 
@@ -459,6 +607,7 @@ function draw() {
   drawBackground();
   bullets.forEach(drawBullet);
   enemies.forEach(drawEnemy);
+  drawBoss();
   drawPlayer();
   drawParticles();
 
