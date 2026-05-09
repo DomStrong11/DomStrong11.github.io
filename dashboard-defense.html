@@ -271,11 +271,11 @@ function spawnEnemy() {
   const label = enemyLabels[Math.floor(Math.random() * enemyLabels.length)];
 
   enemies.push({
-    x: Math.random() * (canvas.width - 130) + 40,
+    x: Math.random() * (canvas.width - 260) + 130,
     y: -40,
     w: label.length > 7 ? 120 : 82,
     h: 34,
-    speed: 0.22 + wave * 0.025 + Math.random() * 0.12,
+    speed: 0.28 + wave * 0.035 + Math.random() * 0.15,
     label,
     hp: label.length > 7 ? 2 : 1
   });
@@ -570,7 +570,7 @@ function updateBoss() {
     boss.attackTimer = 0;
 
     enemies.push({
-      x: boss.x + boss.w / 2 - 50,
+      x: Math.max(130, Math.min(canvas.width - 230, boss.x + boss.w / 2 - 50)),
       y: boss.y + boss.h + 20,
       w: 100,
       h: 34,
@@ -619,7 +619,7 @@ function update() {
     spawnEnemy();
   }
 
-  if (frame % 720 === 0) {
+  if (frame % 1200 === 0) {
     spawnPowerUp();
   }
 
