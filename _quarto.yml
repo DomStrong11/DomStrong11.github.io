@@ -13,7 +13,7 @@ website:
       - href: projects.qmd
         text: Projects
       - href: cv.qmd
-        text: Curriculum Vitae
+        text: Resume
       - href: contact.qmd
         text: Contact
 
