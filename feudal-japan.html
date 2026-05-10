@@ -695,6 +695,112 @@
         }
       }
     });
+    const clanRoutes = {
+  oda: {
+    story: "Oda expansion begins in Owari Province, then pushes toward Kyoto through decisive military campaigns.",
+    color: "#38bdf8",
+    points: [
+      { name: "Owari", x: 430, y: 310 },
+      { name: "Mino", x: 420, y: 270 },
+      { name: "Kyoto", x: 385, y: 250 },
+      { name: "Central Japan", x: 410, y: 220 }
+    ]
+  },
+  tokugawa: {
+    story: "Tokugawa influence grows from Mikawa, consolidates eastern power, and ultimately dominates after Sekigahara.",
+    color: "#d4af37",
+    points: [
+      { name: "Mikawa", x: 455, y: 315 },
+      { name: "Edo", x: 505, y: 270 },
+      { name: "Sekigahara", x: 405, y: 285 },
+      { name: "National Control", x: 455, y: 230 }
+    ]
+  },
+  takeda: {
+    story: "Takeda power expands through Kai and Shinano, known for cavalry strength and aggressive inland campaigns.",
+    color: "#ef4444",
+    points: [
+      { name: "Kai", x: 485, y: 295 },
+      { name: "Shinano", x: 455, y: 255 },
+      { name: "Suruga", x: 475, y: 330 }
+    ]
+  },
+  uesugi: {
+    story: "Uesugi influence rises in Echigo, projecting power across northern and central mountain corridors.",
+    color: "#8b5cf6",
+    points: [
+      { name: "Echigo", x: 500, y: 205 },
+      { name: "Kanto Edge", x: 520, y: 255 },
+      { name: "Shinano", x: 455, y: 255 }
+    ]
+  },
+  shimazu: {
+    story: "Shimazu power is concentrated in southern Kyushu, expanding across the island through regional dominance.",
+    color: "#fdba74",
+    points: [
+      { name: "Satsuma", x: 120, y: 425 },
+      { name: "Osumi", x: 150, y: 420 },
+      { name: "Kyushu", x: 200, y: 405 }
+    ]
+  }
+};
+
+const clanSelect = document.getElementById("clanSelect");
+const markers = document.getElementById("markers");
+const routeLine = document.getElementById("routeLine");
+const mapStory = document.getElementById("mapStory");
+
+function renderClanRoute(clanKey) {
+  const clan = clanRoutes[clanKey];
+  markers.innerHTML = "";
+  mapStory.textContent = clan.story;
+
+  routeLine.setAttribute("stroke", clan.color);
+
+  if (clan.points.length >= 2) {
+    routeLine.setAttribute("x1", clan.points[0].x);
+    routeLine.setAttribute("y1", clan.points[0].y);
+    routeLine.setAttribute("x2", clan.points[clan.points.length - 1].x);
+    routeLine.setAttribute("y2", clan.points[clan.points.length - 1].y);
+  }
+
+  clan.points.forEach((point, i) => {
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", point.x);
+    circle.setAttribute("cy", point.y);
+    circle.setAttribute("r", 11 + i * 2);
+    circle.setAttribute("class", "clan-marker");
+    circle.setAttribute("fill", clan.color);
+
+    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    label.setAttribute("x", point.x + 18);
+    label.setAttribute("y", point.y + 5);
+    label.setAttribute("class", "marker-label");
+    label.textContent = point.name;
+
+    markers.appendChild(circle);
+    markers.appendChild(label);
+  });
+}
+
+clanSelect.addEventListener("change", e => {
+  renderClanRoute(e.target.value);
+});
+
+renderClanRoute("oda");
+
+const musicBtn = document.getElementById("musicBtn");
+const bgMusic = document.getElementById("bgMusic");
+
+musicBtn.addEventListener("click", () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    musicBtn.textContent = "⏸ Pause Historical Japan Music";
+  } else {
+    bgMusic.pause();
+    musicBtn.textContent = "▶ Play Historical Japan Music";
+  }
+});
   </script>
 </body>
 </html>
