@@ -216,8 +216,8 @@ function reset() {
   particles = [];
   score = 0;
   health = 100;
-  speed = 2.1;
-  gravity = 0.32;
+  speed = 1.5;
+  gravity = 0.18;
   gameOver = false;
   frame = 0;
 
@@ -232,7 +232,7 @@ function hop() {
     return;
   }
 
-  packet.vy = -6.6;
+  packet.vy = -5.2;
   burst(packet.x, packet.y, "#38bdf8", 8);
 }
 
@@ -259,7 +259,7 @@ function updateStats() {
 }
 
 function spawnPipe() {
-  const gap = Math.max(150, 205 - Math.floor(score / 8) * 4);
+  const gap = Math.max(180, 245 - Math.floor(score / 10) * 3);
   const topHeight = Math.random() * (canvas.height - gap - 150) + 60;
   const label = obstacleLabels[Math.floor(Math.random() * obstacleLabels.length)];
 
@@ -432,9 +432,9 @@ function update() {
   packet.vy += gravity;
   packet.y += packet.vy;
 
-  speed = Math.min(4.2, 2.1 + score * 0.025);
+  speed = Math.min(3.2, 1.5 + score * 0.015);
 
-  if (frame % Math.max(95, 145 - Math.floor(score / 6)) === 0) {
+  if (frame > 120 && frame % Math.max(120, 180 - Math.floor(score / 8)) === 0) {
     spawnPipe();
   }
 
