@@ -78,6 +78,42 @@
       max-width: 900px;
       margin-top: 1rem;
     }
+    <section class="panel map-panel">
+  <h2 class="panel-title">Clan Expansion Map</h2>
+  <div class="panel-subtitle">Select a clan to trace territorial movement across Japan</div>
+
+  <div class="map-controls">
+    <select id="clanSelect">
+      <option value="oda">Oda Clan</option>
+      <option value="tokugawa">Tokugawa Clan</option>
+      <option value="takeda">Takeda Clan</option>
+      <option value="uesugi">Uesugi Clan</option>
+      <option value="shimazu">Shimazu Clan</option>
+    </select>
+
+    <button id="musicBtn">▶ Play Historical Japan Music</button>
+  </div>
+
+  <div class="map-wrap">
+    <svg id="japanMap" viewBox="0 0 800 520">
+      <path class="japan-land" d="M520 60 C560 110 555 160 530 205 C505 250 520 290 485 335 C450 380 465 430 420 475 C390 505 340 505 320 470 C300 435 335 400 355 360 C375 320 350 275 380 235 C410 195 395 145 430 105 C455 75 485 55 520 60Z"/>
+      <path class="japan-land" d="M330 360 C300 390 270 415 235 420 C205 425 185 405 200 380 C215 355 250 345 280 335 C305 325 330 330 330 360Z"/>
+      <path class="japan-land" d="M230 430 C190 455 145 465 105 450 C80 440 80 410 110 395 C145 378 190 395 230 430Z"/>
+
+      <line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
+
+      <g id="markers"></g>
+    </svg>
+
+    <div class="map-story" id="mapStory">
+      Oda expansion begins in Owari Province, then pushes toward Kyoto through decisive military campaigns.
+    </div>
+  </div>
+</section>
+
+<audio id="bgMusic" loop>
+  <source src="./audio/japan-music.mp3" type="audio/mpeg">
+</audio>
 
     .control-row {
       display: flex;
