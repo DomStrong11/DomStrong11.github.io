@@ -144,6 +144,8 @@ button:hover, .control-link:hover {
 <nav class="navbar">
   <a href="index.html">Home</a>
   <a href="game.html">Arcade</a>
+  <a href="data-snake.html">Data Snake</a>
+  <a href="dashboard-defense.html">SQL Invaders</a>
 </nav>
 
 <main class="game-wrap">
@@ -155,20 +157,22 @@ button:hover, .control-link:hover {
     </p>
 
     <p class="hint">
-      Press <strong>Space Bar</strong>, click, or tap to hop. Clear pipelines to deliver clean data.
+      Press <strong>Space Bar</strong>, click, or tap to start and hop. Clear pipelines to deliver clean data.
     </p>
 
     <div class="stats">
       <div class="stat"><span>Score</span><strong id="score">0</strong></div>
       <div class="stat"><span>Best</span><strong id="best">0</strong></div>
       <div class="stat"><span>Pipeline Health</span><strong id="health">100%</strong></div>
-      <div class="stat"><span>Status</span><strong id="status">Stable</strong></div>
+      <div class="stat"><span>Status</span><strong id="status">Ready</strong></div>
     </div>
 
     <canvas id="game" width="920" height="500"></canvas>
 
     <div class="controls">
       <button id="restart">Restart</button>
+      <a class="control-link" href="game.html">Back to Arcade</a>
+      <a class="control-link" href="dashboard-defense.html">SQL Invaders</a>
     </div>
   </section>
 </main>
@@ -198,6 +202,7 @@ let score;
 let health;
 let speed;
 let gravity;
+let started;
 let gameOver;
 let frame;
 let animationId;
@@ -207,7 +212,7 @@ const obstacleLabels = ["NULL", "BAD JOIN", "DUPES", "BROKEN ETL", "SCHEMA DRIFT
 function reset() {
   packet = {
     x: 170,
-    y: canvas.height / 2 - 80,
+    y: canvas.height / 2,
     r: 18,
     vy: 0
   };
@@ -216,8 +221,9 @@ function reset() {
   particles = [];
   score = 0;
   health = 100;
-  speed = 1.5;
-  gravity = 0.12;
+  speed = 1.15;
+  gravity = 0.055;
+  started = false;
   gameOver = false;
   frame = 0;
 
@@ -229,9 +235,14 @@ function reset() {
 function hop() {
   if (gameOver) {
     reset();
+    return;
   }
 
-  packet.vy = -5.8;
+  if (!started) {
+    started = true;
+  }
+
+  packet.vy = -3.2;
   burst(packet.x, packet.y, "#38bdf8", 8);
 }
 
@@ -239,7 +250,10 @@ function updateStats() {
   scoreEl.textContent = score;
   healthEl.textContent = Math.max(0, health) + "%";
 
-  if (health > 70) {
+  if (!started && !gameOver) {
+    statusEl.textContent = "Ready";
+    statusEl.style.color = "#38bdf8";
+  } else if (health > 70) {
     statusEl.textContent = "Stable";
     statusEl.style.color = "#86efac";
   } else if (health > 35) {
@@ -258,8 +272,9 @@ function updateStats() {
 }
 
 function spawnPipe() {
-  const gap = Math.max(180, 245 - Math.floor(score / 10) * 3);
-  const topHeight = Math.random() * (canvas.height - gap - 150) + 60;
+  const gap = Math.max(230, 310 - Math.floor(score / 12) * 3);
+  const availableHeight = canvas.height - 70 - gap - 100;
+  const topHeight = Math.random() * availableHeight + 50;
   const label = obstacleLabels[Math.floor(Math.random() * obstacleLabels.length)];
 
   pipes.push({
@@ -268,7 +283,8 @@ function spawnPipe() {
     top: topHeight,
     gap,
     passed: false,
-    label
+    label,
+    hit: false
   });
 }
 
@@ -311,6 +327,7 @@ function drawBackground() {
 
   ctx.fillStyle = "#94a3b8";
   ctx.font = "bold 12px Arial";
+  ctx.textAlign = "left";
   ctx.fillText("DATA WAREHOUSE LANDING ZONE", 28, canvas.height - 26);
 }
 
@@ -353,9 +370,9 @@ function drawPacket() {
 function drawPipe(pipe) {
   ctx.save();
 
-  ctx.shadowColor = "#fb7185";
+  ctx.shadowColor = pipe.hit ? "#facc15" : "#fb7185";
   ctx.shadowBlur = 12;
-  ctx.fillStyle = "#fb7185";
+  ctx.fillStyle = pipe.hit ? "#facc15" : "#fb7185";
 
   roundRect(pipe.x, 0, pipe.w, pipe.top, 16);
   ctx.fill();
@@ -370,13 +387,13 @@ function drawPipe(pipe) {
   ctx.textAlign = "center";
 
   ctx.save();
-  ctx.translate(pipe.x + pipe.w / 2, pipe.top / 2);
+  ctx.translate(pipe.x + pipe.w / 2, Math.max(28, pipe.top / 2));
   ctx.rotate(-Math.PI / 2);
   ctx.fillText(pipe.label, 0, 0);
   ctx.restore();
 
   ctx.save();
-  ctx.translate(pipe.x + pipe.w / 2, bottomY + (canvas.height - bottomY - 70) / 2);
+  ctx.translate(pipe.x + pipe.w / 2, bottomY + Math.max(28, (canvas.height - bottomY - 70) / 2));
   ctx.rotate(-Math.PI / 2);
   ctx.fillText(pipe.label, 0, 0);
   ctx.restore();
@@ -411,6 +428,22 @@ function hitPipe(pipe) {
   return collideCircleRect(packet, topRect) || collideCircleRect(packet, bottomRect);
 }
 
+function drawStartOverlay() {
+  if (started || gameOver) return;
+
+  ctx.fillStyle = "rgba(0,0,0,0.45)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#f8fafc";
+  ctx.font = "bold 38px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Press Space to Start", canvas.width / 2, canvas.height / 2 - 15);
+
+  ctx.fillStyle = "#cbd5e1";
+  ctx.font = "18px Arial";
+  ctx.fillText("Click or tap also works", canvas.width / 2, canvas.height / 2 + 25);
+}
+
 function drawGameOver() {
   ctx.fillStyle = "rgba(0,0,0,0.74)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -428,12 +461,17 @@ function drawGameOver() {
 function update() {
   frame++;
 
+  if (!started) {
+    updateStats();
+    return;
+  }
+
   packet.vy += gravity;
   packet.y += packet.vy;
 
-  speed = Math.min(3.2, 1.5 + score * 0.015);
+  speed = Math.min(2.4, 1.15 + score * 0.008);
 
-  if (frame > 120 && frame % Math.max(120, 180 - Math.floor(score / 8)) === 0) {
+  if (frame > 220 && frame % Math.max(150, 230 - Math.floor(score / 10)) === 0) {
     spawnPipe();
   }
 
@@ -446,12 +484,11 @@ function update() {
       burst(packet.x, packet.y, "#86efac", 10);
     }
 
-    if (hitPipe(pipe)) {
-      health -= 4;
+    if (!pipe.hit && hitPipe(pipe)) {
+      pipe.hit = true;
+      health -= 12;
       burst(packet.x, packet.y, "#fb7185", 12);
-      packet.vy = -2;
-
-      pipe.x -= 8;
+      packet.vy = -1.4;
 
       if (health <= 0) {
         health = 0;
@@ -462,11 +499,20 @@ function update() {
 
   pipes = pipes.filter(pipe => pipe.x + pipe.w > -50);
 
-  if (packet.y - packet.r < 0 || packet.y + packet.r > canvas.height - 40) {
-    health -= 6;
-    burst(packet.x, packet.y, "#fb7185", 16);
-    gameOver = true;
-    health = Math.max(0, health);
+  if (packet.y - packet.r < 0) {
+    packet.y = packet.r;
+    packet.vy = 0.8;
+  }
+
+  if (packet.y + packet.r > canvas.height - 70) {
+    packet.y = canvas.height - 70 - packet.r;
+    packet.vy = -1.4;
+    health -= 1;
+
+    if (health <= 0) {
+      health = 0;
+      gameOver = true;
+    }
   }
 
   particles.forEach(p => {
@@ -485,6 +531,7 @@ function draw() {
   pipes.forEach(drawPipe);
   drawPacket();
   drawParticles();
+  drawStartOverlay();
 
   if (gameOver) drawGameOver();
 }
@@ -511,7 +558,6 @@ canvas.addEventListener("touchstart", e => {
 document.getElementById("restart").addEventListener("click", reset);
 
 reset();
-gameOver = true;
 </script>
 
 </body>
