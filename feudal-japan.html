@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feudal Japan Intelligence Network</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(212,175,55,0.15), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(127,29,29,0.2), transparent 35%),
+        #050816;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+
+    .page {
+      padding: 2rem 4%;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .top-nav a {
+      color: #f8fafc;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    .top-nav a:hover {
+      color: #d4af37;
+    }
+
+    .hero {
+      border-bottom: 1px solid rgba(212,175,55,0.35);
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .eyebrow {
+      color: #d4af37;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 6.5rem);
+      line-height: 0.95;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: linear-gradient(90deg, #d4af37, #f8fafc, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #94a3b8;
+      font-size: 1.15rem;
+      max-width: 900px;
+      margin-top: 1rem;
+    }
+
+    .control-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2rem 0 3rem;
+    }
+
+    .control-card {
+      border: 1px solid rgba(212,175,55,0.5);
+      background: rgba(15,23,42,0.72);
+      padding: 1rem 1.4rem;
+      border-radius: 12px;
+      min-width: 190px;
+      box-shadow: 0 0 25px rgba(212,175,55,0.08);
+    }
+
+    .control-label {
+      color: #d4af37;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .control-value {
+      font-size: 1.15rem;
+      font-weight: 900;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    .metric-stack {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .metric-card,
+    .panel {
+      position: relative;
+      background: rgba(15,23,42,0.82);
+      border: 1px solid rgba(148,163,184,0.25);
+      border-radius: 18px;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+
+    .metric-card {
+      padding: 2rem;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .metric-card::before,
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-top: 2px solid rgba(56,189,248,0.6);
+      border-left: 2px solid rgba(56,189,248,0.6);
+      width: 28px;
+      height: 28px;
+      pointer-events: none;
+    }
+
+    .metric-card::after,
+    .panel::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      border-bottom: 2px solid rgba(56,189,248,0.6);
+      border-right: 2px solid rgba(56,189,248,0.6);
+      width: 28px;
+      height: 28px;
+      pointer-events: none;
+    }
+
+    .metric-value {
+      color: #d4af37;
+      font-size: 3.6rem;
+      font-weight: 900;
+      text-shadow: 0 0 22px rgba(212,175,55,0.35);
+    }
+
+    .metric-title {
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-size: 0.75rem;
+    }
+
+    .panel {
+      padding: 1.7rem;
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .panel-subtitle {
+      color: #94a3b8;
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-top: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .clan-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .clan-card {
+      background: rgba(2,6,23,0.65);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 16px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .clan-card:hover {
+      transform: translateY(-6px);
+      border-color: #d4af37;
+      box-shadow: 0 0 35px rgba(212,175,55,0.18);
+    }
+
+    .mon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      margin: 0 auto 0.8rem;
+      display: grid;
+      place-items: center;
+      border: 2px solid #d4af37;
+      color: #d4af37;
+      font-weight: 900;
+      font-size: 1.5rem;
+      background: radial-gradient(circle, rgba(212,175,55,0.2), rgba(2,6,23,0.9));
+    }
+
+    .clan-name {
+      font-weight: 900;
+      margin-bottom: 0.4rem;
+    }
+
+    .clan-score {
+      color: #86efac;
+      font-weight: 800;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 1rem;
+      align-items: start;
+      padding: 1rem;
+      border-left: 3px solid #d4af37;
+      background: rgba(2,6,23,0.55);
+      border-radius: 12px;
+    }
+
+    .year {
+      color: #d4af37;
+      font-weight: 900;
+    }
+
+    .event-title {
+      font-weight: 900;
+      margin-bottom: 0.25rem;
+    }
+
+    .event-copy {
+      color: #cbd5e1;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .risk-card {
+      background: rgba(2,6,23,0.65);
+      border-radius: 14px;
+      padding: 1rem;
+      border: 1px solid rgba(148,163,184,0.18);
+    }
+
+    .risk-label {
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.7rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .risk-number {
+      font-size: 2.3rem;
+      color: #fdba74;
+      font-weight: 900;
+    }
+
+    .bar {
+      height: 8px;
+      background: rgba(148,163,184,0.2);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 0.7rem;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #86efac, #d4af37, #ef4444);
+      border-radius: 999px;
+    }
+
+    canvas {
+      max-height: 360px;
+    }
+
+    .footer-note {
+      color: #94a3b8;
+      text-align: center;
+      margin: 3rem 0 1rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 1050px) {
+      .dashboard,
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .clan-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 650px) {
+      .page {
+        padding: 1.2rem;
+      }
+
+      .clan-grid,
+      .risk-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .top-nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <nav class="top-nav">
+      <a href="index.html">← Back to Portfolio</a>
+      <a href="#timeline">Sacred Timeline</a>
+    </nav>
+
+    <header class="hero">
+      <div class="eyebrow">Sengoku Diagnostic System</div>
+      <h1>Feudal Japan Intelligence Network</h1>
+      <p class="subtitle">
+        A fictional analytics command center exploring clan power, territory control,
+        economic strength, battle efficiency, and political stability during Japan’s warring states era.
+      </p>
+    </header>
+
+    <div class="control-row">
+      <div class="control-card">
+        <div class="control-label">Temporal Status</div>
+        <div class="control-value">Sengoku Era</div>
+      </div>
+
+      <div class="control-card">
+        <div class="control-label">Primary Lens</div>
+        <div class="control-value">Clan Power</div>
+      </div>
+
+      <div class="control-card">
+        <div class="control-label">Model Mode</div>
+        <div class="control-value">Stability Risk</div>
+      </div>
+    </div>
+
+    <section class="dashboard">
+      <div class="metric-stack">
+        <div class="metric-card">
+          <div class="metric-value">12</div>
+          <div class="metric-title">Clans Tracked</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-value">68</div>
+          <div class="metric-title">Provinces Analyzed</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-value">47%</div>
+          <div class="metric-title">Avg Rebellion Risk</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel-title">Clan Power Distribution</h2>
+        <div class="panel-subtitle">Territory · Military · Economy · Alliance Strength</div>
+        <canvas id="powerChart"></canvas>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <div class="panel">
+        <h2 class="panel-title">Strategic Clan Rankings</h2>
+        <div class="panel-subtitle">Composite power index</div>
+
+        <div class="clan-grid">
+          <div class="clan-card">
+            <div class="mon">徳</div>
+            <div class="clan-name">Tokugawa</div>
+            <div class="clan-score">94 Power</div>
+          </div>
+
+          <div class="clan-card">
+            <div class="mon">織</div>
+            <div class="clan-name">Oda</div>
+            <div class="clan-score">91 Power</div>
+          </div>
+
+          <div class="clan-card">
+            <div class="mon">武</div>
+            <div class="clan-name">Takeda</div>
+            <div class="clan-score">86 Power</div>
+          </div>
+
+          <div class="clan-card">
+            <div class="mon">上</div>
+            <div class="clan-name">Uesugi</div>
+            <div class="clan-score">82 Power</div>
+          </div>
+
+          <div class="clan-card">
+            <div class="mon">島</div>
+            <div class="clan-name">Shimazu</div>
+            <div class="clan-score">78 Power</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel-title">Economic Output</h2>
+        <div class="panel-subtitle">Estimated rice production index</div>
+        <canvas id="riceChart"></canvas>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <div class="panel">
+        <h2 class="panel-title">Predictive Stability Model</h2>
+        <div class="panel-subtitle">Fictional ML-style risk scoring</div>
+
+        <div class="risk-grid">
+          <div class="risk-card">
+            <div class="risk-label">Rebellion Risk</div>
+            <div class="risk-number">63%</div>
+            <div class="bar"><span style="width:63%"></span></div>
+          </div>
+
+          <div class="risk-card">
+            <div class="risk-label">Alliance Betrayal</div>
+            <div class="risk-number">41%</div>
+            <div class="bar"><span style="width:41%"></span></div>
+          </div>
+
+          <div class="risk-card">
+            <div class="risk-label">Economic Strain</div>
+            <div class="risk-number">58%</div>
+            <div class="bar"><span style="width:58%"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel-title">Battle Efficiency</h2>
+        <div class="panel-subtitle">Win rate by clan</div>
+        <canvas id="battleChart"></canvas>
+      </div>
+    </section>
+
+    <section id="timeline" class="panel" style="margin-top:1.5rem;">
+      <h2 class="panel-title">Sacred Timeline</h2>
+      <div class="panel-subtitle">Key power shifts and strategic events</div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="year">1467</div>
+          <div>
+            <div class="event-title">Onin War Begins</div>
+            <div class="event-copy">Central authority weakens, accelerating regional conflict and clan militarization.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="year">1560</div>
+          <div>
+            <div class="event-title">Battle of Okehazama</div>
+            <div class="event-copy">Oda Nobunaga’s surprise victory shifts the balance of power and signals a new strategic era.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="year">1575</div>
+          <div>
+            <div class="event-title">Battle of Nagashino</div>
+            <div class="event-copy">Firearm tactics alter battlefield efficiency and reduce cavalry dominance.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="year">1600</div>
+          <div>
+            <div class="event-title">Battle of Sekigahara</div>
+            <div class="event-copy">Tokugawa victory consolidates power and sets the foundation for long-term political stability.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      Prototype dashboard · fictional metrics · built for storytelling, analytics, and portfolio impact
+    </div>
+
+  </div>
+
+  <script>
+    const gold = "#d4af37";
+    const blue = "#38bdf8";
+    const green = "#86efac";
+    const red = "#ef4444";
+    const purple = "#8b5cf6";
+    const orange = "#fdba74";
+
+    Chart.defaults.color = "#cbd5e1";
+    Chart.defaults.borderColor = "rgba(148,163,184,0.18)";
+    Chart.defaults.font.family = "Arial";
+
+    new Chart(document.getElementById("powerChart"), {
+      type: "radar",
+      data: {
+        labels: ["Territory", "Military", "Economy", "Alliances", "Stability"],
+        datasets: [
+          {
+            label: "Tokugawa",
+            data: [92, 88, 95, 91, 89],
+            borderColor: gold,
+            backgroundColor: "rgba(212,175,55,0.18)",
+            pointBackgroundColor: gold
+          },
+          {
+            label: "Oda",
+            data: [84, 96, 80, 72, 66],
+            borderColor: blue,
+            backgroundColor: "rgba(56,189,248,0.15)",
+            pointBackgroundColor: blue
+          },
+          {
+            label: "Takeda",
+            data: [78, 94, 70, 65, 61],
+            borderColor: red,
+            backgroundColor: "rgba(239,68,68,0.14)",
+            pointBackgroundColor: red
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom"
+          }
+        },
+        scales: {
+          r: {
+            angleLines: { color: "rgba(148,163,184,0.2)" },
+            grid: { color: "rgba(148,163,184,0.18)" },
+            pointLabels: { color: "#f8fafc" },
+            ticks: {
+              backdropColor: "transparent",
+              color: "#94a3b8"
+            }
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("riceChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Tokugawa", "Oda", "Takeda", "Uesugi", "Shimazu"],
+        datasets: [{
+          data: [31, 24, 18, 15, 12],
+          backgroundColor: [gold, blue, red, purple, orange],
+          borderColor: "#050816",
+          borderWidth: 3
+        }]
+      },
+      options: {
+        cutout: "62%",
+        plugins: {
+          legend: {
+            position: "bottom"
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById("battleChart"), {
+      type: "bar",
+      data: {
+        labels: ["Tokugawa", "Oda", "Takeda", "Uesugi", "Shimazu"],
+        datasets: [{
+          label: "Battle Win Rate",
+          data: [72, 76, 69, 64, 58],
+          backgroundColor: [gold, blue, red, purple, orange],
+          borderRadius: 10
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            ticks: {
+              callback: value => value + "%"
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
