@@ -15,12 +15,55 @@ body {
   overflow-x: hidden;
 }
 
+/* Animated Arcade Background */
+
+.arcade-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(56,189,248,0.28), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(99,102,241,0.25), transparent 35%),
+    radial-gradient(circle at 50% 80%, rgba(14,165,233,0.20), transparent 35%),
+    #000;
+  animation: arcadeShift 14s ease-in-out infinite alternate;
+}
+
+@keyframes arcadeShift {
+  0% {
+    filter: hue-rotate(0deg);
+    transform: scale(1);
+  }
+
+  100% {
+    filter: hue-rotate(35deg);
+    transform: scale(1.08);
+  }
+}
+
+.arcade-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(56,189,248,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.15) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: gridMove 18s linear infinite;
+}
+
+@keyframes gridMove {
+  from { background-position: 0 0; }
+  to { background-position: 96px 96px; }
+}
+
 /* NAV */
 
 .navbar {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
   padding: 1.2rem;
   position: sticky;
   top: 0;
@@ -29,15 +72,23 @@ body {
   backdrop-filter: blur(10px);
 }
 
-.navbar a {
+.navbar a,
+.music-btn {
   color: #f8fafc;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 800;
   transition: 0.25s;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  padding: 0.75rem 1.1rem;
+  cursor: pointer;
 }
 
-.navbar a:hover {
-  color: #86efac;
+.navbar a:hover,
+.music-btn:hover {
+  color: #38bdf8;
+  background: rgba(56,189,248,0.16);
 }
 
 /* HERO */
@@ -75,11 +126,12 @@ body {
   border-radius: 28px;
   padding: 2rem;
   box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-  transition: transform 0.25s;
+  transition: transform 0.25s, border-color 0.25s;
 }
 
 .game-card:hover {
   transform: translateY(-8px);
+  border-color: rgba(56,189,248,0.55);
 }
 
 .game-card h2 {
@@ -107,7 +159,7 @@ body {
   border-radius: 999px;
   text-decoration: none;
   color: #020617;
-  background: #86efac;
+  background: #38bdf8;
   font-weight: 900;
 }
 
@@ -115,25 +167,43 @@ body {
   opacity: 0.9;
 }
 
-.bg-grid {
+/* Blue Cursor Trail */
+
+.cursor-sparkle {
   position: fixed;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.18;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
+  width: 7px;
+  height: 7px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #38bdf8 45%, transparent 75%);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.95);
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  animation: blueSparkleFade 650ms ease-out forwards;
+}
+
+@keyframes blueSparkleFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -95%) scale(0.12);
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg-grid"></div>
+<div class="arcade-bg"></div>
+<div class="arcade-grid"></div>
 
 <nav class="navbar">
   <a href="index.html">Home</a>
+  <button class="music-btn" id="musicToggle">Music: Off</button>
 </nav>
 
 <section class="hero">
@@ -174,6 +244,80 @@ body {
   </div>
 
 </section>
+
+<script>
+/* Blue cursor trail */
+document.addEventListener("mousemove", e => {
+  const sparkle = document.createElement("span");
+  sparkle.className = "cursor-sparkle";
+  sparkle.style.left = `${e.clientX}px`;
+  sparkle.style.top = `${e.clientY}px`;
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 650);
+});
+
+/* Simple 8-bit style music using Web Audio API */
+let audioContext;
+let musicInterval;
+let isPlaying = false;
+
+const notes = [
+  261.63, 329.63, 392.00, 523.25,
+  392.00, 329.63, 293.66, 392.00
+];
+
+function playTone(freq, duration = 120) {
+  if (!audioContext) return;
+
+  const osc = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  osc.type = "square";
+  osc.frequency.value = freq;
+
+  gain.gain.setValueAtTime(0.045, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration / 1000);
+
+  osc.connect(gain);
+  gain.connect(audioContext.destination);
+
+  osc.start();
+  osc.stop(audioContext.currentTime + duration / 1000);
+}
+
+function startMusic() {
+  audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+
+  let i = 0;
+
+  musicInterval = setInterval(() => {
+    playTone(notes[i % notes.length], 110);
+
+    if (i % 4 === 0) {
+      playTone(notes[(i + 2) % notes.length] / 2, 160);
+    }
+
+    i++;
+  }, 220);
+
+  isPlaying = true;
+  document.getElementById("musicToggle").textContent = "Music: On";
+}
+
+function stopMusic() {
+  clearInterval(musicInterval);
+  isPlaying = false;
+  document.getElementById("musicToggle").textContent = "Music: Off";
+}
+
+document.getElementById("musicToggle").addEventListener("click", () => {
+  if (isPlaying) {
+    stopMusic();
+  } else {
+    startMusic();
+  }
+});
+</script>
 
 </body>
 </html>
