@@ -78,42 +78,6 @@
       max-width: 900px;
       margin-top: 1rem;
     }
-    <section class="panel map-panel">
-  <h2 class="panel-title">Clan Expansion Map</h2>
-  <div class="panel-subtitle">Select a clan to trace territorial movement across Japan</div>
-
-  <div class="map-controls">
-    <select id="clanSelect">
-      <option value="oda">Oda Clan</option>
-      <option value="tokugawa">Tokugawa Clan</option>
-      <option value="takeda">Takeda Clan</option>
-      <option value="uesugi">Uesugi Clan</option>
-      <option value="shimazu">Shimazu Clan</option>
-    </select>
-
-    <button id="musicBtn">▶ Play Historical Japan Music</button>
-  </div>
-
-  <div class="map-wrap">
-    <svg id="japanMap" viewBox="0 0 800 520">
-      <path class="japan-land" d="M520 60 C560 110 555 160 530 205 C505 250 520 290 485 335 C450 380 465 430 420 475 C390 505 340 505 320 470 C300 435 335 400 355 360 C375 320 350 275 380 235 C410 195 395 145 430 105 C455 75 485 55 520 60Z"/>
-      <path class="japan-land" d="M330 360 C300 390 270 415 235 420 C205 425 185 405 200 380 C215 355 250 345 280 335 C305 325 330 330 330 360Z"/>
-      <path class="japan-land" d="M230 430 C190 455 145 465 105 450 C80 440 80 410 110 395 C145 378 190 395 230 430Z"/>
-
-      <line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
-
-      <g id="markers"></g>
-    </svg>
-
-    <div class="map-story" id="mapStory">
-      Oda expansion begins in Owari Province, then pushes toward Kyoto through decisive military campaigns.
-    </div>
-  </div>
-</section>
-
-<audio id="bgMusic" loop>
-  <source src="./audio/japan-music.mp3" type="audio/mpeg">
-</audio>
 
     .control-row {
       display: flex;
@@ -374,9 +338,110 @@
       font-size: 0.75rem;
     }
 
+    /* ===== CLAN EXPANSION MAP ===== */
+
+    .map-panel {
+      margin-bottom: 1.5rem;
+    }
+
+    .map-controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .map-controls select,
+    .map-controls button {
+      background: rgba(2,6,23,0.9);
+      color: #f8fafc;
+      border: 1px solid rgba(212,175,55,0.55);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .map-controls button {
+      cursor: pointer;
+    }
+
+    .map-controls button:hover {
+      background: rgba(212,175,55,0.16);
+    }
+
+    .map-wrap {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    #japanMap {
+      width: 100%;
+      min-height: 430px;
+      background:
+        radial-gradient(circle at center, rgba(56,189,248,0.1), transparent 55%),
+        rgba(2,6,23,0.65);
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.18);
+    }
+
+    .japan-land {
+      fill: rgba(15,23,42,0.95);
+      stroke: rgba(212,175,55,0.65);
+      stroke-width: 2;
+      filter: drop-shadow(0 0 10px rgba(212,175,55,0.18));
+    }
+
+    .clan-marker {
+      fill: #d4af37;
+      stroke: #f8fafc;
+      stroke-width: 2;
+      filter: drop-shadow(0 0 14px rgba(212,175,55,0.8));
+      animation: pulseMarker 1.8s infinite ease-in-out;
+    }
+
+    .route-line {
+      stroke: #38bdf8;
+      stroke-width: 4;
+      stroke-dasharray: 10;
+      filter: drop-shadow(0 0 12px rgba(56,189,248,0.8));
+    }
+
+    .marker-label {
+      fill: #f8fafc;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .map-story {
+      background: rgba(2,6,23,0.72);
+      border-left: 4px solid #d4af37;
+      border-radius: 14px;
+      padding: 1.5rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    @keyframes pulseMarker {
+      0%, 100% {
+        opacity: 0.85;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.18);
+      }
+    }
+
     @media (max-width: 1050px) {
       .dashboard,
-      .main-grid {
+      .main-grid,
+      .map-wrap {
         grid-template-columns: 1fr;
       }
 
@@ -436,6 +501,43 @@
         <div class="control-value">Stability Risk</div>
       </div>
     </div>
+
+    <section class="panel map-panel">
+      <h2 class="panel-title">Clan Expansion Map</h2>
+      <div class="panel-subtitle">Select a clan to trace territorial movement across Japan</div>
+
+      <div class="map-controls">
+        <select id="clanSelect">
+          <option value="oda">Oda Clan</option>
+          <option value="tokugawa">Tokugawa Clan</option>
+          <option value="takeda">Takeda Clan</option>
+          <option value="uesugi">Uesugi Clan</option>
+          <option value="shimazu">Shimazu Clan</option>
+        </select>
+
+        <button id="musicBtn">▶ Play Historical Japan Music</button>
+      </div>
+
+      <div class="map-wrap">
+        <svg id="japanMap" viewBox="0 0 800 520">
+          <path class="japan-land" d="M520 60 C560 110 555 160 530 205 C505 250 520 290 485 335 C450 380 465 430 420 475 C390 505 340 505 320 470 C300 435 335 400 355 360 C375 320 350 275 380 235 C410 195 395 145 430 105 C455 75 485 55 520 60Z"/>
+          <path class="japan-land" d="M330 360 C300 390 270 415 235 420 C205 425 185 405 200 380 C215 355 250 345 280 335 C305 325 330 330 330 360Z"/>
+          <path class="japan-land" d="M230 430 C190 455 145 465 105 450 C80 440 80 410 110 395 C145 378 190 395 230 430Z"/>
+
+          <line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
+
+          <g id="markers"></g>
+        </svg>
+
+        <div class="map-story" id="mapStory">
+          Oda expansion begins in Owari Province, then pushes toward Kyoto through decisive military campaigns.
+        </div>
+      </div>
+    </section>
+
+    <audio id="bgMusic" loop>
+      <source src="./audio/japan-music.mp3" type="audio/mpeg">
+    </audio>
 
     <section class="dashboard">
       <div class="metric-stack">
@@ -695,112 +797,114 @@
         }
       }
     });
+
     const clanRoutes = {
-  oda: {
-    story: "Oda expansion begins in Owari Province, then pushes toward Kyoto through decisive military campaigns.",
-    color: "#38bdf8",
-    points: [
-      { name: "Owari", x: 430, y: 310 },
-      { name: "Mino", x: 420, y: 270 },
-      { name: "Kyoto", x: 385, y: 250 },
-      { name: "Central Japan", x: 410, y: 220 }
-    ]
-  },
-  tokugawa: {
-    story: "Tokugawa influence grows from Mikawa, consolidates eastern power, and ultimately dominates after Sekigahara.",
-    color: "#d4af37",
-    points: [
-      { name: "Mikawa", x: 455, y: 315 },
-      { name: "Edo", x: 505, y: 270 },
-      { name: "Sekigahara", x: 405, y: 285 },
-      { name: "National Control", x: 455, y: 230 }
-    ]
-  },
-  takeda: {
-    story: "Takeda power expands through Kai and Shinano, known for cavalry strength and aggressive inland campaigns.",
-    color: "#ef4444",
-    points: [
-      { name: "Kai", x: 485, y: 295 },
-      { name: "Shinano", x: 455, y: 255 },
-      { name: "Suruga", x: 475, y: 330 }
-    ]
-  },
-  uesugi: {
-    story: "Uesugi influence rises in Echigo, projecting power across northern and central mountain corridors.",
-    color: "#8b5cf6",
-    points: [
-      { name: "Echigo", x: 500, y: 205 },
-      { name: "Kanto Edge", x: 520, y: 255 },
-      { name: "Shinano", x: 455, y: 255 }
-    ]
-  },
-  shimazu: {
-    story: "Shimazu power is concentrated in southern Kyushu, expanding across the island through regional dominance.",
-    color: "#fdba74",
-    points: [
-      { name: "Satsuma", x: 120, y: 425 },
-      { name: "Osumi", x: 150, y: 420 },
-      { name: "Kyushu", x: 200, y: 405 }
-    ]
-  }
-};
+      oda: {
+        story: "Oda expansion begins in Owari Province, then pushes toward Mino and Kyoto through decisive campaigns. The route represents the clan’s rise from regional power to central political influence.",
+        color: "#38bdf8",
+        points: [
+          { name: "Owari", x: 430, y: 310 },
+          { name: "Mino", x: 420, y: 270 },
+          { name: "Kyoto", x: 385, y: 250 },
+          { name: "Central Japan", x: 410, y: 220 }
+        ]
+      },
+      tokugawa: {
+        story: "Tokugawa influence grows from Mikawa, consolidates eastern power, and ultimately dominates after Sekigahara. The path reflects a steady build toward long-term national control.",
+        color: "#d4af37",
+        points: [
+          { name: "Mikawa", x: 455, y: 315 },
+          { name: "Edo", x: 505, y: 270 },
+          { name: "Sekigahara", x: 405, y: 285 },
+          { name: "National Control", x: 455, y: 230 }
+        ]
+      },
+      takeda: {
+        story: "Takeda power expands through Kai and Shinano, known for cavalry strength and aggressive inland campaigns. The path highlights pressure across mountainous central Japan.",
+        color: "#ef4444",
+        points: [
+          { name: "Kai", x: 485, y: 295 },
+          { name: "Shinano", x: 455, y: 255 },
+          { name: "Suruga", x: 475, y: 330 }
+        ]
+      },
+      uesugi: {
+        story: "Uesugi influence rises in Echigo, projecting power across northern and central corridors. The route reflects strategic pressure toward Kanto and Shinano.",
+        color: "#8b5cf6",
+        points: [
+          { name: "Echigo", x: 500, y: 205 },
+          { name: "Kanto Edge", x: 520, y: 255 },
+          { name: "Shinano", x: 455, y: 255 }
+        ]
+      },
+      shimazu: {
+        story: "Shimazu power is concentrated in southern Kyushu, expanding across the island through regional dominance. The route represents a strong southern base of influence.",
+        color: "#fdba74",
+        points: [
+          { name: "Satsuma", x: 120, y: 425 },
+          { name: "Osumi", x: 150, y: 420 },
+          { name: "Kyushu", x: 200, y: 405 }
+        ]
+      }
+    };
 
-const clanSelect = document.getElementById("clanSelect");
-const markers = document.getElementById("markers");
-const routeLine = document.getElementById("routeLine");
-const mapStory = document.getElementById("mapStory");
+    const clanSelect = document.getElementById("clanSelect");
+    const markers = document.getElementById("markers");
+    const routeLine = document.getElementById("routeLine");
+    const mapStory = document.getElementById("mapStory");
 
-function renderClanRoute(clanKey) {
-  const clan = clanRoutes[clanKey];
-  markers.innerHTML = "";
-  mapStory.textContent = clan.story;
+    function renderClanRoute(clanKey) {
+      const clan = clanRoutes[clanKey];
 
-  routeLine.setAttribute("stroke", clan.color);
+      markers.innerHTML = "";
+      mapStory.textContent = clan.story;
 
-  if (clan.points.length >= 2) {
-    routeLine.setAttribute("x1", clan.points[0].x);
-    routeLine.setAttribute("y1", clan.points[0].y);
-    routeLine.setAttribute("x2", clan.points[clan.points.length - 1].x);
-    routeLine.setAttribute("y2", clan.points[clan.points.length - 1].y);
-  }
+      routeLine.setAttribute("stroke", clan.color);
 
-  clan.points.forEach((point, i) => {
-    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle.setAttribute("cx", point.x);
-    circle.setAttribute("cy", point.y);
-    circle.setAttribute("r", 11 + i * 2);
-    circle.setAttribute("class", "clan-marker");
-    circle.setAttribute("fill", clan.color);
+      if (clan.points.length >= 2) {
+        routeLine.setAttribute("x1", clan.points[0].x);
+        routeLine.setAttribute("y1", clan.points[0].y);
+        routeLine.setAttribute("x2", clan.points[clan.points.length - 1].x);
+        routeLine.setAttribute("y2", clan.points[clan.points.length - 1].y);
+      }
 
-    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    label.setAttribute("x", point.x + 18);
-    label.setAttribute("y", point.y + 5);
-    label.setAttribute("class", "marker-label");
-    label.textContent = point.name;
+      clan.points.forEach((point, i) => {
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", point.x);
+        circle.setAttribute("cy", point.y);
+        circle.setAttribute("r", 11 + i * 2);
+        circle.setAttribute("class", "clan-marker");
+        circle.setAttribute("fill", clan.color);
 
-    markers.appendChild(circle);
-    markers.appendChild(label);
-  });
-}
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("x", point.x + 18);
+        label.setAttribute("y", point.y + 5);
+        label.setAttribute("class", "marker-label");
+        label.textContent = point.name;
 
-clanSelect.addEventListener("change", e => {
-  renderClanRoute(e.target.value);
-});
+        markers.appendChild(circle);
+        markers.appendChild(label);
+      });
+    }
 
-renderClanRoute("oda");
+    clanSelect.addEventListener("change", e => {
+      renderClanRoute(e.target.value);
+    });
 
-const musicBtn = document.getElementById("musicBtn");
-const bgMusic = document.getElementById("bgMusic");
+    renderClanRoute("oda");
 
-musicBtn.addEventListener("click", () => {
-  if (bgMusic.paused) {
-    bgMusic.play();
-    musicBtn.textContent = "⏸ Pause Historical Japan Music";
-  } else {
-    bgMusic.pause();
-    musicBtn.textContent = "▶ Play Historical Japan Music";
-  }
-});
+    const musicBtn = document.getElementById("musicBtn");
+    const bgMusic = document.getElementById("bgMusic");
+
+    musicBtn.addEventListener("click", () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicBtn.textContent = "⏸ Pause Historical Japan Music";
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = "▶ Play Historical Japan Music";
+      }
+    });
   </script>
 </body>
 </html>
