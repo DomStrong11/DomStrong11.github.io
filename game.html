@@ -15,47 +15,87 @@ body {
   overflow-x: hidden;
 }
 
-/* Animated Arcade Background */
+/* ===== Animated Data Arcade Background ===== */
 
-.arcade-bg {
+.data-arcade-bg {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -3;
   background:
-    radial-gradient(circle at 20% 20%, rgba(56,189,248,0.28), transparent 30%),
-    radial-gradient(circle at 80% 30%, rgba(99,102,241,0.25), transparent 35%),
-    radial-gradient(circle at 50% 80%, rgba(14,165,233,0.20), transparent 35%),
+    radial-gradient(circle at 20% 25%, rgba(56,189,248,0.25), transparent 28%),
+    radial-gradient(circle at 80% 70%, rgba(134,239,172,0.18), transparent 30%),
+    radial-gradient(circle at 50% 50%, rgba(99,102,241,0.20), transparent 35%),
     #000;
-  animation: arcadeShift 14s ease-in-out infinite alternate;
+  animation: bgPulse 10s ease-in-out infinite alternate;
 }
 
-@keyframes arcadeShift {
-  0% {
+@keyframes bgPulse {
+  from {
     filter: hue-rotate(0deg);
     transform: scale(1);
   }
 
-  100% {
+  to {
     filter: hue-rotate(35deg);
     transform: scale(1.08);
   }
 }
 
-.arcade-grid {
+.data-streams {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.data-streams span {
+  position: absolute;
+  top: -10%;
+  color: rgba(56,189,248,0.45);
+  font-weight: 900;
+  font-size: 1.1rem;
+  animation: dataFall linear infinite;
+  text-shadow: 0 0 14px rgba(56,189,248,0.55);
+}
+
+@keyframes dataFall {
+  from {
+    transform: translateY(-20vh);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(120vh);
+    opacity: 0;
+  }
+}
+
+.arcade-scanlines {
   position: fixed;
   inset: 0;
   z-index: -1;
-  opacity: 0.18;
-  background-image:
-    linear-gradient(rgba(56,189,248,0.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(56,189,248,0.15) 1px, transparent 1px);
-  background-size: 48px 48px;
-  animation: gridMove 18s linear infinite;
+  background:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+  animation: gridSlide 8s linear infinite;
+  opacity: 0.25;
+  pointer-events: none;
 }
 
-@keyframes gridMove {
-  from { background-position: 0 0; }
-  to { background-position: 96px 96px; }
+@keyframes gridSlide {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 84px 84px;
+  }
 }
 
 /* NAV */
@@ -202,8 +242,23 @@ body {
 
 <body>
 
-<div class="arcade-bg"></div>
-<div class="arcade-grid"></div>
+<div class="data-arcade-bg"></div>
+
+<div class="data-streams">
+  <span style="left:5%; animation-duration:8s;">SQL</span>
+  <span style="left:14%; animation-duration:11s; animation-delay:1s;">JOIN</span>
+  <span style="left:23%; animation-duration:9s; animation-delay:2s;">KPI</span>
+  <span style="left:32%; animation-duration:12s; animation-delay:0.5s;">ML</span>
+  <span style="left:41%; animation-duration:10s; animation-delay:1.5s;">ETL</span>
+  <span style="left:50%; animation-duration:13s; animation-delay:2.5s;">NULL</span>
+  <span style="left:59%; animation-duration:9s; animation-delay:0.8s;">DASH</span>
+  <span style="left:68%; animation-duration:12s; animation-delay:1.8s;">PY</span>
+  <span style="left:77%; animation-duration:10s; animation-delay:2.8s;">BI</span>
+  <span style="left:86%; animation-duration:14s; animation-delay:0.2s;">A/B</span>
+  <span style="left:94%; animation-duration:8s; animation-delay:1.2s;">🎮</span>
+</div>
+
+<div class="arcade-scanlines"></div>
 
 <nav class="navbar">
   <a href="index.html">Home</a>
@@ -248,17 +303,17 @@ body {
   </div>
 
   <div class="game-card etl">
-  <h2>🐦 ETL Hopper</h2>
+    <h2>🐦 ETL Hopper</h2>
 
-  <p>
-    Hop a data packet through broken pipelines, NULL columns, bad joins,
-    schema drift, and ETL failures.
-  </p>
+    <p>
+      Hop a data packet through broken pipelines, NULL columns, bad joins,
+      schema drift, and ETL failures.
+    </p>
 
-  <a class="play-btn" href="etl-hopper.html">
-    Play ETL Hopper
-  </a>
-</div>
+    <a class="play-btn" href="etl-hopper.html">
+      Play ETL Hopper
+    </a>
+  </div>
 
 </section>
 
