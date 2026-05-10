@@ -426,7 +426,90 @@ h2 {
     margin-right: auto;
   }
 }
+.skills-section {
+  min-height: 100vh;
+  padding: 6rem 8%;
+  text-align: center;
+}
 
+.skills-subtitle {
+  color: #94a3b8;
+  letter-spacing: 0.35rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+}
+
+.skills-grid {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.8rem;
+}
+
+.skill-circle {
+  width: 125px;
+  height: 125px;
+  border: 2px solid #86efac;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.05);
+  box-shadow: 0 0 25px rgba(134,239,172,0.12);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.skill-circle span {
+  font-weight: 800;
+  color: white;
+  font-size: 1.05rem;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.skill-circle::after {
+  content: attr(data-percent);
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(134,239,172,0.95);
+  color: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 900;
+  opacity: 0;
+  transform: scale(0.75);
+  transition: all 0.3s ease;
+}
+
+.skill-circle:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 0 40px rgba(134,239,172,0.45);
+}
+
+.skill-circle:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 850px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .skill-circle {
+    width: 110px;
+    height: 110px;
+  }
+}
 @media (max-width: 850px) {
   .navbar {
     gap: 1rem;
@@ -603,6 +686,63 @@ h2 {
         Measured campaign effectiveness using treatment/control logic and incremental business impact analysis.
       </p>
     </div>
+  </div>
+</section>
+
+  <section id="skills" class="skills-section">
+  <div class="section-label">S K I L L S</div>
+  <p class="skills-subtitle">Hover over a skill for current proficiency</p>
+
+  <div class="skills-grid">
+
+    <div class="skill-circle" data-percent="95%">
+      <span>SQL</span>
+    </div>
+
+    <div class="skill-circle" data-percent="95%">
+      <span>Tableau</span>
+    </div>
+
+    <div class="skill-circle" data-percent="90%">
+      <span>Excel</span>
+    </div>
+
+    <div class="skill-circle" data-percent="85%">
+      <span>Python</span>
+    </div>
+
+    <div class="skill-circle" data-percent="80%">
+      <span>ML</span>
+    </div>
+
+    <div class="skill-circle" data-percent="85%">
+      <span>Forecasting</span>
+    </div>
+
+    <div class="skill-circle" data-percent="90%">
+      <span>KPI</span>
+    </div>
+
+    <div class="skill-circle" data-percent="85%">
+      <span>A/B Testing</span>
+    </div>
+
+    <div class="skill-circle" data-percent="80%">
+      <span>Stats</span>
+    </div>
+
+    <div class="skill-circle" data-percent="75%">
+      <span>PySpark</span>
+    </div>
+
+    <div class="skill-circle" data-percent="80%">
+      <span>Quarto</span>
+    </div>
+
+    <div class="skill-circle" data-percent="85%">
+      <span>Storytelling</span>
+    </div>
+
   </div>
 </section>
 
