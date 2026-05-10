@@ -345,6 +345,88 @@ h2 {
   }
 }
 
+  .about-section {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 6rem 8%;
+}
+
+.about-image-wrap {
+  width: 100%;
+}
+
+.about-image {
+  width: 100%;
+  max-height: 760px;
+  object-fit: cover;
+  border-radius: 16px;
+  filter: grayscale(100%);
+  box-shadow: 0 25px 70px rgba(0,0,0,0.45);
+}
+
+.about-copy {
+  text-align: left;
+}
+
+.section-label {
+  text-align: center;
+  letter-spacing: 1.4rem;
+  color: #94a3b8;
+  font-size: 1.6rem;
+  margin-bottom: 10rem;
+}
+
+.about-heading {
+  text-align: left;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  margin-bottom: 2rem;
+  text-decoration: none;
+}
+
+.about-heading::after {
+  content: "";
+  display: block;
+  width: 160px;
+  height: 4px;
+  background: #86efac;
+  margin-top: 0.4rem;
+}
+
+.about-copy p {
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  line-height: 1.7;
+  color: #e5e7eb;
+  margin-bottom: 1.3rem;
+}
+
+@media (max-width: 900px) {
+  .about-section {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .section-label {
+    margin-bottom: 3rem;
+    letter-spacing: 0.8rem;
+  }
+
+  .about-copy {
+    text-align: center;
+  }
+
+  .about-heading {
+    text-align: center;
+  }
+
+  .about-heading::after {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 @media (max-width: 850px) {
   .navbar {
     gap: 1rem;
@@ -407,8 +489,39 @@ h2 {
     <span class="orange-text">AAA Mountain West Group</span>.
   </p>
 
-  <a href="#work-experience" class="explore-btn">Explore My Work ↓</a>
+  <a href="#about" class="explore-btn">Explore My Work ↓</a>
 </section>
+<section id="about" class="about-section">
+  <div class="about-image-wrap">
+    <img src="./images/graduation.jpg" alt="Dominique J. Strong graduation photo" class="about-image">
+  </div>
+
+  <div class="about-copy">
+    <div class="section-label">A B O U T</div>
+
+    <h2 class="about-heading">Here is a little background</h2>
+
+    <p>
+      Hey 👋🏾 I’m Dominique J. Strong, an analytics leader based in the San Francisco Bay Area. 
+      I specialize in turning customer, operational, and financial data into clear business decisions 
+      through SQL, Tableau, Python, forecasting, machine learning, and executive-ready storytelling.
+    </p>
+
+    <p>
+      I currently lead membership and sales analytics work at AAA Mountain West Group, where I focus on 
+      retention strategy, churn forecasting, KPI development, campaign measurement, and dashboarding. 
+      My work sits at the intersection of business strategy and technical analytics — helping leaders 
+      understand what is happening, why it is happening, and what actions to take next.
+    </p>
+
+    <p>
+      Outside of analytics, I enjoy video games, building creative web projects, and finding new ways to 
+      make data feel less boring and more useful.
+    </p>
+  </div>
+</section>
+
+
 
 <section id="work-experience">
   <h2>Work Experience</h2>
