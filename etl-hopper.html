@@ -144,8 +144,6 @@ button:hover, .control-link:hover {
 <nav class="navbar">
   <a href="index.html">Home</a>
   <a href="game.html">Arcade</a>
-  <a href="data-snake.html">Data Snake</a>
-  <a href="dashboard-defense.html">SQL Invaders</a>
 </nav>
 
 <main class="game-wrap">
@@ -171,8 +169,6 @@ button:hover, .control-link:hover {
 
     <div class="controls">
       <button id="restart">Restart</button>
-      <a class="control-link" href="game.html">Back to Arcade</a>
-      <a class="control-link" href="dashboard-defense.html">SQL Invaders</a>
     </div>
   </section>
 </main>
@@ -272,9 +268,14 @@ function updateStats() {
 }
 
 function spawnPipe() {
-  const gap = Math.max(230, 310 - Math.floor(score / 12) * 3);
-  const availableHeight = canvas.height - 70 - gap - 100;
-  const topHeight = Math.random() * availableHeight + 50;
+  const gap = Math.max(220, 300 - Math.floor(score / 12) * 3);
+
+  const playableHeight = canvas.height - 70;
+  const minPipeHeight = 55;
+  const maxTopHeight = playableHeight - gap - minPipeHeight;
+
+  const topHeight = Math.random() * (maxTopHeight - minPipeHeight) + minPipeHeight;
+
   const label = obstacleLabels[Math.floor(Math.random() * obstacleLabels.length)];
 
   pipes.push({
