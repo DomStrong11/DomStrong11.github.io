@@ -1397,6 +1397,237 @@
   window.addEventListener("resize", resizeCanvas);
   resizeCanvas();
   animateEmbers();
+  const raceCanvas = document.getElementById("clanRaceCanvas");
+const raceCtx = raceCanvas.getContext("2d");
+const racePlayBtn = document.getElementById("racePlayBtn");
+const raceYearLabel = document.getElementById("raceYear");
+
+const raceYears = [1467, 1560, 1575, 1600];
+
+const raceData = {
+  oda: {
+    name: "Oda",
+    color: "#38bdf8",
+    image: "images/oda.jpg",
+    values: [42, 76, 91, 72]
+  },
+  tokugawa: {
+    name: "Tokugawa",
+    color: "#d4af37",
+    image: "images/tokugawa.jpg",
+    values: [35, 58, 74, 98]
+  },
+  takeda: {
+    name: "Takeda",
+    color: "#ef4444",
+    image: "images/takeda.jpg",
+    values: [48, 82, 86, 45]
+  },
+  uesugi: {
+    name: "Uesugi",
+    color: "#8b5cf6",
+    image: "images/uesugi.jpg",
+    values: [46, 74, 80, 61]
+  },
+  shimazu: {
+    name: "Shimazu",
+    color: "#fdba74",
+    image: "images/shimazu.jpg",
+    values: [38, 55, 68, 78]
+  }
+};
+
+const raceImages = {};
+Object.entries(raceData).forEach(([key, clan]) => {
+  const img = new Image();
+  img.src = clan.image;
+  raceImages[key] = img;
+});
+
+let raceProgress = 0;
+let racePlaying = false;
+let raceAnimationId = null;
+
+function interpolate(values, progress) {
+  const maxStep = values.length - 1;
+  const raw = progress * maxStep;
+  const index = Math.floor(raw);
+  const t = raw - index;
+
+  if (index >= maxStep) return values[maxStep];
+
+  return values[index] * (1 - t) + values[index + 1] * t;
+}
+
+function interpolateYear(progress) {
+  const maxStep = raceYears.length - 1;
+  const raw = progress * maxStep;
+  const index = Math.floor(raw);
+  const t = raw - index;
+
+  if (index >= maxStep) return raceYears[maxStep];
+
+  return Math.round(raceYears[index] * (1 - t) + raceYears[index + 1] * t);
+}
+
+function drawRoundedImage(ctx, img, x, y, size) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.clip();
+
+  if (img.complete) {
+    ctx.drawImage(img, x, y, size, size);
+  } else {
+    ctx.fillStyle = "#111827";
+    ctx.fillRect(x, y, size, size);
+  }
+
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
+  ctx.strokeStyle = "#f8fafc";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+function drawRaceChart() {
+  const width = raceCanvas.width;
+  const height = raceCanvas.height;
+
+  raceCtx.clearRect(0, 0, width, height);
+
+  const paddingLeft = 90;
+  const paddingRight = 260;
+  const paddingTop = 70;
+  const paddingBottom = 70;
+
+  const chartWidth = width - paddingLeft - paddingRight;
+  const chartHeight = height - paddingTop - paddingBottom;
+
+  const minVal = 30;
+  const maxVal = 100;
+
+  raceCtx.fillStyle = "#f8fafc";
+  raceCtx.font = "bold 30px Arial";
+  raceCtx.textAlign = "center";
+  raceCtx.fillText("The Most Powerful Clans of the Sengoku Era", width / 2, 38);
+
+  raceCtx.strokeStyle = "rgba(248,250,252,0.22)";
+  raceCtx.lineWidth = 1;
+
+  raceCtx.font = "14px Arial";
+  raceCtx.fillStyle = "#94a3b8";
+  raceCtx.textAlign = "right";
+
+  for (let v = 40; v <= 100; v += 10) {
+    const y = paddingTop + chartHeight - ((v - minVal) / (maxVal - minVal)) * chartHeight;
+
+    raceCtx.beginPath();
+    raceCtx.moveTo(paddingLeft, y);
+    raceCtx.lineTo(width - paddingRight + 40, y);
+    raceCtx.stroke();
+
+    raceCtx.fillText(v, paddingLeft - 15, y + 5);
+  }
+
+  raceYears.forEach((year, i) => {
+    const x = paddingLeft + (i / (raceYears.length - 1)) * chartWidth;
+    raceCtx.fillStyle = "#cbd5e1";
+    raceCtx.font = "bold 18px Arial";
+    raceCtx.textAlign = "center";
+    raceCtx.fillText(year, x, height - 25);
+  });
+
+  const currentYear = interpolateYear(raceProgress);
+  raceYearLabel.textContent = currentYear;
+
+  Object.entries(raceData).forEach(([key, clan]) => {
+    const visibleStep = raceProgress * (raceYears.length - 1);
+    const points = [];
+
+    for (let i = 0; i <= Math.floor(visibleStep); i++) {
+      points.push({
+        x: paddingLeft + (i / (raceYears.length - 1)) * chartWidth,
+        y: paddingTop + chartHeight - ((clan.values[i] - minVal) / (maxVal - minVal)) * chartHeight
+      });
+    }
+
+    const nextIndex = Math.floor(visibleStep);
+    const t = visibleStep - nextIndex;
+
+    if (nextIndex < raceYears.length - 1) {
+      const v = clan.values[nextIndex] * (1 - t) + clan.values[nextIndex + 1] * t;
+      points.push({
+        x: paddingLeft + ((nextIndex + t) / (raceYears.length - 1)) * chartWidth,
+        y: paddingTop + chartHeight - ((v - minVal) / (maxVal - minVal)) * chartHeight
+      });
+    }
+
+    if (points.length > 1) {
+      raceCtx.beginPath();
+      raceCtx.moveTo(points[0].x, points[0].y);
+
+      points.slice(1).forEach(p => raceCtx.lineTo(p.x, p.y));
+
+      raceCtx.strokeStyle = clan.color;
+      raceCtx.lineWidth = 5;
+      raceCtx.shadowColor = clan.color;
+      raceCtx.shadowBlur = 14;
+      raceCtx.stroke();
+      raceCtx.shadowBlur = 0;
+    }
+
+    const currentValue = interpolate(clan.values, raceProgress);
+    const lastPoint = points[points.length - 1];
+
+    if (lastPoint) {
+      drawRoundedImage(raceCtx, raceImages[key], lastPoint.x - 24, lastPoint.y - 24, 48);
+
+      raceCtx.fillStyle = clan.color;
+      raceCtx.font = "bold 18px Arial";
+      raceCtx.textAlign = "left";
+      raceCtx.fillText(`${clan.name} ${Math.round(currentValue)}`, lastPoint.x + 35, lastPoint.y + 6);
+    }
+  });
+}
+
+function animateRace() {
+  if (!racePlaying) return;
+
+  raceProgress += 0.0035;
+
+  if (raceProgress >= 1) {
+    raceProgress = 1;
+    racePlaying = false;
+    racePlayBtn.textContent = "↺ Replay Timeline";
+  }
+
+  drawRaceChart();
+  raceAnimationId = requestAnimationFrame(animateRace);
+}
+
+racePlayBtn.addEventListener("click", () => {
+  if (raceProgress >= 1) {
+    raceProgress = 0;
+  }
+
+  racePlaying = !racePlaying;
+  racePlayBtn.textContent = racePlaying ? "⏸ Pause Timeline" : "▶ Play Timeline";
+
+  if (racePlaying) {
+    cancelAnimationFrame(raceAnimationId);
+    animateRace();
+  }
+});
+
+Object.values(raceImages).forEach(img => {
+  img.onload = drawRaceChart;
+});
+
+drawRaceChart();
 </script>
 </body>
 </html>
