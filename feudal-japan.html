@@ -6,8 +6,6 @@
   <title>Feudal Japan Intelligence Network</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
     * {
@@ -302,60 +300,53 @@
       align-items: center;
     }
 
-    #realJapanMap {
+    #japanMap {
       width: 100%;
-      min-height: 520px;
+      min-height: 430px;
+      background:
+        radial-gradient(circle at center, rgba(56,189,248,0.1), transparent 55%),
+        rgba(2,6,23,0.65);
       border-radius: 18px;
       border: 1px solid rgba(148,163,184,0.18);
-      overflow: hidden;
-      background: rgba(2,6,23,0.65);
-      box-shadow: inset 0 0 45px rgba(56,189,248,0.08);
     }
 
-    .leaflet-container {
-      background: #050816;
-      font-family: Arial, Helvetica, sans-serif;
+    .japan-land {
+      fill: rgba(15,23,42,0.95);
+      stroke: rgba(212,175,55,0.65);
+      stroke-width: 2;
     }
 
-    .leaflet-popup-content-wrapper,
-    .leaflet-popup-tip {
-      background: rgba(2,6,23,0.95);
-      color: #f8fafc;
-      border: 1px solid rgba(212,175,55,0.35);
-      box-shadow: 0 0 30px rgba(212,175,55,0.18);
+    .province-hotspot {
+      fill: rgba(56,189,248,0.08);
+      stroke: rgba(56,189,248,0.25);
+      cursor: pointer;
+      transition: all 0.25s ease;
     }
 
-    .leaflet-popup-content strong {
-      color: #d4af37;
+    .province-hotspot:hover {
+      fill: rgba(212,175,55,0.25);
+      stroke: #d4af37;
     }
 
-    .leaflet-control-zoom a {
-      background: rgba(2,6,23,0.9) !important;
-      color: #d4af37 !important;
-      border-color: rgba(212,175,55,0.35) !important;
+    .clan-marker {
+      stroke: #f8fafc;
+      stroke-width: 2;
+      filter: drop-shadow(0 0 14px rgba(212,175,55,0.8));
+      animation: pulseMarker 1.8s infinite ease-in-out;
     }
 
-    .city-marker {
-      width: 14px;
-      height: 14px;
-      border-radius: 999px;
-      background: #38bdf8;
-      border: 2px solid #f8fafc;
-      box-shadow: 0 0 18px rgba(56,189,248,0.95);
+    .route-line {
+      stroke-width: 4;
+      stroke-dasharray: 10;
+      filter: drop-shadow(0 0 12px rgba(56,189,248,0.8));
+      animation: dashMove 1.4s linear infinite;
     }
 
-    .clan-map-marker {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      border: 2px solid #f8fafc;
-      box-shadow: 0 0 24px currentColor;
-      animation: leafletPulse 1.8s infinite ease-in-out;
-    }
-
-    @keyframes leafletPulse {
-      0%, 100% { transform: scale(1); opacity: 0.85; }
-      50% { transform: scale(1.35); opacity: 1; }
+    .marker-label {
+      fill: #f8fafc;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
     }
 
     @keyframes pulseMarker {
@@ -735,7 +726,20 @@
     </div>
 
     <div class="map-wrap">
-      <div id="realJapanMap"></div>
+      <svg id="japanMap" viewBox="0 0 800 520">
+        <path class="japan-land" d="M520 60 C560 110 555 160 530 205 C505 250 520 290 485 335 C450 380 465 430 420 475 C390 505 340 505 320 470 C300 435 335 400 355 360 C375 320 350 275 380 235 C410 195 395 145 430 105 C455 75 485 55 520 60Z"/>
+        <path class="japan-land" d="M330 360 C300 390 270 415 235 420 C205 425 185 405 200 380 C215 355 250 345 280 335 C305 325 330 330 330 360Z"/>
+        <path class="japan-land" d="M230 430 C190 455 145 465 105 450 C80 440 80 410 110 395 C145 378 190 395 230 430Z"/>
+
+        <circle class="province-hotspot" cx="430" cy="310" r="34" data-name="Owari" data-info="High strategic value. Oda power base and early expansion center." />
+        <circle class="province-hotspot" cx="455" cy="315" r="32" data-name="Mikawa" data-info="Tokugawa base of power. Strong consolidation potential." />
+        <circle class="province-hotspot" cx="485" cy="295" r="30" data-name="Kai" data-info="Takeda stronghold. Mountain defense and cavalry advantage." />
+        <circle class="province-hotspot" cx="500" cy="205" r="30" data-name="Echigo" data-info="Uesugi influence zone. Northern projection corridor." />
+        <circle class="province-hotspot" cx="120" cy="425" r="32" data-name="Satsuma" data-info="Shimazu southern base. Strong regional control in Kyushu." />
+
+        <line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <g id="markers"></g>
+      </svg>
 
       <div>
         <div class="map-story" id="mapStory"></div>
@@ -1024,10 +1028,10 @@
         "Oda influence becomes part of the broader unification path that reshapes national control."
       ],
       points: [
-        { name: "Owari / Nagoya", coords: [35.1815, 136.9066], note: "Oda power base and early expansion center." },
-        { name: "Mino / Gifu", coords: [35.4233, 136.7606], note: "Strategic inland expansion corridor." },
-        { name: "Kyoto", coords: [35.0116, 135.7681], note: "Political center and symbolic control point." },
-        { name: "Central Japan", coords: [35.3500, 137.0500], note: "Broader central influence zone." }
+        { name: "Owari", x: 430, y: 310 },
+        { name: "Mino", x: 420, y: 270 },
+        { name: "Kyoto", x: 385, y: 250 },
+        { name: "Central Japan", x: 410, y: 220 }
       ]
     },
     tokugawa: {
@@ -1039,10 +1043,10 @@
         "Sekigahara establishes Tokugawa dominance and long-term control."
       ],
       points: [
-        { name: "Mikawa / Okazaki", coords: [34.9543, 137.1744], note: "Tokugawa base of power and consolidation center." },
-        { name: "Edo / Tokyo", coords: [35.6762, 139.6503], note: "Eastern power center and future shogunate capital." },
-        { name: "Sekigahara", coords: [35.3667, 136.4667], note: "Decisive battle location for national dominance." },
-        { name: "National Control", coords: [35.6895, 139.6917], note: "Symbolic representation of Tokugawa national control." }
+        { name: "Mikawa", x: 455, y: 315 },
+        { name: "Edo", x: 505, y: 270 },
+        { name: "Sekigahara", x: 405, y: 285 },
+        { name: "National Control", x: 455, y: 230 }
       ]
     },
     takeda: {
@@ -1054,10 +1058,10 @@
         "Takeda influence declines as rival modernization and alliances intensify."
       ],
       points: [
-        { name: "Kai / Kofu", coords: [35.6639, 138.5684], note: "Takeda stronghold with mountain defense advantage." },
-        { name: "Shinano / Nagano", coords: [36.6486, 138.1947], note: "Strategic inland campaign corridor." },
-        { name: "Suruga / Shizuoka", coords: [34.9756, 138.3828], note: "Southern pressure point and coastal access target." },
-        { name: "Central Pressure Zone", coords: [35.7000, 138.3000], note: "Simulated campaign pressure area." }
+        { name: "Kai", x: 485, y: 295 },
+        { name: "Shinano", x: 455, y: 255 },
+        { name: "Suruga", x: 475, y: 330 },
+        { name: "Central Pressure", x: 450, y: 290 }
       ]
     },
     uesugi: {
@@ -1069,10 +1073,10 @@
         "Uesugi influence remains regionally significant but constrained by national consolidation."
       ],
       points: [
-        { name: "Echigo / Niigata", coords: [37.9026, 139.0232], note: "Uesugi influence zone and northern power base." },
-        { name: "Kanto Edge", coords: [36.3911, 139.0608], note: "Pressure point toward eastern Japan." },
-        { name: "Shinano / Nagano", coords: [36.6486, 138.1947], note: "Contested corridor with Takeda influence." },
-        { name: "Northern Hold", coords: [37.3000, 138.9000], note: "Simulated northern retention zone." }
+        { name: "Echigo", x: 500, y: 205 },
+        { name: "Kanto Edge", x: 520, y: 255 },
+        { name: "Shinano", x: 455, y: 255 },
+        { name: "Northern Hold", x: 490, y: 230 }
       ]
     },
     shimazu: {
@@ -1084,103 +1088,63 @@
         "Shimazu remains powerful but geographically distant from central unification."
       ],
       points: [
-        { name: "Satsuma / Kagoshima", coords: [31.5966, 130.5571], note: "Shimazu southern base and core regional stronghold." },
-        { name: "Osumi", coords: [31.3783, 130.8522], note: "Eastern Kagoshima expansion zone." },
-        { name: "Kyushu Corridor", coords: [32.7898, 130.7417], note: "Regional expansion path across Kyushu." },
-        { name: "Southern Hold", coords: [31.9000, 130.7000], note: "Simulated southern control region." }
+        { name: "Satsuma", x: 120, y: 425 },
+        { name: "Osumi", x: 150, y: 420 },
+        { name: "Kyushu", x: 200, y: 405 },
+        { name: "Southern Hold", x: 175, y: 395 }
       ]
     }
   };
-
-  const historicCities = [
-    { name: "Kyoto", coords: [35.0116, 135.7681], info: "Imperial and political center during major periods of Japanese history." },
-    { name: "Edo / Tokyo", coords: [35.6762, 139.6503], info: "Future Tokugawa power center and shogunate capital." },
-    { name: "Nagoya / Owari", coords: [35.1815, 136.9066], info: "Associated with Oda expansion and central Japan control." },
-    { name: "Kofu / Kai", coords: [35.6639, 138.5684], info: "Takeda stronghold and inland campaign base." },
-    { name: "Niigata / Echigo", coords: [37.9026, 139.0232], info: "Uesugi northern influence center." },
-    { name: "Kagoshima / Satsuma", coords: [31.5966, 130.5571], info: "Shimazu southern power base." },
-    { name: "Sekigahara", coords: [35.3667, 136.4667], info: "Site of the decisive 1600 battle tied to Tokugawa dominance." }
-  ];
 
   const clanSelect = document.getElementById("clanSelect");
   const yearSlider = document.getElementById("yearSlider");
   const yearDisplay = document.getElementById("yearDisplay");
   const temporalStatus = document.getElementById("temporalStatus");
+  const markers = document.getElementById("markers");
+  const routeLine = document.getElementById("routeLine");
   const mapStory = document.getElementById("mapStory");
-
-  const realMap = L.map("realJapanMap", {
-    zoomControl: true,
-    scrollWheelZoom: true
-  }).setView([35.7, 137.5], 5);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors"
-  }).addTo(realMap);
-
-  const cityLayer = L.layerGroup().addTo(realMap);
-  const routeLayer = L.layerGroup().addTo(realMap);
-
-  function makeCityIcon() {
-    return L.divIcon({
-      className: "",
-      html: '<div class="city-marker"></div>',
-      iconSize: [14, 14],
-      iconAnchor: [7, 7]
-    });
-  }
-
-  function makeClanIcon(color) {
-    return L.divIcon({
-      className: "",
-      html: `<div class="clan-map-marker" style="background:${color}; color:${color};"></div>`,
-      iconSize: [18, 18],
-      iconAnchor: [9, 9]
-    });
-  }
-
-  historicCities.forEach(city => {
-    L.marker(city.coords, { icon: makeCityIcon() })
-      .bindPopup(`<strong>${city.name}</strong><br>${city.info}`)
-      .addTo(cityLayer);
-  });
 
   function renderClanRoute() {
     const clan = clanRoutes[clanSelect.value];
     const step = Number(yearSlider.value);
     const visiblePoints = clan.points.slice(0, step + 1);
 
-    routeLayer.clearLayers();
+    markers.innerHTML = "";
     yearDisplay.textContent = years[step];
     temporalStatus.textContent = years[step];
     mapStory.textContent = clan.stories[step];
 
-    visiblePoints.forEach((point, i) => {
-      L.marker(point.coords, { icon: makeClanIcon(clan.color) })
-        .bindPopup(`<strong>${point.name}</strong><br>${point.note}`)
-        .addTo(routeLayer);
-
-      L.circle(point.coords, {
-        radius: 42000 + i * 14000,
-        color: clan.color,
-        fillColor: clan.color,
-        fillOpacity: 0.08,
-        weight: 1.5
-      }).addTo(routeLayer);
-    });
+    routeLine.setAttribute("stroke", clan.color);
 
     if (visiblePoints.length >= 2) {
-      L.polyline(visiblePoints.map(p => p.coords), {
-        color: clan.color,
-        weight: 4,
-        opacity: 0.85,
-        dashArray: "10, 10"
-      }).addTo(routeLayer);
+      routeLine.setAttribute("x1", visiblePoints[0].x);
+      routeLine.setAttribute("y1", visiblePoints[0].y);
+      routeLine.setAttribute("x2", visiblePoints[visiblePoints.length - 1].x);
+      routeLine.setAttribute("y2", visiblePoints[visiblePoints.length - 1].y);
+    } else {
+      routeLine.setAttribute("x1", 0);
+      routeLine.setAttribute("y1", 0);
+      routeLine.setAttribute("x2", 0);
+      routeLine.setAttribute("y2", 0);
     }
 
-    if (visiblePoints.length > 0) {
-      const bounds = L.latLngBounds(visiblePoints.map(p => p.coords));
-      realMap.fitBounds(bounds.pad(0.6), { animate: true, duration: 0.7 });
-    }
+    visiblePoints.forEach((point, i) => {
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", point.x);
+      circle.setAttribute("cy", point.y);
+      circle.setAttribute("r", 11 + i * 2);
+      circle.setAttribute("class", "clan-marker");
+      circle.setAttribute("fill", clan.color);
+
+      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("x", point.x + 18);
+      label.setAttribute("y", point.y + 5);
+      label.setAttribute("class", "marker-label");
+      label.textContent = point.name;
+
+      markers.appendChild(circle);
+      markers.appendChild(label);
+    });
   }
 
   function renderClanProfile() {
@@ -1203,6 +1167,13 @@
 
   renderClanRoute();
   renderClanProfile();
+
+  document.querySelectorAll(".province-hotspot").forEach(p => {
+    p.addEventListener("mouseenter", () => {
+      document.getElementById("provinceTooltip").innerHTML =
+        `<strong>${p.dataset.name}</strong><br>${p.dataset.info}`;
+    });
+  });
 
   const warBtn = document.getElementById("warBtn");
   warBtn.addEventListener("click", () => {
