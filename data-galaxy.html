@@ -29,24 +29,32 @@ body {
     radial-gradient(circle at center, rgba(15,23,42,0.75), #000 70%);
 }
 
-/* cosmic clouds */
 .galaxy-page::before {
   content: "";
   position: absolute;
   inset: -20%;
+
   background:
-    radial-gradient(ellipse at 8% 65%, rgba(134,239,172,0.28), transparent 28%),
-    radial-gradient(ellipse at 86% 72%, rgba(168,85,247,0.26), transparent 32%),
-    radial-gradient(ellipse at 50% 95%, rgba(56,189,248,0.16), transparent 35%);
-  filter: blur(22px);
-  opacity: 0.75;
+    radial-gradient(ellipse at 8% 70%, rgba(134,239,172,0.38), transparent 32%),
+    radial-gradient(ellipse at 86% 72%, rgba(168,85,247,0.32), transparent 34%),
+    radial-gradient(ellipse at 48% 96%, rgba(56,189,248,0.22), transparent 38%),
+    radial-gradient(ellipse at 52% 45%, rgba(253,224,71,0.08), transparent 28%);
+
+  filter: blur(24px);
+  opacity: 0.95;
   z-index: 0;
+
   animation: nebulaDrift 20s ease-in-out infinite alternate;
 }
 
 @keyframes nebulaDrift {
-  from { transform: translateX(-20px) scale(1); }
-  to { transform: translateX(35px) scale(1.04); }
+  from {
+    transform: translateX(-20px) scale(1);
+  }
+
+  to {
+    transform: translateX(35px) scale(1.04);
+  }
 }
 
 #galaxy-canvas {
@@ -57,8 +65,8 @@ body {
 
 .cosmic-planet {
   position: absolute;
-  top: 95px;
-  right: 85px;
+  top: 88px;
+  right: 78px;
   width: 220px;
   height: 220px;
   border-radius: 50%;
@@ -93,44 +101,49 @@ body {
 
 .galaxy-title {
   position: absolute;
-  top: 118px;
+  top: 115px;
   left: 54px;
   z-index: 5;
+  max-width: 760px;
 }
 
 .galaxy-title h1 {
-  font-size: clamp(3.5rem, 6.2vw, 6.6rem);
+  font-size: clamp(3rem, 5vw, 5.2rem);
   margin: 0;
   font-weight: 950;
-  letter-spacing: -0.06em;
-  line-height: 0.9;
-  text-shadow: 0 10px 28px rgba(0,0,0,0.7);
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+  text-shadow: 0 10px 28px rgba(0,0,0,0.8);
 }
 
 .galaxy-title p {
   color: #9fffb5;
-  font-size: clamp(1rem, 1.45vw, 1.35rem);
+  font-size: clamp(0.95rem, 1.25vw, 1.2rem);
   font-weight: 800;
   margin-top: 0.7rem;
-  text-shadow: 0 0 18px rgba(134,239,172,0.55);
+  max-width: 620px;
+  text-shadow: 0 0 18px rgba(134,239,172,0.65);
 }
 
 .info-panel {
   position: absolute;
-  right: 34px;
-  bottom: 34px;
-  width: 380px;
-  min-height: 150px;
-  max-height: 230px;
+  right: 42px;
+  bottom: 64px;
+  width: 400px;
+  min-height: 145px;
+  max-height: 210px;
   overflow-y: auto;
 
-  padding: 1.45rem 1.6rem;
+  padding: 1.35rem 1.55rem;
   border-radius: 22px;
+
   background: rgba(3, 7, 18, 0.88);
   border: 1px solid rgba(134,239,172,0.35);
+
   box-shadow:
     0 0 35px rgba(134,239,172,0.18),
     0 24px 65px rgba(0,0,0,0.55);
+
   backdrop-filter: blur(16px);
 }
 
@@ -160,6 +173,10 @@ body {
     top: 110px;
     left: 24px;
     right: 24px;
+  }
+
+  .galaxy-title h1 {
+    font-size: 3rem;
   }
 
   .info-panel {
@@ -222,15 +239,16 @@ const canvas = document.getElementById("galaxy-canvas");
 const ctx = canvas.getContext("2d");
 const infoPanel = document.getElementById("infoPanel");
 
-let width, height;
+let width;
+let height;
 let mouse = { x: null, y: null };
 
 const nodes = [
   {
     label: "AAA Analytics Scale",
     icon: "▥",
-    x: 0.12,
-    y: 0.55,
+    x: 0.11,
+    y: 0.49,
     r: 56,
     color: "#ef4444",
     text: "Analytics work supporting membership, sales, billing, product, and retention performance across a large multi-state organization."
@@ -239,7 +257,7 @@ const nodes = [
     label: "Enterprise KPI System",
     icon: "◴",
     x: 0.25,
-    y: 0.62,
+    y: 0.58,
     r: 58,
     color: "#38bdf8",
     text: "Created enterprise-level retention KPIs used by executive leadership to monitor performance and guide business decisions."
@@ -248,7 +266,7 @@ const nodes = [
     label: "A/B Testing Program",
     icon: "⌁",
     x: 0.15,
-    y: 0.80,
+    y: 0.76,
     r: 52,
     color: "#a78bfa",
     text: "Measured campaign performance using treatment/control logic to estimate incremental renewal lift and business value."
@@ -256,8 +274,8 @@ const nodes = [
   {
     label: "Retention Strategy",
     icon: "◎",
-    x: 0.28,
-    y: 0.36,
+    x: 0.34,
+    y: 0.32,
     r: 54,
     color: "#fb7185",
     text: "Supported retention strategy by identifying customer risk patterns, renewal timing issues, and operational improvement opportunities."
@@ -265,8 +283,8 @@ const nodes = [
   {
     label: "+240K Renewals",
     icon: "↗",
-    x: 0.43,
-    y: 0.48,
+    x: 0.46,
+    y: 0.44,
     r: 64,
     color: "#86efac",
     text: "Helped reverse a long-term retention decline through KPI strategy, forecasting, experimentation, and operational analytics."
@@ -274,8 +292,8 @@ const nodes = [
   {
     label: "Churn Forecasting Engine",
     icon: "⌁",
-    x: 0.44,
-    y: 0.76,
+    x: 0.46,
+    y: 0.71,
     r: 58,
     color: "#f97316",
     text: "Built forecasting models using renewal timing, payment behavior, customer tenure, and retention signals to estimate future churn."
@@ -283,8 +301,8 @@ const nodes = [
   {
     label: "$18.7M Revenue Impact",
     icon: "$",
-    x: 0.59,
-    y: 0.61,
+    x: 0.61,
+    y: 0.58,
     r: 70,
     color: "#fde047",
     text: "Estimated incremental revenue impact connected to improved retention performance and renewal growth."
@@ -292,8 +310,8 @@ const nodes = [
   {
     label: "Machine Learning Systems",
     icon: "⚙",
-    x: 0.64,
-    y: 0.82,
+    x: 0.66,
+    y: 0.78,
     r: 56,
     color: "#0ea5e9",
     text: "Developed predictive modeling workflows using Python, Random Forest, logistic regression, calibration logic, and model evaluation."
@@ -301,8 +319,8 @@ const nodes = [
   {
     label: "Executive Reporting",
     icon: "▤",
-    x: 0.72,
-    y: 0.38,
+    x: 0.74,
+    y: 0.35,
     r: 58,
     color: "#22c55e",
     text: "Translated complex data into clear executive-ready insights, dashboards, and leadership presentations."
@@ -310,8 +328,8 @@ const nodes = [
   {
     label: "Interactive Labs",
     icon: "🎮",
-    x: 0.82,
-    y: 0.65,
+    x: 0.85,
+    y: 0.58,
     r: 52,
     color: "#d4af37",
     text: "Creative portfolio experiments including interactive analytics, games, historical storytelling, and data visualization concepts.",
@@ -336,7 +354,7 @@ const pairs = [
   [7, 9]
 ];
 
-const stars = Array.from({ length: 340 }, () => ({
+const stars = Array.from({ length: 360 }, () => ({
   x: Math.random(),
   y: Math.random(),
   r: Math.random() * 1.7 + 0.25,
@@ -358,7 +376,9 @@ function spawnShootingStar() {
 }
 
 setInterval(() => {
-  if (Math.random() > 0.25) spawnShootingStar();
+  if (Math.random() > 0.25) {
+    spawnShootingStar();
+  }
 }, 1500);
 
 function resize() {
@@ -377,6 +397,7 @@ function drawStars() {
     ctx.fill();
 
     star.y += star.speed / height;
+
     if (star.y > 1) {
       star.y = 0;
       star.x = Math.random();
@@ -388,7 +409,13 @@ function drawShootingStars() {
   for (let i = shootingStars.length - 1; i >= 0; i--) {
     const s = shootingStars[i];
 
-    const grad = ctx.createLinearGradient(s.x, s.y, s.x - s.length, s.y + s.length * 0.38);
+    const grad = ctx.createLinearGradient(
+      s.x,
+      s.y,
+      s.x - s.length,
+      s.y + s.length * 0.38
+    );
+
     grad.addColorStop(0, `rgba(255,255,255,${s.alpha})`);
     grad.addColorStop(0.35, s.hue);
     grad.addColorStop(1, "rgba(255,255,255,0)");
@@ -407,7 +434,9 @@ function drawShootingStars() {
     s.y -= s.speed * 0.38;
     s.alpha -= 0.016;
 
-    if (s.alpha <= 0) shootingStars.splice(i, 1);
+    if (s.alpha <= 0) {
+      shootingStars.splice(i, 1);
+    }
   }
 }
 
@@ -498,6 +527,7 @@ function drawNode(node) {
   ctx.font = `900 ${isHover ? 15 : 13}px Arial`;
 
   const words = node.label.split(" ");
+
   if (words.length > 2) {
     ctx.fillText(words.slice(0, 2).join(" "), pos.x, pos.y + 2);
     ctx.fillText(words.slice(2).join(" "), pos.x, pos.y + 22);
@@ -521,8 +551,11 @@ function drawNode(node) {
 
 function drawNodes() {
   let hoveringNode = false;
+
   nodes.forEach(node => {
-    if (drawNode(node)) hoveringNode = true;
+    if (drawNode(node)) {
+      hoveringNode = true;
+    }
   });
 
   canvas.style.cursor = hoveringNode ? "pointer" : "default";
@@ -561,6 +594,7 @@ canvas.addEventListener("mouseleave", () => {
 canvas.addEventListener("click", e => {
   nodes.forEach(node => {
     const pos = getNodePosition(node);
+
     const dx = e.clientX - pos.x;
     const dy = e.clientY - pos.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
