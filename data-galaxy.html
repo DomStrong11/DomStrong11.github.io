@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Data Galaxy | Dominique J. Strong</title>
+<title>Impact Galaxy | Dominique J. Strong</title>
 
 <link rel="stylesheet" href="styles.css">
 
@@ -67,7 +67,7 @@ body {
   position: absolute;
   right: 32px;
   bottom: 32px;
-  width: 340px;
+  width: 360px;
   padding: 1.3rem;
   border-radius: 22px;
   background: rgba(5, 10, 20, 0.86);
@@ -132,7 +132,7 @@ body {
     <div class="dropdown-menu">
       <a href="game.html">Games Arcade</a>
       <a href="feudal-japan.html">Feudal Japan Analytics</a>
-      <a href="data-galaxy.html">Data Galaxy</a>
+      <a href="data-galaxy.html">Impact Galaxy</a>
     </div>
   </details>
 </nav>
@@ -142,19 +142,20 @@ body {
 
   <div class="galaxy-overlay">
     <div class="galaxy-title">
-      <h1>Data Galaxy</h1>
-      <p>Explore my analytics universe</p>
+      <h1>Impact Galaxy</h1>
+      <p>Explore the business impact behind my analytics work</p>
     </div>
 
     <div class="info-panel" id="infoPanel">
       <h2>Dominique J. Strong</h2>
       <p>
-        Hover over a glowing node to explore skills, projects, tools, and analytics themes across my portfolio.
+        Hover over a glowing node to explore business impact, analytics strategy,
+        forecasting, KPI systems, experimentation, and executive reporting work.
       </p>
     </div>
 
     <div class="galaxy-hint">
-      HOVER NODES • CLICK PROJECTS • EXPLORE LABS
+      HOVER NODES • CLICK LABS • EXPLORE IMPACT
     </div>
   </div>
 </main>
@@ -169,82 +170,99 @@ let mouse = { x: null, y: null };
 
 const nodes = [
   {
-    label: "SQL",
-    type: "skill",
-    x: 0.24,
+    label: "+240K Renewals",
+    type: "impact",
+    x: 0.52,
     y: 0.38,
-    r: 38,
-    color: "#38bdf8",
-    text: "Advanced SQL for executive reporting, KPI logic, data validation, and business performance analysis."
+    r: 64,
+    color: "#86efac",
+    text: "Helped reverse a long-term retention decline through KPI strategy, forecasting, experimentation, and operational analytics."
   },
   {
-    label: "Tableau",
-    type: "skill",
-    x: 0.38,
+    label: "$18.7M Revenue Impact",
+    type: "impact",
+    x: 0.68,
+    y: 0.52,
+    r: 68,
+    color: "#fde047",
+    text: "Estimated incremental revenue impact connected to improved retention performance and renewal growth."
+  },
+  {
+    label: "Enterprise KPI System",
+    type: "strategy",
+    x: 0.35,
+    y: 0.48,
+    r: 56,
+    color: "#38bdf8",
+    text: "Created enterprise-level retention KPIs used by executive leadership to monitor performance and guide business decisions."
+  },
+  {
+    label: "Churn Forecasting Engine",
+    type: "modeling",
+    x: 0.54,
+    y: 0.66,
+    r: 58,
+    color: "#f97316",
+    text: "Built forecasting models using renewal timing, payment behavior, customer tenure, and retention signals to estimate future churn."
+  },
+  {
+    label: "A/B Testing Program",
+    type: "experiment",
+    x: 0.25,
+    y: 0.68,
+    r: 48,
+    color: "#a78bfa",
+    text: "Measured campaign performance using treatment/control logic to estimate incremental renewal lift and business value."
+  },
+  {
+    label: "Executive Reporting",
+    type: "leadership",
+    x: 0.76,
+    y: 0.32,
+    r: 52,
+    color: "#22c55e",
+    text: "Translated complex data into clear executive-ready insights, dashboards, and leadership presentations."
+  },
+  {
+    label: "Retention Strategy",
+    type: "strategy",
+    x: 0.42,
+    y: 0.26,
+    r: 50,
+    color: "#fb7185",
+    text: "Supported retention strategy by identifying customer risk patterns, renewal timing issues, and operational improvement opportunities."
+  },
+  {
+    label: "Machine Learning Systems",
+    type: "technical",
+    x: 0.72,
+    y: 0.72,
+    r: 52,
+    color: "#0ea5e9",
+    text: "Developed predictive modeling workflows using Python, Random Forest, logistic regression, calibration logic, and model evaluation."
+  },
+  {
+    label: "AAA Analytics Scale",
+    type: "scale",
+    x: 0.22,
+    y: 0.34,
+    r: 50,
+    color: "#ef4444",
+    text: "Analytics work supporting membership, sales, billing, product, and retention performance across a large multi-state organization."
+  },
+  {
+    label: "Interactive Labs",
+    type: "innovation",
+    x: 0.82,
     y: 0.58,
     r: 44,
-    color: "#86efac",
-    text: "Executive dashboards, operational reporting, retention monitoring, and visual storytelling."
-  },
-  {
-    label: "Machine Learning",
-    type: "project",
-    x: 0.57,
-    y: 0.43,
-    r: 58,
-    color: "#fde047",
-    text: "Predictive modeling using Random Forest, logistic regression, XGBoost concepts, model evaluation, and forecasting workflows."
-  },
-  {
-    label: "Churn Forecasting",
-    type: "project",
-    x: 0.72,
-    y: 0.62,
-    r: 56,
-    color: "#f97316",
-    text: "Retention and churn prediction using renewal populations, payment behavior, tenure mix, and calibration logic."
-  },
-  {
-    label: "A/B Testing",
-    type: "analytics",
-    x: 0.28,
-    y: 0.72,
-    r: 42,
-    color: "#a78bfa",
-    text: "Treatment/control measurement, incremental lift, campaign effectiveness, and business impact analysis."
-  },
-  {
-    label: "KPI Frameworks",
-    type: "analytics",
-    x: 0.77,
-    y: 0.34,
-    r: 46,
-    color: "#22c55e",
-    text: "Enterprise KPI development for retention, renewals, executive reporting, and operational decision-making."
-  },
-  {
-    label: "Feudal Japan",
-    type: "lab",
-    x: 0.48,
-    y: 0.76,
-    r: 42,
     color: "#d4af37",
-    text: "Interactive historical analytics project combining storytelling, map visuals, clan profiles, and creative data design.",
+    text: "Creative portfolio experiments including interactive analytics, games, historical storytelling, and data visualization concepts.",
     link: "feudal-japan.html"
-  },
-  {
-    label: "Arcade",
-    type: "lab",
-    x: 0.64,
-    y: 0.78,
-    r: 36,
-    color: "#fb7185",
-    text: "A creative games lab that blends web interactivity, motion, and data-themed mini game concepts.",
-    link: "game.html"
   }
 ];
 
-const stars = Array.from({ length: 180 }, () => ({
+const stars = Array.from({ length: 190 }, () => ({
   x: Math.random(),
   y: Math.random(),
   r: Math.random() * 1.8 + 0.4,
@@ -288,14 +306,16 @@ function getNodePosition(node) {
 
 function drawConnections() {
   const pairs = [
-    [0, 2],
-    [1, 2],
-    [2, 3],
-    [2, 5],
-    [3, 5],
-    [4, 3],
     [6, 2],
-    [7, 1]
+    [2, 3],
+    [3, 0],
+    [0, 1],
+    [4, 0],
+    [5, 2],
+    [7, 3],
+    [8, 2],
+    [9, 7],
+    [5, 1]
   ];
 
   pairs.forEach(([a, b]) => {
@@ -305,21 +325,28 @@ function drawConnections() {
     ctx.beginPath();
     ctx.moveTo(n1.x, n1.y);
     ctx.lineTo(n2.x, n2.y);
-    ctx.strokeStyle = "rgba(148,163,184,0.22)";
-    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = "rgba(148,163,184,0.24)";
+    ctx.lineWidth = 1.5;
     ctx.stroke();
   });
 }
 
 function drawNodes() {
+  let hoveringNode = false;
+
   nodes.forEach(node => {
     const pos = getNodePosition(node);
+
     const dx = mouse.x - pos.x;
     const dy = mouse.y - pos.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
-    const isHover = dist < node.r + 12;
 
+    const isHover = dist < node.r + 12;
     const radius = isHover ? node.r * 1.14 : node.r;
+
+    if (isHover) {
+      hoveringNode = true;
+    }
 
     ctx.beginPath();
     ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
@@ -336,7 +363,7 @@ function drawNodes() {
     ctx.strokeStyle = node.color;
     ctx.lineWidth = isHover ? 3 : 1.6;
     ctx.shadowColor = node.color;
-    ctx.shadowBlur = isHover ? 32 : 18;
+    ctx.shadowBlur = isHover ? 34 : 18;
     ctx.stroke();
     ctx.shadowBlur = 0;
 
@@ -346,7 +373,11 @@ function drawNodes() {
     ctx.textBaseline = "middle";
 
     const words = node.label.split(" ");
-    if (words.length > 1) {
+
+    if (words.length > 2) {
+      ctx.fillText(words.slice(0, 2).join(" "), pos.x, pos.y - 10);
+      ctx.fillText(words.slice(2).join(" "), pos.x, pos.y + 10);
+    } else if (words.length > 1) {
       ctx.fillText(words[0], pos.x, pos.y - 8);
       ctx.fillText(words.slice(1).join(" "), pos.x, pos.y + 10);
     } else {
@@ -360,6 +391,8 @@ function drawNodes() {
       `;
     }
   });
+
+  canvas.style.cursor = hoveringNode ? "pointer" : "default";
 }
 
 function animate() {
@@ -377,9 +410,23 @@ canvas.addEventListener("mousemove", e => {
   mouse.y = e.clientY;
 });
 
+canvas.addEventListener("mouseleave", () => {
+  mouse.x = null;
+  mouse.y = null;
+
+  infoPanel.innerHTML = `
+    <h2>Dominique J. Strong</h2>
+    <p>
+      Hover over a glowing node to explore business impact, analytics strategy,
+      forecasting, KPI systems, experimentation, and executive reporting work.
+    </p>
+  `;
+});
+
 canvas.addEventListener("click", e => {
   nodes.forEach(node => {
     const pos = getNodePosition(node);
+
     const dx = e.clientX - pos.x;
     const dy = e.clientY - pos.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
