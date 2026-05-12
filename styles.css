@@ -713,7 +713,7 @@ strong {
   z-index: 1;
   pointer-events: none;
 
-  opacity: 0.18;
+  opacity: 0.13;
 
   filter:
     blur(0.5px)
