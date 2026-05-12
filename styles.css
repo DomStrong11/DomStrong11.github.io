@@ -878,4 +878,91 @@ strong {
   transform: translateY(-3px) scale(1.03);
   box-shadow: 0 0 40px rgba(134,239,172,0.55);
 }
+/* ===== FINAL COSMIC IMPACT CONSTELLATION ===== */
+
+.impact-preview-section {
+  position: relative;
+  padding: 7rem 2rem 6rem;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at 18% 70%, rgba(134,239,172,0.16), transparent 28%),
+    radial-gradient(circle at 82% 35%, rgba(56,189,248,0.16), transparent 30%),
+    radial-gradient(circle at 78% 82%, rgba(168,85,247,0.18), transparent 34%),
+    linear-gradient(
+      180deg,
+      #000 0%,
+      #020617 45%,
+      #000 100%
+    );
+}
+
+.impact-preview-section::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.82) 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(134,239,172,0.42) 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(56,189,248,0.35) 1px, transparent 1.3px);
+
+  background-size:
+    90px 90px,
+    150px 150px,
+    220px 220px;
+
+  background-position:
+    0 0,
+    50px 70px,
+    120px 30px;
+
+  opacity: 0.38;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.impact-preview-section::after {
+  content: "";
+
+  position: absolute;
+
+  right: -120px;
+  top: 70px;
+
+  width: 340px;
+  height: 340px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(circle at 35% 30%,
+      rgba(255,255,255,0.35),
+      transparent 10%
+    ),
+
+    radial-gradient(circle at 45% 45%,
+      rgba(56,189,248,0.42),
+      rgba(15,23,42,0.98) 62%,
+      transparent 72%
+    );
+
+  box-shadow:
+    0 0 80px rgba(56,189,248,0.22),
+    inset -42px -36px 65px rgba(0,0,0,0.85);
+
+  opacity: 0.6;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.impact-preview-header,
+.constellation-preview,
+.impact-actions {
+  position: relative;
+  z-index: 2;
+}
 
