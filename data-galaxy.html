@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Data Galaxy | Dominique J. Strong</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<style>
+body {
+  margin: 0;
+  background: #000;
+  color: #f8fafc;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+}
+
+.galaxy-page {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center, rgba(56,189,248,0.12), transparent 35%),
+    radial-gradient(circle at 80% 20%, rgba(134,239,172,0.08), transparent 30%),
+    #000;
+}
+
+#galaxy-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.galaxy-overlay {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  pointer-events: none;
+}
+
+.galaxy-title {
+  position: absolute;
+  top: 135px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.galaxy-title h1 {
+  font-size: clamp(2.8rem, 6vw, 6rem);
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+}
+
+.galaxy-title p {
+  color: #86efac;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.info-panel {
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  width: 340px;
+  padding: 1.3rem;
+  border-radius: 22px;
+  background: rgba(5, 10, 20, 0.86);
+  border: 1px solid rgba(134,239,172,0.18);
+  box-shadow: 0 20px 55px rgba(0,0,0,0.45);
+  backdrop-filter: blur(14px);
+}
+
+.info-panel h2 {
+  margin: 0 0 0.6rem;
+  text-align: left;
+  font-size: 1.35rem;
+  color: #86efac;
+  text-decoration: none;
+}
+
+.info-panel p {
+  color: #cbd5e1;
+  line-height: 1.55;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.galaxy-hint {
+  position: absolute;
+  left: 32px;
+  bottom: 32px;
+  color: #94a3b8;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 850px) {
+  .info-panel {
+    left: 20px;
+    right: 20px;
+    bottom: 24px;
+    width: auto;
+  }
+
+  .galaxy-title {
+    top: 120px;
+    width: 90%;
+  }
+
+  .galaxy-hint {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-link">Home</a>
+
+  <details class="nav-dropdown">
+    <summary class="nav-link dropdown-toggle">Labs ▾</summary>
+
+    <div class="dropdown-menu">
+      <a href="game.html">Games Arcade</a>
+      <a href="feudal-japan.html">Feudal Japan Analytics</a>
+      <a href="data-galaxy.html">Data Galaxy</a>
+    </div>
+  </details>
+</nav>
+
+<main class="galaxy-page">
+  <canvas id="galaxy-canvas"></canvas>
+
+  <div class="galaxy-overlay">
+    <div class="galaxy-title">
+      <h1>Data Galaxy</h1>
+      <p>Explore my analytics universe</p>
+    </div>
+
+    <div class="info-panel" id="infoPanel">
+      <h2>Dominique J. Strong</h2>
+      <p>
+        Hover over a glowing node to explore skills, projects, tools, and analytics themes across my portfolio.
+      </p>
+    </div>
+
+    <div class="galaxy-hint">
+      HOVER NODES • CLICK PROJECTS • EXPLORE LABS
+    </div>
+  </div>
+</main>
+
+<script>
+const canvas = document.getElementById("galaxy-canvas");
+const ctx = canvas.getContext("2d");
+const infoPanel = document.getElementById("infoPanel");
+
+let width, height;
+let mouse = { x: null, y: null };
+
+const nodes = [
+  {
+    label: "SQL",
+    type: "skill",
+    x: 0.24,
+    y: 0.38,
+    r: 38,
+    color: "#38bdf8",
+    text: "Advanced SQL for executive reporting, KPI logic, data validation, and business performance analysis."
+  },
+  {
+    label: "Tableau",
+    type: "skill",
+    x: 0.38,
+    y: 0.58,
+    r: 44,
+    color: "#86efac",
+    text: "Executive dashboards, operational reporting, retention monitoring, and visual storytelling."
+  },
+  {
+    label: "Machine Learning",
+    type: "project",
+    x: 0.57,
+    y: 0.43,
+    r: 58,
+    color: "#fde047",
+    text: "Predictive modeling using Random Forest, logistic regression, XGBoost concepts, model evaluation, and forecasting workflows."
+  },
+  {
+    label: "Churn Forecasting",
+    type: "project",
+    x: 0.72,
+    y: 0.62,
+    r: 56,
+    color: "#f97316",
+    text: "Retention and churn prediction using renewal populations, payment behavior, tenure mix, and calibration logic."
+  },
+  {
+    label: "A/B Testing",
+    type: "analytics",
+    x: 0.28,
+    y: 0.72,
+    r: 42,
+    color: "#a78bfa",
+    text: "Treatment/control measurement, incremental lift, campaign effectiveness, and business impact analysis."
+  },
+  {
+    label: "KPI Frameworks",
+    type: "analytics",
+    x: 0.77,
+    y: 0.34,
+    r: 46,
+    color: "#22c55e",
+    text: "Enterprise KPI development for retention, renewals, executive reporting, and operational decision-making."
+  },
+  {
+    label: "Feudal Japan",
+    type: "lab",
+    x: 0.48,
+    y: 0.76,
+    r: 42,
+    color: "#d4af37",
+    text: "Interactive historical analytics project combining storytelling, map visuals, clan profiles, and creative data design.",
+    link: "feudal-japan.html"
+  },
+  {
+    label: "Arcade",
+    type: "lab",
+    x: 0.64,
+    y: 0.78,
+    r: 36,
+    color: "#fb7185",
+    text: "A creative games lab that blends web interactivity, motion, and data-themed mini game concepts.",
+    link: "game.html"
+  }
+];
+
+const stars = Array.from({ length: 180 }, () => ({
+  x: Math.random(),
+  y: Math.random(),
+  r: Math.random() * 1.8 + 0.4,
+  speed: Math.random() * 0.25 + 0.05,
+  alpha: Math.random() * 0.6 + 0.2
+}));
+
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+
+function drawStars() {
+  stars.forEach(star => {
+    const px = star.x * width;
+    const py = star.y * height;
+
+    ctx.beginPath();
+    ctx.arc(px, py, star.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${star.alpha})`;
+    ctx.fill();
+
+    star.y += star.speed / height;
+
+    if (star.y > 1) {
+      star.y = 0;
+      star.x = Math.random();
+    }
+  });
+}
+
+function getNodePosition(node) {
+  const parallaxX = mouse.x ? (mouse.x - width / 2) * 0.015 : 0;
+  const parallaxY = mouse.y ? (mouse.y - height / 2) * 0.015 : 0;
+
+  return {
+    x: node.x * width + parallaxX,
+    y: node.y * height + parallaxY
+  };
+}
+
+function drawConnections() {
+  const pairs = [
+    [0, 2],
+    [1, 2],
+    [2, 3],
+    [2, 5],
+    [3, 5],
+    [4, 3],
+    [6, 2],
+    [7, 1]
+  ];
+
+  pairs.forEach(([a, b]) => {
+    const n1 = getNodePosition(nodes[a]);
+    const n2 = getNodePosition(nodes[b]);
+
+    ctx.beginPath();
+    ctx.moveTo(n1.x, n1.y);
+    ctx.lineTo(n2.x, n2.y);
+    ctx.strokeStyle = "rgba(148,163,184,0.22)";
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+  });
+}
+
+function drawNodes() {
+  nodes.forEach(node => {
+    const pos = getNodePosition(node);
+    const dx = mouse.x - pos.x;
+    const dy = mouse.y - pos.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const isHover = dist < node.r + 12;
+
+    const radius = isHover ? node.r * 1.14 : node.r;
+
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = `${node.color}22`;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, radius * 0.72, 0, Math.PI * 2);
+    ctx.fillStyle = `${node.color}55`;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = node.color;
+    ctx.lineWidth = isHover ? 3 : 1.6;
+    ctx.shadowColor = node.color;
+    ctx.shadowBlur = isHover ? 32 : 18;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = `800 ${isHover ? 15 : 13}px Arial`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    const words = node.label.split(" ");
+    if (words.length > 1) {
+      ctx.fillText(words[0], pos.x, pos.y - 8);
+      ctx.fillText(words.slice(1).join(" "), pos.x, pos.y + 10);
+    } else {
+      ctx.fillText(node.label, pos.x, pos.y);
+    }
+
+    if (isHover) {
+      infoPanel.innerHTML = `
+        <h2>${node.label}</h2>
+        <p>${node.text}</p>
+      `;
+    }
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+
+  drawStars();
+  drawConnections();
+  drawNodes();
+
+  requestAnimationFrame(animate);
+}
+
+canvas.addEventListener("mousemove", e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+canvas.addEventListener("click", e => {
+  nodes.forEach(node => {
+    const pos = getNodePosition(node);
+    const dx = e.clientX - pos.x;
+    const dy = e.clientY - pos.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < node.r + 12 && node.link) {
+      window.location.href = node.link;
+    }
+  });
+});
+
+window.addEventListener("resize", resize);
+
+resize();
+animate();
+</script>
+
+</body>
+</html>
