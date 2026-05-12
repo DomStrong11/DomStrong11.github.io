@@ -697,7 +697,7 @@ strong {
     120px 80px,
     220px 120px;
 
-  opacity: 0.12;
+  opacity: 0.18;
 
   pointer-events: none;
   z-index: 0;
@@ -713,7 +713,7 @@ strong {
   z-index: 1;
   pointer-events: none;
 
-  opacity: 0.13;
+  opacity: 0.35;
 
   filter:
     blur(0.5px)
