@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Feudal Japan Intelligence Network</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -84,15 +83,8 @@
     }
 
     @keyframes crestPulse {
-      0%, 100% {
-        transform: scale(1);
-        opacity: 0.75;
-      }
-
-      50% {
-        transform: scale(1.08);
-        opacity: 1;
-      }
+      0%, 100% { transform: scale(1); opacity: 0.75; }
+      50% { transform: scale(1.08); opacity: 1; }
     }
 
     .page {
@@ -301,62 +293,118 @@
       min-width: 90px;
     }
 
-    /* ===== Upgraded Map System ===== */
-
     .map-wrap {
-      display: grid;
-      grid-template-columns: 1.35fr 0.65fr;
-      gap: 1.5rem;
-      align-items: stretch;
-    }
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
 
-    .map-stage {
-      position: relative;
-      min-height: 600px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid rgba(148,163,184,0.22);
-      background:
-        radial-gradient(circle at 65% 45%, rgba(56,189,248,0.12), transparent 35%),
-        radial-gradient(circle at 30% 65%, rgba(212,175,55,0.08), transparent 32%),
-        rgba(2,6,23,0.72);
-      box-shadow:
-        inset 0 0 70px rgba(0,0,0,0.4),
-        0 0 45px rgba(56,189,248,0.08);
-    }
+.map-stage {
+  position: relative;
+  min-height: 560px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(148,163,184,0.22);
+  background:
+    radial-gradient(circle at 65% 45%, rgba(56,189,248,0.12), transparent 35%),
+    rgba(2,6,23,0.72);
+}
 
-    .leader-watermark {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 48%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.11;
-      filter:
-        grayscale(100%)
-        contrast(1.4)
-        brightness(0.7)
-        blur(1px);
-      mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.7) 48%, transparent 100%);
-      -webkit-mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.7) 48%, transparent 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
+.leader-watermark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18;
+  filter: grayscale(100%) contrast(1.25);
+  mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.7) 48%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.7) 48%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
 
-    #japanMap {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      height: 600px;
-      background: transparent;
-    }
+#japanMap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 560px;
+  background: transparent;
+}
+
+.expansion-zone {
+  opacity: 0.22;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 18px currentColor);
+}
+
+.expansion-zone.active {
+  opacity: 0.5;
+}
+
+.event-callout {
+  fill: #f8fafc;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.event-year {
+  fill: #d4af37;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.timeline-strip {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 4;
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(2,6,23,0.82);
+  border: 1px solid rgba(212,175,55,0.25);
+}
+
+.timeline-dots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.timeline-dot {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.timeline-dot span {
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin: 0 auto 0.4rem;
+  border-radius: 50%;
+  background: #334155;
+  border: 2px solid #64748b;
+}
+
+.timeline-dot.active {
+  color: #f8fafc;
+  font-weight: 800;
+}
+
+.timeline-dot.active span {
+  background: #d4af37;
+  border-color: #facc15;
+  box-shadow: 0 0 18px rgba(212,175,55,0.7);
+}
 
     .japan-land {
       fill: rgba(15,23,42,0.95);
       stroke: rgba(212,175,55,0.65);
       stroke-width: 2;
-      filter: drop-shadow(0 0 10px rgba(212,175,55,0.15));
     }
 
     .province-hotspot {
@@ -369,40 +417,6 @@
     .province-hotspot:hover {
       fill: rgba(212,175,55,0.25);
       stroke: #d4af37;
-    }
-
-    .expansion-zone {
-      opacity: 0.18;
-      stroke-width: 3;
-      filter:
-        drop-shadow(0 0 18px currentColor)
-        blur(1px);
-      transition:
-        opacity 0.5s ease,
-        r 0.6s ease;
-    }
-
-    .expansion-zone.active {
-      opacity: 0.55;
-      animation: territoryPulse 3s infinite ease-in-out;
-      transform-origin: center;
-    }
-
-    @keyframes territoryPulse {
-      0% {
-        transform: scale(1);
-        opacity: 0.22;
-      }
-
-      50% {
-        transform: scale(1.03);
-        opacity: 0.45;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 0.22;
-      }
     }
 
     .clan-marker {
@@ -426,81 +440,13 @@
       letter-spacing: 0.08em;
     }
 
-    .event-year {
-      fill: #d4af37;
-      font-size: 15px;
-      font-weight: 900;
-    }
-
-    .event-callout {
-      fill: #f8fafc;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .timeline-strip {
-      position: absolute;
-      left: 1rem;
-      right: 1rem;
-      bottom: 1rem;
-      z-index: 4;
-      padding: 1rem;
-      border-radius: 16px;
-      background: rgba(2,6,23,0.82);
-      border: 1px solid rgba(212,175,55,0.25);
-      backdrop-filter: blur(10px);
-    }
-
-    .timeline-dots {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-    }
-
-    .timeline-dot {
-      color: #94a3b8;
-      font-size: 0.75rem;
-      text-align: center;
-      line-height: 1.35;
-    }
-
-    .timeline-dot span {
-      display: block;
-      width: 14px;
-      height: 14px;
-      margin: 0 auto 0.4rem;
-      border-radius: 50%;
-      background: #334155;
-      border: 2px solid #64748b;
-    }
-
-    .timeline-dot.active {
-      color: #f8fafc;
-      font-weight: 800;
-    }
-
-    .timeline-dot.active span {
-      background: #d4af37;
-      border-color: #facc15;
-      box-shadow: 0 0 18px rgba(212,175,55,0.7);
-    }
-
     @keyframes pulseMarker {
-      0%, 100% {
-        opacity: 0.85;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1.18);
-      }
+      0%, 100% { opacity: 0.85; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.18); }
     }
 
     @keyframes dashMove {
-      to {
-        stroke-dashoffset: -20;
-      }
+      to { stroke-dashoffset: -20; }
     }
 
     .map-story,
@@ -571,702 +517,1263 @@
       font-size: 0.7rem;
       margin-bottom: 0.5rem;
     }
-        .analysis-grid {
+
+    .comparison-grid {
+      margin-top: 1rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .compare-card {
+      background: rgba(2,6,23,0.72);
+      border: 1px solid rgba(212,175,55,0.28);
+      border-radius: 14px;
+      padding: 1.2rem;
+    }
+
+    .compare-card h3 {
+      color: #d4af37;
+      margin-top: 0;
+    }
+
+    .compare-card p {
+      color: #cbd5e1;
+      margin: 0.45rem 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .ai-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .ai-card {
+      background: rgba(2,6,23,0.65);
+      border-radius: 14px;
+      padding: 1rem;
+      border: 1px solid rgba(148,163,184,0.18);
+    }
+
+    .ai-card input {
+      width: 100%;
+      margin-top: 0.75rem;
+    }
+
+    .ai-output {
+      font-size: 3rem;
+      color: #ef4444;
+      font-weight: 900;
+      text-shadow: 0 0 24px rgba(239,68,68,0.45);
+    }
+
+    .clan-grid,
+    .risk-grid {
+      display: grid;
       gap: 1rem;
       margin-top: 1rem;
     }
 
-    .analysis-card {
-      background: rgba(2,6,23,0.72);
-      border: 1px solid rgba(148,163,184,0.22);
-      border-radius: 16px;
-      padding: 1.2rem;
+    .clan-grid {
+      grid-template-columns: repeat(5, 1fr);
     }
 
-    .analysis-card h4 {
-      margin-top: 0;
+    .risk-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .clan-card,
+    .risk-card {
+      background: rgba(2,6,23,0.65);
+      border-radius: 14px;
+      padding: 1rem;
+      border: 1px solid rgba(148,163,184,0.18);
+    }
+
+    .clan-card {
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .clan-card:hover {
+      transform: translateY(-6px);
+      border-color: #d4af37;
+      box-shadow: 0 0 35px rgba(212,175,55,0.18);
+    }
+
+    .mon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      margin: 0 auto 0.8rem;
+      display: grid;
+      place-items: center;
+      border: 2px solid #d4af37;
       color: #d4af37;
-      letter-spacing: 0.08em;
+      font-weight: 900;
+      font-size: 1.5rem;
+      background: radial-gradient(circle, rgba(212,175,55,0.2), rgba(2,6,23,0.9));
+    }
+
+    .clan-name {
+      font-weight: 900;
+      margin-bottom: 0.4rem;
+    }
+
+    .clan-score {
+      color: #86efac;
+      font-weight: 800;
+    }
+
+    .risk-label {
+      color: #94a3b8;
       text-transform: uppercase;
-      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      font-size: 0.7rem;
+      margin-bottom: 0.6rem;
     }
 
-    .analysis-card p {
+    .risk-number {
+      font-size: 2.3rem;
+      color: #fdba74;
+      font-weight: 900;
+    }
+
+    .bar {
+      height: 8px;
+      background: rgba(148,163,184,0.2);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 0.7rem;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #86efac, #d4af37, #ef4444);
+      border-radius: 999px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 1rem;
+      align-items: start;
+      padding: 1rem;
+      border-left: 3px solid #d4af37;
+      background: rgba(2,6,23,0.55);
+      border-radius: 12px;
+    }
+
+    .year {
+      color: #d4af37;
+      font-weight: 900;
+    }
+
+    .event-title {
+      font-weight: 900;
+      margin-bottom: 0.25rem;
+    }
+
+    .event-copy {
       color: #cbd5e1;
-      line-height: 1.55;
       font-size: 0.92rem;
+      line-height: 1.45;
     }
 
-    canvas.chart {
-      width: 100% !important;
-      max-height: 360px !important;
+    .build-section p {
+      color: #cbd5e1;
+      line-height: 1.7;
+      max-width: 1100px;
+    }
+
+    canvas.chart-canvas {
+      max-height: 360px;
     }
 
     .footer-note {
+      color: #94a3b8;
       text-align: center;
-      margin-top: 3rem;
-      color: #64748b;
-      letter-spacing: 0.18em;
+      margin: 3rem 0 1rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
     }
 
-    @media (max-width: 1100px) {
-
+    @media (max-width: 1050px) {
       .dashboard,
       .main-grid,
-      .map-wrap {
+      .map-wrap,
+      .ai-grid,
+      .comparison-grid {
         grid-template-columns: 1fr;
       }
 
-      .map-stage {
-        min-height: 720px;
-      }
-
-      #japanMap {
-        height: 720px;
-      }
-    }
-
-    @media (max-width: 768px) {
-
-      .page {
-        padding: 1.2rem;
-      }
-
-      h1 {
-        font-size: 3rem;
-      }
-
-      .clan-profile-card {
-        grid-template-columns: 1fr;
-      }
-
-      .clan-profile-card img {
-        width: 100%;
-        height: 260px;
-      }
-
-      .timeline-dots {
+      .clan-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
+    @media (max-width: 650px) {
+      .page {
+        padding: 1.2rem;
+      }
+
+      .clan-grid,
+      .risk-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .top-nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .clan-profile-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .clan-profile-card img {
+        margin: 0 auto;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-<canvas id="emberCanvas"></canvas>
-
-<div class="intro-overlay" id="introOverlay">
+<div id="introOverlay" class="intro-overlay">
   <div>
-    <div class="intro-crest">⚔</div>
-
+    <div class="intro-crest">侍</div>
     <h2>Feudal Japan Intelligence Network</h2>
-
-    <p>Loading Clan Influence Systems...</p>
+    <p>Initializing clan intelligence system...</p>
   </div>
 </div>
+
+<canvas id="emberCanvas"></canvas>
 
 <div class="page">
 
   <nav class="top-nav">
-    <div class="brand">戦国 Analytics</div>
-
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-      <a href="index.html">Home</a>
-      <a href="data-galaxy.html">Data Galaxy</a>
-      <a href="arcade.html">Arcade</a>
-    </div>
+    <a href="index.html">← Back to Portfolio</a>
+    <div class="brand">DOM STRONG ANALYTICS LAB</div>
   </nav>
 
-  <section class="hero">
-    <div class="eyebrow">Interactive Historical Intelligence</div>
-
-    <h1>Feudal Japan Command Center</h1>
+  <header class="hero">
+    <div class="eyebrow">Sengoku Diagnostic System</div>
+    <h1>Feudal Japan Intelligence Network</h1>
 
     <p class="subtitle">
-      Analyze the rise of major Sengoku-era clans through territorial expansion,
-      military campaigns, strategic strongholds, and political influence systems.
-      Track how each clan evolved across Japan over time through an interactive
-      intelligence network.
+      A fictional analytics command center exploring clan power, territory control, economic strength,
+      battle efficiency, and political stability during Japan’s warring states era.
     </p>
-  </section>
+  </header>
 
   <div class="control-row">
-
     <div class="control-card">
-      <div class="control-label">Active Timeline</div>
+      <div class="control-label">Temporal Status</div>
       <div class="control-value" id="temporalStatus">1560</div>
     </div>
 
     <div class="control-card">
-      <div class="control-label">Dominant Clan</div>
-      <div class="control-value" id="activeClanDisplay">Oda</div>
+      <div class="control-label">Primary Lens</div>
+      <div class="control-value">Clan Expansion</div>
     </div>
 
     <div class="control-card">
-      <div class="control-label">Campaign Status</div>
-      <div class="control-value" id="campaignStatus">Expansion Active</div>
+      <div class="control-label">Mode</div>
+      <div class="control-value" id="modeLabel">Peace Analysis</div>
+    </div>
+  </div>
+
+  <section class="panel map-panel">
+    <h2 class="panel-title">Clan Expansion Map</h2>
+    <div class="panel-subtitle">Select a clan and move the year slider to trace territorial movement</div>
+
+    <div class="map-controls">
+      <select id="clanSelect">
+        <option value="oda">Oda Clan</option>
+        <option value="tokugawa">Tokugawa Clan</option>
+        <option value="takeda">Takeda Clan</option>
+        <option value="uesugi">Uesugi Clan</option>
+        <option value="shimazu">Shimazu Clan</option>
+      </select>
+
+      <span class="year-box" id="yearDisplay">1560</span>
+      <input id="yearSlider" type="range" min="0" max="3" value="1">
+
+      <button id="warBtn" class="war-btn">⚔ Enter War Mode</button>
+      <button id="musicBtn">▶ Play Historical Japan Music</button>
+    </div>
+
+    <div class="map-wrap">
+
+  <div class="map-stage">
+    <img
+      id="leaderWatermark"
+      class="leader-watermark"
+      src="images/oda.jpg"
+      alt="Clan leader background"
+    >
+
+    <svg id="japanMap" viewBox="0 0 800 520">
+        <path class="japan-land" d="M520 60 C560 110 555 160 530 205 C505 250 520 290 485 335 C450 380 465 430 420 475 C390 505 340 505 320 470 C300 435 335 400 355 360 C375 320 350 275 380 235 C410 195 395 145 430 105 C455 75 485 55 520 60Z"/>
+        <path class="japan-land" d="M330 360 C300 390 270 415 235 420 C205 425 185 405 200 380 C215 355 250 345 280 335 C305 325 330 330 330 360Z"/>
+        <path class="japan-land" d="M230 430 C190 455 145 465 105 450 C80 440 80 410 110 395 C145 378 190 395 230 430Z"/>
+
+        <circle class="province-hotspot" cx="430" cy="310" r="34" data-name="Owari" data-info="High strategic value. Oda power base and early expansion center." />
+        <circle class="province-hotspot" cx="455" cy="315" r="32" data-name="Mikawa" data-info="Tokugawa base of power. Strong consolidation potential." />
+        <circle class="province-hotspot" cx="485" cy="295" r="30" data-name="Kai" data-info="Takeda stronghold. Mountain defense and cavalry advantage." />
+        <circle class="province-hotspot" cx="500" cy="205" r="30" data-name="Echigo" data-info="Uesugi influence zone. Northern projection corridor." />
+        <circle class="province-hotspot" cx="120" cy="425" r="32" data-name="Satsuma" data-info="Shimazu southern base. Strong regional control in Kyushu." />
+
+      <g id="expansionZones"></g>
+      <g id="eventCallouts"></g>
+
+        <line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
+        <g id="markers"></g>
+      </svg>
+
+        <div class="timeline-strip">
+      <div class="timeline-dots" id="timelineDots"></div>
     </div>
 
   </div>
 
-  <div class="dashboard">
+      <div>
+        <div class="map-story" id="mapStory"></div>
 
+        <div class="clan-profile-card">
+          <img id="clanImage" src="images/oda.jpg" alt="Oda Nobunaga">
+          <div>
+            <h3 id="clanProfileName">Oda Clan</h3>
+            <p id="clanProfileLeader"><strong>Leader:</strong> Oda Nobunaga</p>
+            <p id="clanProfileStrength"><strong>Strength:</strong> Military modernization and aggressive expansion.</p>
+            <p id="clanProfileWeakness"><strong>Weakness:</strong> High political instability.</p>
+          </div>
+        </div>
+
+        <div class="tooltip-card" id="provinceTooltip">
+          Hover over a province marker to view regional intelligence.
+        </div>
+
+        <div class="battle-feed">
+          <div class="battle-feed-title">Live Battle Intelligence</div>
+          <div id="battleAlert">⚔ Oda forces advancing toward Kyoto</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel race-panel">
+  <h2 class="panel-title">Clan Power Over Time</h2>
+  <div class="panel-subtitle">Animated Sengoku-era power index inspired by historical momentum</div>
+
+  <div class="race-controls">
+    <button id="racePlayBtn">▶ Play Timeline</button>
+    <div class="race-year" id="raceYear">1467</div>
+  </div>
+
+  <div class="race-chart">
+    <canvas id="clanRaceCanvas" width="1200" height="620"></canvas>
+  </div>
+</section>
+
+  <audio id="bgMusic" preload="auto">
+    <source src="audio/japan-music.mp3" type="audio/mpeg">
+  </audio>
+
+  <section class="dashboard">
     <div class="metric-stack">
-
       <div class="metric-card">
-        <div class="metric-title">Territory Influence</div>
-        <div class="metric-value" id="territoryValue">68%</div>
+        <div class="metric-value">12</div>
+        <div class="metric-title">Clans Tracked</div>
       </div>
 
       <div class="metric-card">
-        <div class="metric-title">Strategic Pressure</div>
-        <div class="metric-value" id="pressureValue">82</div>
+        <div class="metric-value">68</div>
+        <div class="metric-title">Provinces Analyzed</div>
       </div>
 
       <div class="metric-card">
-        <div class="metric-title">Military Readiness</div>
-        <div class="metric-value" id="militaryValue">91</div>
+        <div class="metric-value" id="riskMetric">47%</div>
+        <div class="metric-title">Avg Rebellion Risk</div>
       </div>
-
     </div>
 
     <div class="panel">
+      <h2 class="panel-title">Clan Power Distribution</h2>
+      <div class="panel-subtitle">Territory · Military · Economy · Alliance Strength</div>
+      <canvas class="chart-canvas" id="powerChart"></canvas>
+    </div>
+  </section>
 
-      <h2 class="panel-title">Clan Expansion Map</h2>
+  <section class="panel">
+    <h2 class="panel-title">Predictive Shogunate Stability Engine</h2>
+    <div class="panel-subtitle">Interactive fictional ML-style forecast console</div>
 
-      <div class="panel-subtitle">
-        Track territorial expansion, campaign movement, and strategic influence.
+    <div class="ai-grid">
+      <div class="ai-card">
+        <div class="risk-label">Economic Stress</div>
+        <input id="economicStress" type="range" min="0" max="100" value="58">
       </div>
 
-      <div class="map-controls">
-
-        <select id="clanSelect">
-          <option value="oda">Oda Clan</option>
-          <option value="tokugawa">Tokugawa Clan</option>
-          <option value="takeda">Takeda Clan</option>
-          <option value="uesugi">Uesugi Clan</option>
-          <option value="shimazu">Shimazu Clan</option>
-        </select>
-
-        <input type="range" id="yearSlider" min="0" max="3" value="0">
-
-        <div class="year-box" id="yearDisplay">1560</div>
-
-        <button id="warModeBtn" class="war-btn">
-          War Mode
-        </button>
-
+      <div class="ai-card">
+        <div class="risk-label">Military Losses</div>
+        <input id="militaryLosses" type="range" min="0" max="100" value="44">
       </div>
 
-      <div class="map-wrap">
+      <div class="ai-card">
+        <div class="risk-label">Alliance Instability</div>
+        <input id="allianceInstability" type="range" min="0" max="100" value="63">
+      </div>
 
-        <div class="map-stage">
+      <div class="ai-card">
+        <div class="risk-label">Collapse Probability</div>
+        <div class="ai-output" id="collapseOutput">55%</div>
+      </div>
+    </div>
+  </section>
 
-          <img
-            id="leaderWatermark"
-            class="leader-watermark"
-            src="images/oda.jpg"
-            alt="Clan leader background"
-          >
+  <section class="main-grid">
+    <div class="panel">
+      <h2 class="panel-title">Strategic Clan Rankings</h2>
+      <div class="panel-subtitle">Composite power index</div>
 
-          <svg id="japanMap" viewBox="0 0 800 520">
+      <div class="clan-grid">
+        <div class="clan-card"><div class="mon">徳</div><div class="clan-name">Tokugawa</div><div class="clan-score">94 Power</div></div>
+        <div class="clan-card"><div class="mon">織</div><div class="clan-name">Oda</div><div class="clan-score">91 Power</div></div>
+        <div class="clan-card"><div class="mon">武</div><div class="clan-name">Takeda</div><div class="clan-score">86 Power</div></div>
+        <div class="clan-card"><div class="mon">上</div><div class="clan-name">Uesugi</div><div class="clan-score">82 Power</div></div>
+        <div class="clan-card"><div class="mon">島</div><div class="clan-name">Shimazu</div><div class="clan-score">78 Power</div></div>
+      </div>
+    </div>
 
-            <path
-              class="japan-land"
-              d="M155 92 L218 60 L318 78 L410 105 L490 135 L565 175 L640 255 L692 338 L655 420 L580 460 L455 470 L345 455 L240 420 L180 355 L148 285 L132 195 Z"
-            />
+    <div class="panel">
+      <h2 class="panel-title">Economic Output</h2>
+      <div class="panel-subtitle">Estimated rice production index</div>
+      <canvas class="chart-canvas" id="riceChart"></canvas>
+    </div>
+  </section>
 
-            <circle class="province-hotspot" cx="250" cy="170" r="34" />
-            <circle class="province-hotspot" cx="360" cy="220" r="34" />
-            <circle class="province-hotspot" cx="500" cy="280" r="34" />
-            <circle class="province-hotspot" cx="610" cy="335" r="34" />
+  <section class="panel comparison-panel">
+    <h2 class="panel-title">Clan Comparison Mode</h2>
+    <div class="panel-subtitle">Side-by-side strategic analytics by clan</div>
 
-            <g id="expansionZones"></g>
+    <button id="compareBtn">Compare Clans</button>
 
-            <g id="eventCallouts"></g>
+    <div id="comparisonGrid" class="comparison-grid hidden">
+      <div class="compare-card">
+        <h3>Oda</h3>
+        <p>Military: 96</p>
+        <p>Economy: 80</p>
+        <p>Alliance Stability: 72</p>
+        <p>Campaign Momentum: 91</p>
+      </div>
 
-            <g id="markers"></g>
+      <div class="compare-card">
+        <h3>Tokugawa</h3>
+        <p>Military: 88</p>
+        <p>Economy: 95</p>
+        <p>Alliance Stability: 91</p>
+        <p>Campaign Momentum: 94</p>
+      </div>
 
-            <line id="routeLine"></line>
+      <div class="compare-card">
+        <h3>Takeda</h3>
+        <p>Military: 94</p>
+        <p>Economy: 70</p>
+        <p>Alliance Stability: 65</p>
+        <p>Campaign Momentum: 86</p>
+      </div>
+    </div>
+  </section>
 
-          </svg>
+  <section class="main-grid">
+    <div class="panel">
+      <h2 class="panel-title">Risk Forecast</h2>
+      <div class="panel-subtitle">Simulated instability indicators</div>
 
-          <div class="timeline-strip">
-            <div class="timeline-dots" id="timelineDots"></div>
-          </div>
-
+      <div class="risk-grid">
+        <div class="risk-card">
+          <div class="risk-label">Rebellion Risk</div>
+          <div class="risk-number">63%</div>
+          <div class="bar"><span style="width:63%"></span></div>
         </div>
 
+        <div class="risk-card">
+          <div class="risk-label">Alliance Betrayal</div>
+          <div class="risk-number">41%</div>
+          <div class="bar"><span style="width:41%"></span></div>
+        </div>
+
+        <div class="risk-card">
+          <div class="risk-label">Economic Strain</div>
+          <div class="risk-number">58%</div>
+          <div class="bar"><span style="width:58%"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-title">Battle Efficiency</h2>
+      <div class="panel-subtitle">Win rate by clan</div>
+      <canvas class="chart-canvas" id="battleChart"></canvas>
+    </div>
+  </section>
+
+  <section id="timeline" class="panel">
+    <h2 class="panel-title">Sacred Timeline</h2>
+    <div class="panel-subtitle">Key power shifts and strategic events</div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="year">1467</div>
         <div>
-
-          <div class="map-story" id="mapStory">
-            Oda Nobunaga begins consolidating central Japan and initiates the
-            unification campaign that will reshape the balance of power across
-            the Sengoku era.
-          </div>
-
-          <div class="clan-profile-card">
-
-            <img
-              id="profileImage"
-              src="images/oda.jpg"
-              alt="Clan leader"
-            >
-
-            <div>
-              <h3 id="profileTitle">Oda Nobunaga</h3>
-
-              <p id="profileDescription">
-                Aggressive strategist known for military modernization,
-                innovation, and rapid territorial expansion.
-              </p>
-
-              <p id="profileStrength">
-                Strategic Strength: Rapid Expansion
-              </p>
-            </div>
-
-          </div>
-
-          <div class="battle-feed">
-
-            <div class="battle-feed-title">
-              Key Event
-            </div>
-
-            <div id="battleFeedText">
-              Battle of Okehazama reshapes political influence in central Japan.
-            </div>
-
-          </div>
-
-          <div class="tooltip-card">
-            Hover over strategic provinces and timeline stages to visualize
-            how each clan expanded influence across Japan.
-          </div>
-
+          <div class="event-title">Onin War Begins</div>
+          <div class="event-copy">Central authority weakens, accelerating regional conflict and clan militarization.</div>
         </div>
-
       </div>
 
+      <div class="timeline-item">
+        <div class="year">1560</div>
+        <div>
+          <div class="event-title">Battle of Okehazama</div>
+          <div class="event-copy">Oda Nobunaga’s surprise victory shifts the balance of power and signals a new strategic era.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="year">1575</div>
+        <div>
+          <div class="event-title">Battle of Nagashino</div>
+          <div class="event-copy">Firearm tactics alter battlefield efficiency and reduce cavalry dominance.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="year">1600</div>
+        <div>
+          <div class="event-title">Battle of Sekigahara</div>
+          <div class="event-copy">Tokugawa victory consolidates power and sets the foundation for long-term political stability.</div>
+        </div>
+      </div>
     </div>
+  </section>
 
-  </div>
+  <section class="panel build-section">
+    <h2 class="panel-title">How This Was Built</h2>
+    <div class="panel-subtitle">Portfolio project technical stack</div>
 
-  <div class="main-grid">
+    <p>
+      Built with HTML, CSS, JavaScript, Chart.js, interactive data storytelling,
+      UX analytics design, fictional predictive modeling logic, and custom dashboard theming.
+    </p>
 
-    <div class="panel">
-
-      <h2 class="panel-title">Clan Influence Analysis</h2>
-
-      <div class="panel-subtitle">
-        Comparative strategic positioning and military influence.
-      </div>
-
-      <canvas id="clanChart" class="chart"></canvas>
-
-    </div>
-
-    <div class="panel">
-
-      <h2 class="panel-title">Strategic Intelligence</h2>
-
-      <div class="panel-subtitle">
-        Core operational characteristics and leadership analysis.
-      </div>
-
-      <div class="analysis-grid">
-
-        <div class="analysis-card">
-          <h4>Military Innovation</h4>
-          <p>
-            Adoption of firearms, cavalry mobility, and coordinated battlefield
-            strategy dramatically shifted territorial control.
-          </p>
-        </div>
-
-        <div class="analysis-card">
-          <h4>Political Control</h4>
-          <p>
-            Clan alliances, castle systems, and regional governance structures
-            influenced long-term stability.
-          </p>
-        </div>
-
-        <div class="analysis-card">
-          <h4>Economic Power</h4>
-          <p>
-            Agricultural production, trade access, and taxation enabled
-            sustainable military campaigns.
-          </p>
-        </div>
-
-        <div class="analysis-card">
-          <h4>Expansion Strategy</h4>
-          <p>
-            Expansion corridors reveal how geography and regional pressure
-            shaped influence growth.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
+    <p>
+      Historical events are inspired by Sengoku-era Japan. Analytics metrics are fictional
+      and designed to demonstrate dashboard thinking, model interpretation, and executive-style reporting.
+    </p>
+  </section>
 
   <div class="footer-note">
-    Feudal Japan Intelligence Network • Interactive Analytics Experience
+    Prototype dashboard · fictional metrics · built for storytelling, analytics, and portfolio impact
   </div>
-
 </div>
 
 <script>
+  setTimeout(() => {
+    document.getElementById("introOverlay").classList.add("hidden");
+  }, 2200);
 
-const years = ["1560", "1575", "1582", "1600"];
+  const years = [1467, 1560, 1575, 1600];
 
-const clanProfiles = {
+  const clanProfiles = {
+    oda: {
+      name: "Oda Clan",
+      image: "images/oda.jpg",
+      alt: "Oda Nobunaga",
+      leader: "Oda Nobunaga",
+      strength: "Military modernization, firearm adoption, and aggressive expansion.",
+      weakness: "High political instability and betrayal exposure."
+    },
+    tokugawa: {
+      name: "Tokugawa Clan",
+      image: "images/tokugawa.jpg",
+      alt: "Tokugawa Ieyasu",
+      leader: "Tokugawa Ieyasu",
+      strength: "Long-term consolidation, alliance strategy, and political patience.",
+      weakness: "Dependent on timing, coalition management, and postwar legitimacy."
+    },
+    takeda: {
+      name: "Takeda Clan",
+      image: "images/takeda.jpg",
+      alt: "Takeda Shingen",
+      leader: "Takeda Shingen",
+      strength: "Elite cavalry, inland defense, and strong battlefield discipline.",
+      weakness: "Limited coastal access and vulnerability to firearm modernization."
+    },
+    uesugi: {
+      name: "Uesugi Clan",
+      image: "images/uesugi.jpg",
+      alt: "Uesugi Kenshin",
+      leader: "Uesugi Kenshin",
+      strength: "Northern military pressure, tactical discipline, and regional influence.",
+      weakness: "Geographic constraints and succession instability."
+    },
+    shimazu: {
+      name: "Shimazu Clan",
+      image: "images/shimazu.jpg",
+      alt: "Shimazu Clan",
+      leader: "Shimazu Yoshihisa",
+      strength: "Southern Kyushu dominance and strong regional identity.",
+      weakness: "Distance from central Japan limited national control opportunities."
+    }
+  };
 
-  oda: {
-    title: "Oda Nobunaga",
-    image: "images/oda.jpg",
-    alt: "Oda Nobunaga",
-    description:
-      "Aggressive strategist known for military modernization, innovation, and rapid territorial expansion.",
-    strength:
-      "Strategic Strength: Rapid Expansion",
-    feed:
-      "Battle of Okehazama reshapes political influence in central Japan."
-  },
+  const clanRoutes = {
+    oda: {
+      color: "#38bdf8",
+      stories: [
+        "Early instability creates opportunity. Oda influence has not yet reached full strategic momentum.",
+        "Oda expansion begins in Owari, following the victory at Okehazama.",
+        "Oda power pushes toward Mino and Kyoto, supported by tactical modernization.",
+        "Oda influence becomes part of the broader unification path that reshapes national control."
+      ],
+      points: [
+        { name: "Owari", x: 430, y: 310 },
+        { name: "Mino", x: 420, y: 270 },
+        { name: "Kyoto", x: 385, y: 250 },
+        { name: "Central Japan", x: 410, y: 220 }
+      ]
+    },
+    tokugawa: {
+      color: "#d4af37",
+      stories: [
+        "Tokugawa influence is still emerging from regional instability.",
+        "Mikawa becomes the foundation for future Tokugawa consolidation.",
+        "Eastern alliances strengthen as Tokugawa power expands.",
+        "Sekigahara establishes Tokugawa dominance and long-term control."
+      ],
+      points: [
+        { name: "Mikawa", x: 455, y: 315 },
+        { name: "Edo", x: 505, y: 270 },
+        { name: "Sekigahara", x: 405, y: 285 },
+        { name: "National Control", x: 455, y: 230 }
+      ]
+    },
+    takeda: {
+      color: "#ef4444",
+      stories: [
+        "Takeda positioning begins from a strong inland base.",
+        "Kai becomes a military launch point for inland campaigns.",
+        "Takeda pressure expands through Shinano and nearby corridors.",
+        "Takeda influence declines as rival modernization and alliances intensify."
+      ],
+      points: [
+        { name: "Kai", x: 485, y: 295 },
+        { name: "Shinano", x: 455, y: 255 },
+        { name: "Suruga", x: 475, y: 330 },
+        { name: "Central Pressure", x: 450, y: 290 }
+      ]
+    },
+    uesugi: {
+      color: "#8b5cf6",
+      stories: [
+        "Northern corridors become strategically important.",
+        "Echigo anchors Uesugi regional influence.",
+        "Uesugi power projects toward Kanto and Shinano.",
+        "Uesugi influence remains regionally significant but constrained by national consolidation."
+      ],
+      points: [
+        { name: "Echigo", x: 500, y: 205 },
+        { name: "Kanto Edge", x: 520, y: 255 },
+        { name: "Shinano", x: 455, y: 255 },
+        { name: "Northern Hold", x: 490, y: 230 }
+      ]
+    },
+    shimazu: {
+      color: "#fdba74",
+      stories: [
+        "Southern Kyushu remains a distinct regional power base.",
+        "Shimazu control grows from Satsuma.",
+        "Regional expansion increases across Kyushu.",
+        "Shimazu remains powerful but geographically distant from central unification."
+      ],
+      points: [
+        { name: "Satsuma", x: 120, y: 425 },
+        { name: "Osumi", x: 150, y: 420 },
+        { name: "Kyushu", x: 200, y: 405 },
+        { name: "Southern Hold", x: 175, y: 395 }
+      ]
+    }
+  };
 
-  tokugawa: {
-    title: "Tokugawa Ieyasu",
-    image: "images/tokugawa.jpg",
-    alt: "Tokugawa Ieyasu",
-    description:
-      "Master political strategist who established long-term national stability.",
-    strength:
-      "Strategic Strength: Political Consolidation",
-    feed:
-      "Tokugawa influence expands after the Battle of Sekigahara."
-  },
+  const clanSelect = document.getElementById("clanSelect");
+  const yearSlider = document.getElementById("yearSlider");
+  const yearDisplay = document.getElementById("yearDisplay");
+  const temporalStatus = document.getElementById("temporalStatus");
+  const markers = document.getElementById("markers");
+  const routeLine = document.getElementById("routeLine");
+  const mapStory = document.getElementById("mapStory");
 
-  takeda: {
-    title: "Takeda Shingen",
-    image: "images/takeda.jpg",
-    alt: "Takeda Shingen",
-    description:
-      "Legendary cavalry commander feared across feudal Japan.",
-    strength:
-      "Strategic Strength: Cavalry Warfare",
-    feed:
-      "Takeda cavalry campaigns dominate regional battlefields."
-  },
-
-  uesugi: {
-    title: "Uesugi Kenshin",
-    image: "images/uesugi.jpg",
-    alt: "Uesugi Kenshin",
-    description:
-      "Highly disciplined military leader and rival to Takeda Shingen.",
-    strength:
-      "Strategic Strength: Tactical Warfare",
-    feed:
-      "Rivalries in central Japan intensify regional conflict."
-  },
-
-  shimazu: {
-    title: "Shimazu Yoshihisa",
-    image: "images/shimazu.jpg",
-    alt: "Shimazu Yoshihisa",
-    description:
-      "Southern clan leaders who expanded influence throughout Kyushu.",
-    strength:
-      "Strategic Strength: Regional Domination",
-    feed:
-      "Shimazu campaigns strengthen southern territorial control."
-  }
-
-};
-
-const clanRoutes = {
-
-  oda: {
-    color: "#d4af37",
-    stories: [
-      "Oda Nobunaga begins consolidating central Japan.",
-      "Rapid expansion continues through military modernization.",
-      "Political alliances reshape territorial control.",
-      "Oda influence sets the foundation for national unification."
-    ],
-    points: [
-      { x: 260, y: 220, name: "Owari" },
-      { x: 360, y: 240, name: "Kyoto" },
-      { x: 470, y: 285, name: "Azuchi" },
-      { x: 590, y: 330, name: "Expansion Peak" }
-    ]
-  },
-
-  tokugawa: {
-    color: "#38bdf8",
-    stories: [
-      "Tokugawa influence begins in Mikawa Province.",
-      "Strategic alliances strengthen regional stability.",
-      "Eastern Japan consolidates under Tokugawa influence.",
-      "Victory at Sekigahara secures national dominance."
-    ],
-    points: [
-      { x: 340, y: 255, name: "Mikawa" },
-      { x: 430, y: 270, name: "Edo" },
-      { x: 520, y: 295, name: "Eastern Control" },
-      { x: 640, y: 345, name: "Shogunate" }
-    ]
-  }
-
-};
-
-const clanSelect = document.getElementById("clanSelect");
-const yearSlider = document.getElementById("yearSlider");
-
-const yearDisplay = document.getElementById("yearDisplay");
-const temporalStatus = document.getElementById("temporalStatus");
-
-const mapStory = document.getElementById("mapStory");
-
-const markers = document.getElementById("markers");
-const routeLine = document.getElementById("routeLine");
-
-function renderClanRoute() {
-
+  function renderClanRoute() {
   const clan = clanRoutes[clanSelect.value];
   const profile = clanProfiles[clanSelect.value];
-
   const step = Number(yearSlider.value);
-
   const visiblePoints = clan.points.slice(0, step + 1);
 
   const expansionZones = document.getElementById("expansionZones");
+  const eventCallouts = document.getElementById("eventCallouts");
   const timelineDots = document.getElementById("timelineDots");
 
   markers.innerHTML = "";
   expansionZones.innerHTML = "";
+  eventCallouts.innerHTML = "";
   timelineDots.innerHTML = "";
 
   yearDisplay.textContent = years[step];
   temporalStatus.textContent = years[step];
-
   mapStory.textContent = clan.stories[step];
 
   document.getElementById("leaderWatermark").src = profile.image;
-  document.getElementById("profileImage").src = profile.image;
+  document.getElementById("leaderWatermark").alt = profile.alt;
 
-  document.getElementById("profileTitle").textContent = profile.title;
-  document.getElementById("profileDescription").textContent = profile.description;
-  document.getElementById("profileStrength").textContent = profile.strength;
-  document.getElementById("battleFeedText").textContent = profile.feed;
-
-  document.getElementById("activeClanDisplay").textContent =
-    clanSelect.options[clanSelect.selectedIndex].text;
+  routeLine.setAttribute("stroke", clan.color);
 
   visiblePoints.forEach((point, i) => {
-
-    const zone = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "circle"
-    );
-
+    const zone = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     zone.setAttribute("cx", point.x);
     zone.setAttribute("cy", point.y);
-
-    zone.setAttribute("r", 34 + i * 22);
-
+    zone.setAttribute("r", 34 + i * 20);
     zone.setAttribute("fill", clan.color);
     zone.setAttribute("stroke", clan.color);
-
-    zone.setAttribute(
-      "class",
-      i === step ? "expansion-zone active" : "expansion-zone"
-    );
-
+    zone.setAttribute("class", i === step ? "expansion-zone active" : "expansion-zone");
     expansionZones.appendChild(zone);
-
   });
 
-  routeLine.style.display = "none";
-
-  for (let i = 0; i < visiblePoints.length - 1; i++) {
-
-    const start = visiblePoints[i];
-    const end = visiblePoints[i + 1];
-
-    const path = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "line"
-    );
-
-    path.setAttribute("x1", start.x);
-    path.setAttribute("y1", start.y);
-
-    path.setAttribute("x2", end.x);
-    path.setAttribute("y2", end.y);
-
-    path.setAttribute("stroke", clan.color);
-    path.setAttribute("class", "route-line");
-
-    markers.appendChild(path);
-
+  if (visiblePoints.length >= 2) {
+    routeLine.setAttribute("x1", visiblePoints[0].x);
+    routeLine.setAttribute("y1", visiblePoints[0].y);
+    routeLine.setAttribute("x2", visiblePoints[visiblePoints.length - 1].x);
+    routeLine.setAttribute("y2", visiblePoints[visiblePoints.length - 1].y);
+  } else {
+    routeLine.setAttribute("x1", 0);
+    routeLine.setAttribute("y1", 0);
+    routeLine.setAttribute("x2", 0);
+    routeLine.setAttribute("y2", 0);
   }
 
   visiblePoints.forEach((point, i) => {
-
-    const circle = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "circle"
-    );
-
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     circle.setAttribute("cx", point.x);
     circle.setAttribute("cy", point.y);
-
     circle.setAttribute("r", 11 + i * 2);
-
     circle.setAttribute("class", "clan-marker");
     circle.setAttribute("fill", clan.color);
 
-    const label = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "text"
-    );
-
+    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
     label.setAttribute("x", point.x + 18);
     label.setAttribute("y", point.y + 5);
-
     label.setAttribute("class", "marker-label");
-
     label.textContent = point.name;
 
-    const yearLabel = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "text"
-    );
-
+    const yearLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     yearLabel.setAttribute("x", point.x + 18);
     yearLabel.setAttribute("y", point.y - 16);
-
     yearLabel.setAttribute("class", "event-year");
-
     yearLabel.textContent = years[i];
 
     markers.appendChild(circle);
-
     markers.appendChild(yearLabel);
-
     markers.appendChild(label);
-
   });
 
   years.forEach((yr, i) => {
-
     const dot = document.createElement("div");
-
-    dot.className =
-      i <= step ? "timeline-dot active" : "timeline-dot";
-
-    dot.innerHTML =
-      `<span></span>${yr}<br>${clan.points[i].name}`;
-
+    dot.className = i <= step ? "timeline-dot active" : "timeline-dot";
+    dot.innerHTML = `<span></span>${yr}<br>${clan.points[i].name}`;
     timelineDots.appendChild(dot);
-
   });
-
 }
 
-clanSelect.addEventListener("change", renderClanRoute);
-yearSlider.addEventListener("input", renderClanRoute);
+  function renderClanProfile() {
+    const profile = clanProfiles[clanSelect.value];
 
-renderClanRoute();
+    document.getElementById("clanImage").src = profile.image;
+    document.getElementById("clanImage").alt = profile.alt;
+    document.getElementById("clanProfileName").textContent = profile.name;
+    document.getElementById("clanProfileLeader").innerHTML = `<strong>Leader:</strong> ${profile.leader}`;
+    document.getElementById("clanProfileStrength").innerHTML = `<strong>Strength:</strong> ${profile.strength}`;
+    document.getElementById("clanProfileWeakness").innerHTML = `<strong>Weakness:</strong> ${profile.weakness}`;
+  }
 
-const chart = new Chart(
-  document.getElementById("clanChart"),
-  {
+  clanSelect.addEventListener("change", () => {
+    renderClanRoute();
+    renderClanProfile();
+  });
+
+  yearSlider.addEventListener("input", renderClanRoute);
+
+  renderClanRoute();
+  renderClanProfile();
+
+  document.querySelectorAll(".province-hotspot").forEach(p => {
+    p.addEventListener("mouseenter", () => {
+      document.getElementById("provinceTooltip").innerHTML =
+        `<strong>${p.dataset.name}</strong><br>${p.dataset.info}`;
+    });
+  });
+
+  const warBtn = document.getElementById("warBtn");
+  warBtn.addEventListener("click", () => {
+    document.body.classList.toggle("war-mode");
+    warBtn.classList.toggle("active");
+
+    const active = document.body.classList.contains("war-mode");
+    warBtn.textContent = active ? "☮ Exit War Mode" : "⚔ Enter War Mode";
+    document.getElementById("modeLabel").textContent = active ? "Conflict Mode" : "Peace Analysis";
+  });
+
+  const musicBtn = document.getElementById("musicBtn");
+  const bgMusic = document.getElementById("bgMusic");
+
+  musicBtn.addEventListener("click", async () => {
+    try {
+      if (bgMusic.paused) {
+        await bgMusic.play();
+        musicBtn.textContent = "⏸ Pause Historical Japan Music";
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = "▶ Play Historical Japan Music";
+      }
+    } catch {
+      musicBtn.textContent = "Audio file not loading";
+    }
+  });
+
+  const battleAlerts = [
+    "⚔ Oda forces advancing toward Kyoto",
+    "⚠ Takeda cavalry losses increasing after firearm resistance",
+    "📈 Tokugawa alliance stability rising",
+    "🔥 Regional volatility increasing near central provinces",
+    "🏯 Shimazu maintaining strong southern control",
+    "📊 Campaign momentum index shifting toward unification"
+  ];
+
+  let alertIndex = 0;
+
+  setInterval(() => {
+    alertIndex = (alertIndex + 1) % battleAlerts.length;
+    document.getElementById("battleAlert").textContent = battleAlerts[alertIndex];
+  }, 3500);
+
+  const compareBtn = document.getElementById("compareBtn");
+  const comparisonGrid = document.getElementById("comparisonGrid");
+
+  compareBtn.addEventListener("click", () => {
+    comparisonGrid.classList.toggle("hidden");
+    compareBtn.textContent = comparisonGrid.classList.contains("hidden")
+      ? "Compare Clans"
+      : "Hide Comparison";
+  });
+
+  function updateAI() {
+    const e = Number(document.getElementById("economicStress").value);
+    const m = Number(document.getElementById("militaryLosses").value);
+    const a = Number(document.getElementById("allianceInstability").value);
+
+    const score = Math.round((e * 0.35) + (m * 0.30) + (a * 0.35));
+    document.getElementById("collapseOutput").textContent = score + "%";
+    document.getElementById("riskMetric").textContent = score + "%";
+  }
+
+  ["economicStress", "militaryLosses", "allianceInstability"].forEach(id => {
+    document.getElementById(id).addEventListener("input", updateAI);
+  });
+
+  updateAI();
+
+  const gold = "#d4af37";
+  const blue = "#38bdf8";
+  const red = "#ef4444";
+  const purple = "#8b5cf6";
+  const orange = "#fdba74";
+
+  Chart.defaults.color = "#cbd5e1";
+  Chart.defaults.borderColor = "rgba(148,163,184,0.18)";
+  Chart.defaults.font.family = "Arial";
+
+  new Chart(document.getElementById("powerChart"), {
     type: "radar",
-
     data: {
-      labels: [
-        "Military",
-        "Economy",
-        "Expansion",
-        "Leadership",
-        "Strategy",
-        "Influence"
-      ],
-
+      labels: ["Territory", "Military", "Economy", "Alliances", "Stability"],
       datasets: [
         {
-          label: "Clan Influence",
-          data: [92, 75, 95, 88, 93, 85],
-          borderColor: "#d4af37",
-          backgroundColor: "rgba(212,175,55,0.18)",
-          borderWidth: 2,
-          pointBackgroundColor: "#f8fafc"
+          label: "Tokugawa",
+          data: [92, 88, 95, 91, 89],
+          borderColor: gold,
+          backgroundColor: "rgba(212,175,55,0.18)"
+        },
+        {
+          label: "Oda",
+          data: [84, 96, 80, 72, 66],
+          borderColor: blue,
+          backgroundColor: "rgba(56,189,248,0.15)"
+        },
+        {
+          label: "Takeda",
+          data: [78, 94, 70, 65, 61],
+          borderColor: red,
+          backgroundColor: "rgba(239,68,68,0.14)"
         }
       ]
     },
-
     options: {
+      responsive: true,
       plugins: {
         legend: {
-          labels: {
-            color: "#f8fafc"
-          }
+          position: "bottom"
         }
       },
-
       scales: {
         r: {
-          angleLines: {
-            color: "rgba(148,163,184,0.2)"
-          },
-
-          grid: {
-            color: "rgba(148,163,184,0.2)"
-          },
-
-          pointLabels: {
-            color: "#cbd5e1"
-          },
-
           ticks: {
-            color: "#94a3b8",
             backdropColor: "transparent"
           }
         }
       }
     }
+  });
+
+  new Chart(document.getElementById("riceChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Tokugawa", "Oda", "Takeda", "Uesugi", "Shimazu"],
+      datasets: [{
+        data: [31, 24, 18, 15, 12],
+        backgroundColor: [gold, blue, red, purple, orange],
+        borderColor: "#050816",
+        borderWidth: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: "62%",
+      plugins: {
+        legend: {
+          position: "bottom"
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById("battleChart"), {
+    type: "bar",
+    data: {
+      labels: ["Tokugawa", "Oda", "Takeda", "Uesugi", "Shimazu"],
+      datasets: [{
+        data: [72, 76, 69, 64, 58],
+        backgroundColor: [gold, blue, red, purple, orange],
+        borderRadius: 10
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: {
+            callback: v => v + "%"
+          }
+        }
+      }
+    }
+  });
+
+  const canvas = document.getElementById("emberCanvas");
+  const ctx = canvas.getContext("2d");
+  let embers = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    embers = Array.from({ length: 80 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2.5 + 0.5,
+      vy: Math.random() * -0.6 - 0.2,
+      alpha: Math.random() * 0.6 + 0.2
+    }));
   }
-);
 
-document.getElementById("warModeBtn")
-  .addEventListener("click", () => {
+  function animateEmbers() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    document.body.classList.toggle("war-mode");
+    embers.forEach(e => {
+      e.y += e.vy;
+      if (e.y < -10) e.y = canvas.height + 10;
 
-    document.getElementById("warModeBtn")
-      .classList.toggle("active");
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(212,175,55,${e.alpha})`;
+      ctx.fill();
+    });
 
+    requestAnimationFrame(animateEmbers);
+  }
+
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+  animateEmbers();
+  const raceCanvas = document.getElementById("clanRaceCanvas");
+const raceCtx = raceCanvas.getContext("2d");
+const racePlayBtn = document.getElementById("racePlayBtn");
+const raceYearLabel = document.getElementById("raceYear");
+
+const raceYears = [1467, 1560, 1575, 1600];
+
+const raceData = {
+  oda: {
+    name: "Oda",
+    color: "#38bdf8",
+    image: "images/oda.jpg",
+    values: [42, 76, 91, 72]
+  },
+  tokugawa: {
+    name: "Tokugawa",
+    color: "#d4af37",
+    image: "images/tokugawa.jpg",
+    values: [35, 58, 74, 98]
+  },
+  takeda: {
+    name: "Takeda",
+    color: "#ef4444",
+    image: "images/takeda.jpg",
+    values: [48, 82, 86, 45]
+  },
+  uesugi: {
+    name: "Uesugi",
+    color: "#8b5cf6",
+    image: "images/uesugi.jpg",
+    values: [46, 74, 80, 61]
+  },
+  shimazu: {
+    name: "Shimazu",
+    color: "#fdba74",
+    image: "images/shimazu.jpg",
+    values: [38, 55, 68, 78]
+  }
+};
+
+const raceImages = {};
+Object.entries(raceData).forEach(([key, clan]) => {
+  const img = new Image();
+  img.src = clan.image;
+  raceImages[key] = img;
 });
 
-setTimeout(() => {
-  document.getElementById("introOverlay")
-    .classList.add("hidden");
-}, 1800);
+let raceProgress = 0;
+let racePlaying = false;
+let raceAnimationId = null;
 
+function interpolate(values, progress) {
+  const maxStep = values.length - 1;
+  const raw = progress * maxStep;
+  const index = Math.floor(raw);
+  const t = raw - index;
+
+  if (index >= maxStep) return values[maxStep];
+
+  return values[index] * (1 - t) + values[index + 1] * t;
+}
+
+function interpolateYear(progress) {
+  const maxStep = raceYears.length - 1;
+  const raw = progress * maxStep;
+  const index = Math.floor(raw);
+  const t = raw - index;
+
+  if (index >= maxStep) return raceYears[maxStep];
+
+  return Math.round(raceYears[index] * (1 - t) + raceYears[index + 1] * t);
+}
+
+function drawRoundedImage(ctx, img, x, y, size) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.clip();
+
+  if (img.complete) {
+    ctx.drawImage(img, x, y, size, size);
+  } else {
+    ctx.fillStyle = "#111827";
+    ctx.fillRect(x, y, size, size);
+  }
+
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
+  ctx.strokeStyle = "#f8fafc";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+}
+
+function drawRaceChart() {
+  const width = raceCanvas.width;
+  const height = raceCanvas.height;
+
+  raceCtx.clearRect(0, 0, width, height);
+
+  const paddingLeft = 90;
+  const paddingRight = 260;
+  const paddingTop = 70;
+  const paddingBottom = 70;
+
+  const chartWidth = width - paddingLeft - paddingRight;
+  const chartHeight = height - paddingTop - paddingBottom;
+
+  const minVal = 30;
+  const maxVal = 100;
+
+  raceCtx.fillStyle = "#f8fafc";
+  raceCtx.font = "bold 30px Arial";
+  raceCtx.textAlign = "center";
+  raceCtx.fillText("The Most Powerful Clans of the Sengoku Era", width / 2, 38);
+
+  raceCtx.strokeStyle = "rgba(248,250,252,0.22)";
+  raceCtx.lineWidth = 1;
+
+  raceCtx.font = "14px Arial";
+  raceCtx.fillStyle = "#94a3b8";
+  raceCtx.textAlign = "right";
+
+  for (let v = 40; v <= 100; v += 10) {
+    const y = paddingTop + chartHeight - ((v - minVal) / (maxVal - minVal)) * chartHeight;
+
+    raceCtx.beginPath();
+    raceCtx.moveTo(paddingLeft, y);
+    raceCtx.lineTo(width - paddingRight + 40, y);
+    raceCtx.stroke();
+
+    raceCtx.fillText(v, paddingLeft - 15, y + 5);
+  }
+
+  raceYears.forEach((year, i) => {
+    const x = paddingLeft + (i / (raceYears.length - 1)) * chartWidth;
+    raceCtx.fillStyle = "#cbd5e1";
+    raceCtx.font = "bold 18px Arial";
+    raceCtx.textAlign = "center";
+    raceCtx.fillText(year, x, height - 25);
+  });
+
+  const currentYear = interpolateYear(raceProgress);
+  raceYearLabel.textContent = currentYear;
+
+  Object.entries(raceData).forEach(([key, clan]) => {
+    const visibleStep = raceProgress * (raceYears.length - 1);
+    const points = [];
+
+    for (let i = 0; i <= Math.floor(visibleStep); i++) {
+      points.push({
+        x: paddingLeft + (i / (raceYears.length - 1)) * chartWidth,
+        y: paddingTop + chartHeight - ((clan.values[i] - minVal) / (maxVal - minVal)) * chartHeight
+      });
+    }
+
+    const nextIndex = Math.floor(visibleStep);
+    const t = visibleStep - nextIndex;
+
+    if (nextIndex < raceYears.length - 1) {
+      const v = clan.values[nextIndex] * (1 - t) + clan.values[nextIndex + 1] * t;
+      points.push({
+        x: paddingLeft + ((nextIndex + t) / (raceYears.length - 1)) * chartWidth,
+        y: paddingTop + chartHeight - ((v - minVal) / (maxVal - minVal)) * chartHeight
+      });
+    }
+
+    if (points.length > 1) {
+      raceCtx.beginPath();
+      raceCtx.moveTo(points[0].x, points[0].y);
+
+      points.slice(1).forEach(p => raceCtx.lineTo(p.x, p.y));
+
+      raceCtx.strokeStyle = clan.color;
+      raceCtx.lineWidth = 5;
+      raceCtx.shadowColor = clan.color;
+      raceCtx.shadowBlur = 14;
+      raceCtx.stroke();
+      raceCtx.shadowBlur = 0;
+    }
+
+    const currentValue = interpolate(clan.values, raceProgress);
+    const lastPoint = points[points.length - 1];
+
+    if (lastPoint) {
+      drawRoundedImage(raceCtx, raceImages[key], lastPoint.x - 24, lastPoint.y - 24, 48);
+
+      raceCtx.fillStyle = clan.color;
+      raceCtx.font = "bold 18px Arial";
+      raceCtx.textAlign = "left";
+      raceCtx.fillText(`${clan.name} ${Math.round(currentValue)}`, lastPoint.x + 35, lastPoint.y + 6);
+    }
+  });
+}
+
+function animateRace() {
+  if (!racePlaying) return;
+
+  raceProgress += 0.0035;
+
+  if (raceProgress >= 1) {
+    raceProgress = 1;
+    racePlaying = false;
+    racePlayBtn.textContent = "↺ Replay Timeline";
+  }
+
+  drawRaceChart();
+  raceAnimationId = requestAnimationFrame(animateRace);
+}
+
+racePlayBtn.addEventListener("click", () => {
+  if (raceProgress >= 1) {
+    raceProgress = 0;
+  }
+
+  racePlaying = !racePlaying;
+  racePlayBtn.textContent = racePlaying ? "⏸ Pause Timeline" : "▶ Play Timeline";
+
+  if (racePlaying) {
+    cancelAnimationFrame(raceAnimationId);
+    animateRace();
+  }
+});
+
+Object.values(raceImages).forEach(img => {
+  img.onload = drawRaceChart;
+});
+
+drawRaceChart();
 </script>
-
 </body>
 </html>
