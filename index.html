@@ -619,7 +619,7 @@ h2 {
 
   <a href="#about" class="hero-btn">Explore My Work ↓</a>
 </section>
-<section id="about" class="about-section">
+<section id="about" class="about-section reveal reveal-fade-left">
   <div class="about-image-wrap">
     <img src="./images/graduation.jpg" alt="Dominique J. Strong graduation photo" class="about-image">
   </div>
@@ -654,7 +654,7 @@ h2 {
 <section id="work-experience">
   <h2>Work Experience</h2>
 
-  <div class="experience-timeline">
+  <div class="experience-timeline reveal reveal-stagger">
 
     <div class="experience-row">
       <div class="experience-logo">
@@ -705,8 +705,7 @@ h2 {
     </div>
 
   </div>
-</section>
-  <section class="impact-preview-section">
+  <section class="impact-preview-section reveal reveal-glow">
   <canvas id="impact-stars-canvas"></canvas>
 
   <div class="impact-copy">
@@ -798,7 +797,7 @@ h2 {
 </section>
 
 <section>
-  <section class="education-section">
+  <section class="impact-preview-section reveal reveal-glow">
   <h2>Education</h2>
 
   <div class="education-entry">
@@ -1061,6 +1060,25 @@ setInterval(() => {
   resize();
   animate();
 })();
+</script>
+
+<script>
+const revealItems = document.querySelectorAll(".reveal, .reveal-stagger");
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    }
+  });
+}, {
+  threshold: 0.18,
+  rootMargin: "0px 0px -60px 0px"
+});
+
+revealItems.forEach(item => {
+  revealObserver.observe(item);
+});
 </script>
 
 </body>
