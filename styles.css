@@ -517,8 +517,11 @@ h2 {
 }
 
 .constellation-preview {
+  position: relative;
   width: 100%;
-  height: 560px;
+  height: 640px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .constellation-lines {
@@ -530,14 +533,14 @@ h2 {
 }
 
 .constellation-lines line {
-  stroke: rgba(255,255,255,0.22);
+  stroke: rgba(255,255,255,0.16);
   stroke-width: 2;
 }
 
 .impact-node {
   position: absolute;
-  width: 150px;
-  height: 150px;
+  width: 155px;
+  height: 155px;
   border-radius: 50%;
 
   display: flex;
@@ -547,8 +550,12 @@ h2 {
   text-align: center;
 
   z-index: 2;
-  backdrop-filter: blur(14px);
-  transition: all 0.35s ease;
+
+  backdrop-filter: blur(16px);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .impact-node:hover {
@@ -556,56 +563,79 @@ h2 {
 }
 
 .impact-node span {
-  font-size: 1.45rem;
+  font-size: 1.7rem;
   font-weight: 950;
   color: white;
 }
 
 .impact-node p {
-  margin: 0.4rem 0 0;
-  color: #e2e8f0;
+  margin: 0.35rem 0 0;
+  color: #f1f5f9;
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.2;
+  font-size: 1rem;
 }
 
+/* ===== NODE POSITIONS ===== */
+
 .node-renewals {
-  left: 43%;
-  top: 10%;
-  background: rgba(134,239,172,0.14);
+  left: 42%;
+  top: 8%;
+
+  background: rgba(134,239,172,0.12);
   border: 2px solid #86efac;
-  box-shadow: 0 0 35px rgba(134,239,172,0.4);
+
+  box-shadow:
+    0 0 35px rgba(134,239,172,0.4),
+    0 0 80px rgba(134,239,172,0.16);
 }
 
 .node-executive {
-  right: 7%;
-  top: 30%;
-  background: rgba(253,224,71,0.14);
-  border: 2px solid #fde047;
-  box-shadow: 0 0 35px rgba(253,224,71,0.4);
+  right: 5%;
+  top: 28%;
+
+  background: rgba(250,204,21,0.12);
+  border: 2px solid #facc15;
+
+  box-shadow:
+    0 0 35px rgba(250,204,21,0.35),
+    0 0 70px rgba(250,204,21,0.14);
 }
 
 .node-kpi {
-  left: 22%;
-  top: 35%;
-  background: rgba(56,189,248,0.14);
+  left: 18%;
+  top: 34%;
+
+  background: rgba(56,189,248,0.12);
   border: 2px solid #38bdf8;
-  box-shadow: 0 0 35px rgba(56,189,248,0.4);
+
+  box-shadow:
+    0 0 35px rgba(56,189,248,0.35),
+    0 0 70px rgba(56,189,248,0.12);
 }
 
 .node-forecasting {
-  left: 47%;
-  bottom: 8%;
-  background: rgba(249,115,22,0.14);
+  left: 48%;
+  bottom: 5%;
+
+  background: rgba(249,115,22,0.12);
   border: 2px solid #f97316;
-  box-shadow: 0 0 35px rgba(249,115,22,0.4);
+
+  box-shadow:
+    0 0 35px rgba(249,115,22,0.35),
+    0 0 70px rgba(249,115,22,0.12);
 }
 
 .node-testing {
-  left: 10%;
+  left: 3%;
   bottom: 12%;
-  background: rgba(168,85,247,0.14);
+
+  background: rgba(168,85,247,0.12);
   border: 2px solid #a855f7;
-  box-shadow: 0 0 35px rgba(168,85,247,0.4);
+
+  box-shadow:
+    0 0 35px rgba(168,85,247,0.35),
+    0 0 70px rgba(168,85,247,0.12);
 }
 
 .impact-galaxy-btn {
