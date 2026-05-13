@@ -1,1272 +1,1316 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Feudal Japan Intelligence Network</title>
+<title>Dominique J. Strong</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="styles.css">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(212,175,55,0.15), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(127,29,29,0.2), transparent 35%),
-        #050816;
-      color: #f8fafc;
-      overflow-x: hidden;
-      transition: background 0.5s ease;
-    }
-
-    body.war-mode {
-      background:
-        radial-gradient(circle at top left, rgba(239,68,68,0.24), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(127,29,29,0.35), transparent 35%),
-        #08030a;
-    }
-
-    #emberCanvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .intro-overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle, rgba(212,175,55,0.18), #050816 65%);
-      z-index: 9999;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-
-    .intro-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .intro-crest {
-      width: 130px;
-      height: 130px;
-      border: 2px solid #d4af37;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: #d4af37;
-      font-size: 4rem;
-      box-shadow: 0 0 50px rgba(212,175,55,0.35);
-      animation: crestPulse 1.8s infinite ease-in-out;
-      margin: 0 auto 1.5rem;
-    }
-
-    .intro-overlay h2 {
-      color: #f8fafc;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      margin-bottom: 0.7rem;
-    }
-
-    .intro-overlay p {
-      color: #94a3b8;
-      letter-spacing: 0.12em;
-    }
-
-    @keyframes crestPulse {
-      0%, 100% {
-        transform: scale(1);
-        opacity: 0.75;
-      }
-
-      50% {
-        transform: scale(1.08);
-        opacity: 1;
-      }
-    }
-
-    .page {
-      padding: 2rem 4%;
-      position: relative;
-      z-index: 2;
-    }
-
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 3rem;
-      gap: 1rem;
-    }
-
-    .top-nav a,
-    .brand {
-      color: #f8fafc;
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-    }
-
-    .top-nav a:hover {
-      color: #d4af37;
-    }
-
-    .brand {
-      color: #d4af37;
-    }
-
-    .hero {
-      border-bottom: 1px solid rgba(212,175,55,0.35);
-      padding-bottom: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .eyebrow {
-      color: #d4af37;
-      letter-spacing: 0.45em;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-      margin-bottom: 0.8rem;
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 7vw, 6.5rem);
-      line-height: 0.95;
-      margin: 0;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      background: linear-gradient(90deg, #d4af37, #f8fafc, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .subtitle {
-      color: #94a3b8;
-      font-size: 1.15rem;
-      max-width: 900px;
-      margin-top: 1rem;
-      line-height: 1.55;
-    }
-
-    .control-row {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin: 2rem 0 3rem;
-    }
-
-    .control-card {
-      border: 1px solid rgba(212,175,55,0.5);
-      background: rgba(15,23,42,0.72);
-      padding: 1rem 1.4rem;
-      border-radius: 12px;
-      min-width: 190px;
-      box-shadow: 0 0 25px rgba(212,175,55,0.08);
-    }
-
-    .control-label {
-      color: #d4af37;
-      font-size: 0.7rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      margin-bottom: 0.35rem;
-    }
-
-    .control-value {
-      font-size: 1.15rem;
-      font-weight: 900;
-    }
-
-    .panel,
-    .metric-card {
-      position: relative;
-      background: rgba(15,23,42,0.82);
-      border: 1px solid rgba(148,163,184,0.25);
-      border-radius: 18px;
-      box-shadow: 0 25px 70px rgba(0,0,0,0.35);
-      overflow: hidden;
-    }
-
-    .panel {
-      padding: 1.7rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .panel-title {
-      margin: 0;
-      font-size: 1.4rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .panel-subtitle {
-      color: #94a3b8;
-      font-size: 0.75rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      margin-top: 0.4rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
-    }
-
-    .dashboard,
-    .main-grid {
-      display: grid;
-      grid-template-columns: 330px 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .main-grid {
-      grid-template-columns: 1.2fr 0.8fr;
-    }
-
-    .metric-stack {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .metric-card {
-      padding: 2rem;
-      min-height: 150px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .metric-value {
-      color: #d4af37;
-      font-size: 3.6rem;
-      font-weight: 900;
-      text-shadow: 0 0 22px rgba(212,175,55,0.35);
-    }
-
-    .metric-title {
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.3em;
-      font-size: 0.75rem;
-    }
-
-    .map-controls {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-      align-items: center;
-    }
-
-    select,
-    button,
-    input[type="range"] {
-      background: rgba(2,6,23,0.9);
-      color: #f8fafc;
-      border: 1px solid rgba(212,175,55,0.55);
-      border-radius: 10px;
-      padding: 0.85rem 1rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: rgba(212,175,55,0.16);
-    }
-
-    .war-btn.active {
-      background: rgba(239,68,68,0.25);
-      border-color: #ef4444;
-      color: #fecaca;
-    }
-
-    .year-box {
-      color: #d4af37;
-      font-size: 1.5rem;
-      font-weight: 900;
-      min-width: 90px;
-    }
-
-    /* ===== Upgraded Map System ===== */
-
-    .map-wrap {
-      display: grid;
-      grid-template-columns: 1.35fr 0.65fr;
-      gap: 1.5rem;
-      align-items: stretch;
-    }
-
-    .map-stage {
-      position: relative;
-      min-height: 600px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid rgba(148,163,184,0.22);
-      background:
-        radial-gradient(circle at 65% 45%, rgba(56,189,248,0.12), transparent 35%),
-        radial-gradient(circle at 30% 65%, rgba(212,175,55,0.08), transparent 32%),
-        rgba(2,6,23,0.72);
-      box-shadow:
-        inset 0 0 70px rgba(0,0,0,0.4),
-        0 0 45px rgba(56,189,248,0.08);
-    }
-
-    .leader-watermark {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 48%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.11;
-      filter:
-        grayscale(100%)
-        contrast(1.4)
-        brightness(0.7)
-        blur(1px);
-      mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.7) 48%, transparent 100%);
-      -webkit-mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.7) 48%, transparent 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    #japanMap {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      height: 600px;
-      background: transparent;
-    }
-
-    .japan-land {
-      fill: rgba(15,23,42,0.95);
-      stroke: rgba(212,175,55,0.65);
-      stroke-width: 2;
-      filter: drop-shadow(0 0 10px rgba(212,175,55,0.15));
-    }
-
-    .province-hotspot {
-      fill: rgba(56,189,248,0.08);
-      stroke: rgba(56,189,248,0.25);
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-
-    .province-hotspot:hover {
-      fill: rgba(212,175,55,0.25);
-      stroke: #d4af37;
-    }
-
-    .expansion-zone {
-      opacity: 0.18;
-      stroke-width: 3;
-      filter:
-        drop-shadow(0 0 18px currentColor)
-        blur(1px);
-      transition:
-        opacity 0.5s ease,
-        r 0.6s ease;
-    }
-
-    .expansion-zone.active {
-      opacity: 0.55;
-      animation: territoryPulse 3s infinite ease-in-out;
-      transform-origin: center;
-    }
-
-    @keyframes territoryPulse {
-      0% {
-        transform: scale(1);
-        opacity: 0.22;
-      }
-
-      50% {
-        transform: scale(1.03);
-        opacity: 0.45;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 0.22;
-      }
-    }
-
-    .clan-marker {
-      stroke: #f8fafc;
-      stroke-width: 2;
-      filter: drop-shadow(0 0 14px rgba(212,175,55,0.8));
-      animation: pulseMarker 1.8s infinite ease-in-out;
-    }
-
-    .route-line {
-      stroke-width: 4;
-      stroke-dasharray: 10;
-      filter: drop-shadow(0 0 12px rgba(56,189,248,0.8));
-      animation: dashMove 1.4s linear infinite;
-    }
-
-    .marker-label {
-      fill: #f8fafc;
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-    }
-
-    .event-year {
-      fill: #d4af37;
-      font-size: 15px;
-      font-weight: 900;
-    }
-
-    .event-callout {
-      fill: #f8fafc;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .timeline-strip {
-      position: absolute;
-      left: 1rem;
-      right: 1rem;
-      bottom: 1rem;
-      z-index: 4;
-      padding: 1rem;
-      border-radius: 16px;
-      background: rgba(2,6,23,0.82);
-      border: 1px solid rgba(212,175,55,0.25);
-      backdrop-filter: blur(10px);
-    }
-
-    .timeline-dots {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-    }
-
-    .timeline-dot {
-      color: #94a3b8;
-      font-size: 0.75rem;
-      text-align: center;
-      line-height: 1.35;
-    }
-
-    .timeline-dot span {
-      display: block;
-      width: 14px;
-      height: 14px;
-      margin: 0 auto 0.4rem;
-      border-radius: 50%;
-      background: #334155;
-      border: 2px solid #64748b;
-    }
-
-    .timeline-dot.active {
-      color: #f8fafc;
-      font-weight: 800;
-    }
-
-    .timeline-dot.active span {
-      background: #d4af37;
-      border-color: #facc15;
-      box-shadow: 0 0 18px rgba(212,175,55,0.7);
-    }
-
-    @keyframes pulseMarker {
-      0%, 100% {
-        opacity: 0.85;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1.18);
-      }
-    }
-
-    @keyframes dashMove {
-      to {
-        stroke-dashoffset: -20;
-      }
-    }
-
-    .map-story,
-    .tooltip-card {
-      background: rgba(2,6,23,0.72);
-      border-left: 4px solid #d4af37;
-      border-radius: 14px;
-      padding: 1.5rem;
-      color: #cbd5e1;
-      line-height: 1.7;
-      font-size: 1.05rem;
-    }
-
-    .tooltip-card {
-      margin-top: 1rem;
-      border-left-color: #38bdf8;
-    }
-
-    .clan-profile-card {
-      margin-top: 1rem;
-      background: rgba(2,6,23,0.78);
-      border: 1px solid rgba(212,175,55,0.35);
-      border-radius: 16px;
-      padding: 1rem;
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 1rem;
-      align-items: center;
-      box-shadow: 0 0 35px rgba(212,175,55,0.08);
-    }
-
-    .clan-profile-card img {
-      width: 120px;
-      height: 145px;
-      object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid rgba(212,175,55,0.5);
-      background: rgba(15,23,42,0.85);
-    }
-
-    .clan-profile-card h3 {
-      margin: 0 0 0.5rem;
-      color: #d4af37;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .clan-profile-card p {
-      margin: 0.35rem 0;
-      color: #cbd5e1;
-      font-size: 0.92rem;
-      line-height: 1.4;
-    }
-
-    .battle-feed {
-      margin-top: 1rem;
-      background: rgba(127,29,29,0.25);
-      border: 1px solid rgba(239,68,68,0.45);
-      border-radius: 14px;
-      padding: 1rem;
-      color: #fecaca;
-    }
-
-    .battle-feed-title {
-      color: #fca5a5;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-size: 0.7rem;
-      margin-bottom: 0.5rem;
-    }    .analysis-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .analysis-card {
-      background: rgba(2,6,23,0.72);
-      border: 1px solid rgba(148,163,184,0.22);
-      border-radius: 16px;
-      padding: 1.2rem;
-    }
-
-    .analysis-card h4 {
-      margin-top: 0;
-      color: #d4af37;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 0.82rem;
-    }
-
-    .analysis-card p {
-      color: #cbd5e1;
-      line-height: 1.55;
-      font-size: 0.92rem;
-    }
-
-    canvas.chart {
-      width: 100% !important;
-      max-height: 360px !important;
-    }
-
-    .footer-note {
-      text-align: center;
-      margin-top: 3rem;
-      color: #64748b;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 0.7rem;
-    }
-
-    @media (max-width: 1100px) {
-
-      .dashboard,
-      .main-grid,
-      .map-wrap {
-        grid-template-columns: 1fr;
-      }
-
-      .map-stage {
-        min-height: 720px;
-      }
-
-      #japanMap {
-        height: 720px;
-      }
-    }
-
-    @media (max-width: 768px) {
-
-      .page {
-        padding: 1.2rem;
-      }
-
-      h1 {
-        font-size: 3rem;
-      }
-
-      .clan-profile-card {
-        grid-template-columns: 1fr;
-      }
-
-      .clan-profile-card img {
-        width: 100%;
-        height: 260px;
-      }
-
-      .timeline-dots {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-  </style>
-</head>
-
-<body>
-
-<canvas id="emberCanvas"></canvas>
-
-<div class="intro-overlay" id="introOverlay">
-  <div>
-    <div class="intro-crest">⚔</div>
-
-    <h2>Feudal Japan Intelligence Network</h2>
-
-    <p>Loading Clan Influence Systems...</p>
-  </div>
-</div>
-
-<div class="page">
-
-  <nav class="top-nav">
-    <div class="brand">戦国 Analytics</div>
-
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-      <a href="index.html">Home</a>
-      <a href="data-galaxy.html">Data Galaxy</a>
-      <a href="arcade.html">Arcade</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="eyebrow">Interactive Historical Intelligence</div>
-
-    <h1>Feudal Japan Command Center</h1>
-
-    <p class="subtitle">
-      Analyze the rise of major Sengoku-era clans through territorial expansion,
-      military campaigns, strategic strongholds, and political influence systems.
-      Track how each clan evolved across Japan over time through an interactive
-      intelligence network.
-    </p>
-  </section>
-
-  <div class="control-row">
-
-    <div class="control-card">
-      <div class="control-label">Active Timeline</div>
-      <div class="control-value" id="temporalStatus">1560</div>
-    </div>
-
-    <div class="control-card">
-      <div class="control-label">Dominant Clan</div>
-      <div class="control-value" id="activeClanDisplay">Oda</div>
-    </div>
-
-    <div class="control-card">
-      <div class="control-label">Campaign Status</div>
-      <div class="control-value" id="campaignStatus">Expansion Active</div>
-    </div>
-
-  </div>
-
-  <div class="dashboard">
-
-    <div class="metric-stack">
-
-      <div class="metric-card">
-        <div class="metric-title">Territory Influence</div>
-        <div class="metric-value" id="territoryValue">68%</div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-title">Strategic Pressure</div>
-        <div class="metric-value" id="pressureValue">82</div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-title">Military Readiness</div>
-        <div class="metric-value" id="militaryValue">91</div>
-      </div>
-
-    </div>
-
-    <div class="panel">
-
-      <h2 class="panel-title">Clan Expansion Map</h2>
-
-      <div class="panel-subtitle">
-        Track territorial expansion, campaign movement, and strategic influence.
-      </div>
-
-      <div class="map-controls">
-
-        <select id="clanSelect">
-          <option value="oda">Oda Clan</option>
-          <option value="tokugawa">Tokugawa Clan</option>
-          <option value="takeda">Takeda Clan</option>
-          <option value="uesugi">Uesugi Clan</option>
-          <option value="shimazu">Shimazu Clan</option>
-        </select>
-
-        <input type="range" id="yearSlider" min="0" max="3" value="0">
-
-        <div class="year-box" id="yearDisplay">1560</div>
-
-        <button id="warModeBtn" class="war-btn">
-          War Mode
-        </button>
-
-      </div>
-
-      <div class="map-wrap">
-
-        <div class="map-stage">
-
-          <img
-            id="leaderWatermark"
-            class="leader-watermark"
-            src="images/oda.jpg"
-            alt="Clan leader background"
-          >
-
-          <svg id="japanMap" viewBox="0 0 800 520">
-
-            <path
-              class="japan-land"
-              d="M155 92 L218 60 L318 78 L410 105 L490 135 L565 175 L640 255 L692 338 L655 420 L580 460 L455 470 L345 455 L240 420 L180 355 L148 285 L132 195 Z"
-            />
-
-            <circle class="province-hotspot" cx="250" cy="170" r="34" />
-            <circle class="province-hotspot" cx="360" cy="220" r="34" />
-            <circle class="province-hotspot" cx="500" cy="280" r="34" />
-            <circle class="province-hotspot" cx="610" cy="335" r="34" />
-
-            <g id="expansionZones"></g>
-
-            <g id="eventCallouts"></g>
-
-            <g id="markers"></g>
-
-            <line id="routeLine"></line>
-
-          </svg>
-
-          <div class="timeline-strip">
-            <div class="timeline-dots" id="timelineDots"></div>
-          </div>
-
-        </div>
-
-        <div>
-
-          <div class="map-story" id="mapStory">
-            Oda Nobunaga begins consolidating central Japan and initiates the
-            unification campaign that will reshape the balance of power across
-            the Sengoku era.
-          </div>
-
-          <div class="clan-profile-card">
-
-            <img
-              id="profileImage"
-              src="images/oda.jpg"
-              alt="Clan leader"
-            >
-
-            <div>
-              <h3 id="profileTitle">Oda Nobunaga</h3>
-
-              <p id="profileDescription">
-                Aggressive strategist known for military modernization,
-                innovation, and rapid territorial expansion.
-              </p>
-
-              <p id="profileStrength">
-                Strategic Strength: Rapid Expansion
-              </p>
-            </div>
-
-          </div>
-
-          <div class="battle-feed">
-
-            <div class="battle-feed-title">
-              Key Event
-            </div>
-
-            <div id="battleFeedText">
-              Battle of Okehazama reshapes political influence in central Japan.
-            </div>
-
-          </div>
-
-          <div class="tooltip-card">
-            Hover over strategic provinces and timeline stages to visualize
-            how each clan expanded influence across Japan.
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="main-grid">
-
-    <div class="panel">
-
-      <h2 class="panel-title">Clan Influence Analysis</h2>
-
-      <div class="panel-subtitle">
-        Comparative strategic positioning and military influence.
-      </div>
-
-      <canvas id="clanChart" class="chart"></canvas>
-
-    </div>
-
-    <div class="panel">
-
-      <h2 class="panel-title">Strategic Intelligence</h2>
-
-      <div class="panel-subtitle">
-        Core operational characteristics and leadership analysis.
-      </div>
-
-      <div class="analysis-grid">
-
-        <div class="analysis-card">
-          <h4>Military Innovation</h4>
-          <p>
-            Adoption of firearms, cavalry mobility, and coordinated battlefield
-            strategy dramatically shifted territorial control.
-          </p>
-        </div>
-
-        <div class="analysis-card">
-          <h4>Political Control</h4>
-          <p>
-            Clan alliances, castle systems, and regional governance structures
-            influenced long-term stability.
-          </p>
-        </div>
-
-        <div class="analysis-card">
-          <h4>Economic Power</h4>
-          <p>
-            Agricultural production, trade access, and taxation enabled
-            sustainable military campaigns.
-          </p>
-        </div>
-
-        <div class="analysis-card">
-          <h4>Expansion Strategy</h4>
-          <p>
-            Expansion corridors reveal how geography and regional pressure
-            shaped influence growth.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="footer-note">
-    Feudal Japan Intelligence Network • Interactive Analytics Experience
-  </div>
-
-</div>
-
-<script>
-
-const years = ["1560", "1575", "1582", "1600"];
-
-const clanProfiles = {
-
-  oda: {
-    title: "Oda Nobunaga",
-    image: "images/oda.jpg",
-    alt: "Oda Nobunaga",
-    description:
-      "Aggressive strategist known for military modernization, innovation, and rapid territorial expansion.",
-    strength:
-      "Strategic Strength: Rapid Expansion",
-    feed:
-      "Battle of Okehazama reshapes political influence in central Japan."
-  },
-
-  tokugawa: {
-    title: "Tokugawa Ieyasu",
-    image: "images/tokugawa.jpg",
-    alt: "Tokugawa Ieyasu",
-    description:
-      "Master political strategist who established long-term national stability.",
-    strength:
-      "Strategic Strength: Political Consolidation",
-    feed:
-      "Tokugawa influence expands after the Battle of Sekigahara."
-  },
-
-  takeda: {
-    title: "Takeda Shingen",
-    image: "images/takeda.jpg",
-    alt: "Takeda Shingen",
-    description:
-      "Legendary cavalry commander feared across feudal Japan.",
-    strength:
-      "Strategic Strength: Cavalry Warfare",
-    feed:
-      "Takeda cavalry campaigns dominate regional battlefields."
-  },
-
-  uesugi: {
-    title: "Uesugi Kenshin",
-    image: "images/uesugi.jpg",
-    alt: "Uesugi Kenshin",
-    description:
-      "Highly disciplined military leader and rival to Takeda Shingen.",
-    strength:
-      "Strategic Strength: Tactical Warfare",
-    feed:
-      "Rivalries in central Japan intensify regional conflict."
-  },
-
-  shimazu: {
-    title: "Shimazu Yoshihisa",
-    image: "images/shimazu.jpg",
-    alt: "Shimazu Yoshihisa",
-    description:
-      "Southern clan leaders who expanded influence throughout Kyushu.",
-    strength:
-      "Strategic Strength: Regional Domination",
-    feed:
-      "Shimazu campaigns strengthen southern territorial control."
-  }
-
-};
-
-const clanRoutes = {
-
-  oda: {
-    color: "#d4af37",
-    stories: [
-      "Oda Nobunaga begins consolidating central Japan.",
-      "Rapid expansion continues through military modernization.",
-      "Political alliances reshape territorial control.",
-      "Oda influence sets the foundation for national unification."
-    ],
-    points: [
-      { x: 260, y: 220, name: "Owari" },
-      { x: 360, y: 240, name: "Kyoto" },
-      { x: 470, y: 285, name: "Azuchi" },
-      { x: 590, y: 330, name: "Expansion Peak" }
-    ]
-  },
-
-  tokugawa: {
-    color: "#38bdf8",
-    stories: [
-      "Tokugawa influence begins in Mikawa Province.",
-      "Strategic alliances strengthen regional stability.",
-      "Eastern Japan consolidates under Tokugawa influence.",
-      "Victory at Sekigahara secures national dominance."
-    ],
-    points: [
-      { x: 340, y: 255, name: "Mikawa" },
-      { x: 430, y: 270, name: "Edo" },
-      { x: 520, y: 295, name: "Eastern Control" },
-      { x: 640, y: 345, name: "Shogunate" }
-    ]
-  }
-
-};
-
-const clanSelect = document.getElementById("clanSelect");
-const yearSlider = document.getElementById("yearSlider");
-
-const yearDisplay = document.getElementById("yearDisplay");
-const temporalStatus = document.getElementById("temporalStatus");
-
-const mapStory = document.getElementById("mapStory");
-
-const markers = document.getElementById("markers");
-const routeLine = document.getElementById("routeLine");
-
-function renderClanRoute() {
-
-  const clan = clanRoutes[clanSelect.value];
-  const profile = clanProfiles[clanSelect.value];
-
-  const step = Number(yearSlider.value);
-
-  const visiblePoints = clan.points.slice(0, step + 1);
-
-  const expansionZones = document.getElementById("expansionZones");
-  const timelineDots = document.getElementById("timelineDots");
-
-  markers.innerHTML = "";
-  expansionZones.innerHTML = "";
-  timelineDots.innerHTML = "";
-
-  yearDisplay.textContent = years[step];
-  temporalStatus.textContent = years[step];
-
-  mapStory.textContent = clan.stories[step];
-
-  document.getElementById("leaderWatermark").src = profile.image;
-  document.getElementById("profileImage").src = profile.image;
-
-  document.getElementById("profileTitle").textContent = profile.title;
-  document.getElementById("profileDescription").textContent = profile.description;
-  document.getElementById("profileStrength").textContent = profile.strength;
-  document.getElementById("battleFeedText").textContent = profile.feed;
-
-  document.getElementById("activeClanDisplay").textContent =
-    clanSelect.options[clanSelect.selectedIndex].text;
-
-  visiblePoints.forEach((point, i) => {
-
-    const zone = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "circle"
-    );
-
-    zone.setAttribute("cx", point.x);
-    zone.setAttribute("cy", point.y);
-
-    zone.setAttribute("r", 34 + i * 22);
-
-    zone.setAttribute("fill", clan.color);
-    zone.setAttribute("stroke", clan.color);
-
-    zone.setAttribute(
-      "class",
-      i === step ? "expansion-zone active" : "expansion-zone"
-    );
-
-    expansionZones.appendChild(zone);
-
-  });
-
-  routeLine.style.display = "none";
-
-  for (let i = 0; i < visiblePoints.length - 1; i++) {
-
-    const start = visiblePoints[i];
-    const end = visiblePoints[i + 1];
-
-    const path = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "line"
-    );
-
-    path.setAttribute("x1", start.x);
-    path.setAttribute("y1", start.y);
-
-    path.setAttribute("x2", end.x);
-    path.setAttribute("y2", end.y);
-
-    path.setAttribute("stroke", clan.color);
-    path.setAttribute("class", "route-line");
-
-    markers.appendChild(path);
-
-  }
-
-  visiblePoints.forEach((point, i) => {
-
-    const circle = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "circle"
-    );
-
-    circle.setAttribute("cx", point.x);
-    circle.setAttribute("cy", point.y);
-
-    circle.setAttribute("r", 11 + i * 2);
-
-    circle.setAttribute("class", "clan-marker");
-    circle.setAttribute("fill", clan.color);
-
-    const label = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "text"
-    );
-
-    label.setAttribute("x", point.x + 18);
-    label.setAttribute("y", point.y + 5);
-
-    label.setAttribute("class", "marker-label");
-
-    label.textContent = point.name;
-
-    const yearLabel = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "text"
-    );
-
-    yearLabel.setAttribute("x", point.x + 18);
-    yearLabel.setAttribute("y", point.y - 16);
-
-    yearLabel.setAttribute("class", "event-year");
-
-    yearLabel.textContent = years[i];
-
-    markers.appendChild(circle);
-
-    markers.appendChild(yearLabel);
-
-    markers.appendChild(label);
-
-  });
-
-  years.forEach((yr, i) => {
-
-    const dot = document.createElement("div");
-
-    dot.className =
-      i <= step ? "timeline-dot active" : "timeline-dot";
-
-    dot.innerHTML =
-      `<span></span>${yr}<br>${clan.points[i].name}`;
-
-    timelineDots.appendChild(dot);
-
-  });
-
+<style>
+html {
+  scroll-behavior: smooth;
 }
 
-clanSelect.addEventListener("change", renderClanRoute);
-yearSlider.addEventListener("input", renderClanRoute);
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #f8fafc;
+  overflow-x: hidden;
+}
 
-renderClanRoute();
+main {
+  position: relative;
+  z-index: 2;
+}
 
-const chart = new Chart(
-  document.getElementById("clanChart"),
-  {
-    type: "radar",
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  background: #000;
+}
 
-    data: {
-      labels: [
-        "Military",
-        "Economy",
-        "Expansion",
-        "Leadership",
-        "Strategy",
-        "Influence"
-      ],
+/* ===== Navbar ===== */
 
-      datasets: [
-        {
-          label: "Clan Influence",
-          data: [92, 75, 95, 88, 93, 85],
-          borderColor: "#d4af37",
-          backgroundColor: "rgba(212,175,55,0.18)",
-          borderWidth: 2,
-          pointBackgroundColor: "#f8fafc"
-        }
-      ]
-    },
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 
-    options: {
-      plugins: {
-        legend: {
-          labels: {
-            color: "#f8fafc"
-          }
-        }
-      },
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
 
-      scales: {
-        r: {
-          angleLines: {
-            color: "rgba(148,163,184,0.2)"
-          },
+  padding: 20px 30px;
 
-          grid: {
-            color: "rgba(148,163,184,0.2)"
-          },
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(14px);
 
-          pointLabels: {
-            color: "#cbd5e1"
-          },
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
 
-          ticks: {
-            color: "#94a3b8",
-            backdropColor: "transparent"
-          }
-        }
-      }
-    }
+.linkedin-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+}
+
+.linkedin-icon svg {
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.linkedin-icon:hover svg {
+  transform: scale(1.12);
+  color: #86efac;
+}
+
+.nav-link,
+.dropdown-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: #f8fafc !important;
+  text-decoration: none !important;
+
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+
+  padding: 12px 18px;
+  border-radius: 999px;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.nav-link:hover,
+.dropdown-toggle:hover {
+  color: #86efac !important;
+  background: rgba(134,239,172,0.08);
+  transform: translateY(-2px);
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  list-style: none;
+}
+
+.dropdown-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 115%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  min-width: 260px;
+  padding: 0.75rem;
+
+  background: rgba(5, 10, 20, 0.96);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+
+  display: none;
+}
+
+.nav-dropdown[open] .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  color: #86efac;
+  background: rgba(134,239,172,0.08);
+}
+
+/* ===== Hero ===== */
+
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero-name {
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 900;
+  margin-bottom: 2rem;
+  letter-spacing: -0.05em;
+}
+
+.phrase-wrapper {
+  height: 70px;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#rotating-phrase {
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: #86efac;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: phraseFade 4s ease-in-out infinite;
+}
+
+@keyframes phraseFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
   }
-);
 
-document.getElementById("warModeBtn")
-  .addEventListener("click", () => {
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-    document.body.classList.toggle("war-mode");
+  70% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-    document.getElementById("warModeBtn")
-      .classList.toggle("active");
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
 
-});
+.hero-subtitle {
+  max-width: 1100px;
+  font-size: clamp(1.5rem, 3vw, 2.7rem);
+  line-height: 1.4;
+  margin-bottom: 2rem;
+}
 
-setTimeout(() => {
-  document.getElementById("introOverlay")
-    .classList.add("hidden");
-}, 1800);
+.hero-subtitle-small {
+  font-size: clamp(1.2rem, 2vw, 2rem);
+}
 
-</script>
+.green-text {
+  color: #86efac;
+}
 
-</body>
-</html>
+.yellow-text {
+  color: #fde047;
+}
 
+.orange-text {
+  color: #fdba74;
+}
+
+.hero-btn {
+  margin-top: 2rem;
+  display: inline-block;
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  background: rgba(255,255,255,0.05);
+  transition: all 0.3s ease;
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.1);
+}
+
+section {
+  padding: 5rem 8%;
+}
+
+h2 {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 4rem;
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+}
+
+/* ===== About ===== */
+
+.about-section {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 6rem 8%;
+}
+
+.about-image-wrap {
+  width: 100%;
+}
+
+.about-image {
+  width: 100%;
+  max-height: 760px;
+  object-fit: cover;
+  border-radius: 16px;
+  filter: grayscale(100%);
+  box-shadow: 0 25px 70px rgba(0,0,0,0.45);
+}
+
+.about-copy {
+  text-align: left;
+}
+
+.section-label {
+  text-align: center;
+  letter-spacing: 1.4rem;
+  color: #94a3b8;
+  font-size: 1.6rem;
+  margin-bottom: 10rem;
+}
+
+.about-heading {
+  text-align: left;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  margin-bottom: 2rem;
+  text-decoration: none;
+}
+
+.about-heading::after {
+  content: "";
+  display: block;
+  width: 160px;
+  height: 4px;
+  background: #86efac;
+  margin-top: 0.4rem;
+}
+
+.about-copy p {
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  line-height: 1.7;
+  color: #e5e7eb;
+  margin-bottom: 1.3rem;
+}
+
+/* ===== Experience ===== */
+
+.experience-timeline {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.experience-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.experience-row::before {
+  content: "";
+  position: absolute;
+  left: 165px;
+  top: 50%;
+  width: 65px;
+  height: 3px;
+  background: rgba(255,255,255,0.18);
+}
+
+.experience-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.experience-logo img {
+  width: 145px;
+  height: 145px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.96);
+  padding: 0.9rem;
+  box-shadow: 0 0 35px rgba(255,255,255,0.14);
+  transition: transform 0.25s ease;
+}
+
+.experience-logo img:hover {
+  transform: scale(1.05);
+}
+
+.experience-card {
+  border-radius: 24px;
+  padding: 2.25rem;
+  box-shadow: 0 22px 55px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+}
+
+.experience-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+  font-size: 2rem;
+}
+
+.experience-card h3 a {
+  text-decoration: none;
+}
+
+.experience-card h3 a:hover {
+  text-decoration: underline;
+}
+
+.experience-card p {
+  color: #e5e7eb;
+}
+
+.role {
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+  color: #cbd5e1;
+}
+
+.aaa-card {
+  background: linear-gradient(
+    135deg,
+    rgba(180, 35, 40, 0.36),
+    rgba(50, 12, 14, 0.82)
+  );
+  border-left: 7px solid #ff5f67;
+}
+
+.aaa-card h3 a {
+  color: #ffb3b8;
+}
+
+.kaiser-card {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 115, 207, 0.34),
+    rgba(8, 36, 66, 0.84)
+  );
+  border-left: 7px solid #5cbcff;
+}
+
+.kaiser-card h3 a {
+  color: #a9d8ff;
+}
+
+/* ===== Impact Constellation Intro ===== */
+
+/* ===== Impact Constellation Homepage Preview ===== */
+
+/* ===== Impact Constellation Homepage Preview ===== */
+
+/* ===== Impact Command Constellation ===== */
+
+.impact-command-section {
+  position: relative;
+  min-height: 100vh;
+  padding: 7rem 6%;
+  display: grid;
+  grid-template-columns: 0.8fr 1.35fr;
+  gap: 3rem;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.impact-command-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 82% 22%, rgba(56,189,248,0.16), transparent 22%),
+    radial-gradient(circle at 72% 70%, rgba(168,85,247,0.16), transparent 28%),
+    radial-gradient(circle at 30% 85%, rgba(134,239,172,0.12), transparent 25%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+#impact-stars-canvas {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.impact-command-copy,
+.impact-orbit {
+  position: relative;
+  z-index: 3;
+}
+
+.impact-command-copy {
+  max-width: 520px;
+}
+
+.impact-tag {
+  color: #86efac;
+  font-weight: 950;
+  letter-spacing: 0.22em;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.impact-command-copy h2 {
+  text-align: left;
+  font-size: clamp(3.4rem, 6vw, 6rem);
+  line-height: 0.9;
+  margin: 0;
+  font-weight: 950;
+  letter-spacing: -0.065em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.impact-command-copy h2::after {
+  content: "";
+  display: block;
+  width: 150px;
+  height: 4px;
+  margin-top: 1rem;
+  background: #86efac;
+  box-shadow: 0 0 18px rgba(134,239,172,0.75);
+}
+
+.impact-subtitle {
+  margin-top: 1.6rem;
+  color: #d1d5db;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.impact-list {
+  margin: 2rem 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.impact-list div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.11);
+}
+
+.impact-list span {
+  color: #86efac;
+  font-size: 1.35rem;
+  font-weight: 950;
+}
+
+.impact-list p {
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 1.45;
+}
+
+/* right orbit */
+
+.impact-orbit {
+  height: 650px;
+  max-width: 950px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.orbit-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.orbit-lines line {
+  stroke: rgba(134,239,172,0.35);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 7px rgba(134,239,172,0.45));
+}
+
+.orbit-core,
+.orbit-node {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  backdrop-filter: blur(14px);
+}
+
+.orbit-core {
+  left: 50%;
+  top: 47%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 180px;
+  background: rgba(134,239,172,0.16);
+  border: 2px solid #86efac;
+  box-shadow:
+    0 0 45px rgba(134,239,172,0.5),
+    0 0 110px rgba(134,239,172,0.22);
+}
+
+.orbit-core span {
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 950;
+}
+
+.orbit-core p {
+  margin: 0.4rem 0 0;
+  color: #bbf7d0;
+  font-weight: 900;
+}
+
+.orbit-node {
+  width: 145px;
+  height: 145px;
+  padding: 0.6rem;
+  background: rgba(15,23,42,0.72);
+  border: 1.8px solid rgba(255,255,255,0.25);
+  box-shadow: 0 0 35px rgba(255,255,255,0.08);
+  animation: floatNode 7s ease-in-out infinite;
+}
+
+.orbit-node span {
+  color: #86efac;
+  font-size: 1.35rem;
+  font-weight: 950;
+  margin-bottom: 0.35rem;
+}
+
+.orbit-node strong {
+  color: #fff;
+  font-size: 0.92rem;
+  line-height: 1.15;
+}
+
+.orbit-node p {
+  color: #cbd5e1;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  margin: 0.45rem 0 0;
+}
+
+.orbit-retention {
+  left: 42%;
+  top: 0%;
+  border-color: #fb7185;
+  box-shadow: 0 0 35px rgba(251,113,133,0.28);
+}
+
+.orbit-executive {
+  right: 10%;
+  top: 7%;
+  border-color: #22c55e;
+  box-shadow: 0 0 35px rgba(34,197,94,0.28);
+}
+
+.orbit-kpi {
+  left: 10%;
+  top: 27%;
+  border-color: #38bdf8;
+  box-shadow: 0 0 35px rgba(56,189,248,0.28);
+}
+
+.orbit-forecast {
+  left: 23%;
+  bottom: 7%;
+  border-color: #a855f7;
+  box-shadow: 0 0 35px rgba(168,85,247,0.28);
+}
+
+.orbit-testing {
+  right: 17%;
+  bottom: 8%;
+  border-color: #fb7185;
+  box-shadow: 0 0 35px rgba(251,113,133,0.28);
+}
+
+.orbit-sme {
+  right: 0%;
+  top: 45%;
+  border-color: #facc15;
+  box-shadow: 0 0 35px rgba(250,204,21,0.28);
+}
+
+@keyframes floatNode {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+.impact-galaxy-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 1.6rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #020617;
+  background: #86efac;
+  font-weight: 950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 25px rgba(134,239,172,0.35);
+}
+
+.impact-galaxy-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 40px rgba(134,239,172,0.55);
+}
+
+@media (max-width: 950px) {
+  .impact-command-section {
+    grid-template-columns: 1fr;
+    padding: 6rem 2rem;
+  }
+
+  .impact-command-copy {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .impact-command-copy h2 {
+    text-align: center;
+  }
+
+  .impact-command-copy h2::after {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .impact-orbit {
+    height: 760px;
+  }
+}
+/* ===== Skills ===== */
+
+.skills-section {
+  min-height: 100vh;
+  padding: 6rem 8%;
+  text-align: center;
+}
+
+.skills-subtitle {
+  color: #94a3b8;
+  letter-spacing: 0.35rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+}
+
+.skills-grid {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.8rem;
+}
+
+.skill-circle {
+  width: 125px;
+  height: 125px;
+  border: 2px solid #86efac;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.05);
+  box-shadow: 0 0 25px rgba(134,239,172,0.12);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.skill-circle span {
+  font-weight: 800;
+  color: white;
+  font-size: 1.05rem;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.skill-circle::after {
+  content: attr(data-percent);
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(134,239,172,0.95);
+  color: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 900;
+  opacity: 0;
+  transform: scale(0.75);
+  transition: all 0.3s ease;
+}
+
+.skill-circle:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 0 40px rgba(134,239,172,0.45);
+}
+
+.skill-circle:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ===== Education ===== */
+
+.education-block {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(20,20,20,0.92);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+}
+
+/* ===== Premium Education Cards ===== */
+
+.education-entry {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 2.5rem;
+
+  align-items: start;
+
+  margin-bottom: 3rem;
+
+  background: rgba(15,15,15,0.78);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 28px;
+
+  padding: 2.25rem;
+
+  backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 20px 45px rgba(0,0,0,0.35),
+    inset 0 0 25px rgba(255,255,255,0.02);
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.education-entry:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(134,239,172,0.35);
+
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.45),
+    0 0 35px rgba(134,239,172,0.08);
+}
+
+.education-logo {
+  width: 125px;
+  height: 125px;
+
+  object-fit: contain;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.96);
+
+  padding: 0.55rem;
+
+  box-shadow:
+    0 0 35px rgba(255,255,255,0.16);
+}
+
+.education-copy h3 {
+  margin-top: 0;
+
+  font-size: 2rem;
+
+  color: white;
+}
+
+.education-copy h3 a {
+  color: white;
+  text-decoration: none;
+}
+
+.education-copy h3 a:hover {
+  color: #86efac;
+}
+
+.education-copy p,
+.education-copy li {
+  color: #d1d5db;
+  line-height: 1.7;
+}
+
+.education-divider {
+  height: 1px;
+
+  background: rgba(255,255,255,0.14);
+
+  margin: 3rem 0;
+}
+/* ===== Scrollbar ===== */
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #86efac, #38bdf8);
+  border-radius: 999px;
+}
+
+/* ===== Scroll Reveal ===== */
+
+.reveal-section {
+  opacity: 0;
+  transform: translateY(60px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+}
+
+.reveal-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Mobile ===== */
+
+@media (max-width: 900px) {
+  .about-section {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .section-label {
+    margin-bottom: 3rem;
+    letter-spacing: 0.8rem;
+  }
+
+  .about-copy {
+    text-align: center;
+  }
+
+  .about-heading {
+    text-align: center;
+  }
+
+  .about-heading::after {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .impact-mini-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .constellation-preview {
+    height: 850px;
+  }
+
+  .impact-node {
+    width: 124px;
+    height: 124px;
+  }
+
+  .node-retention {
+    left: 4%;
+    top: 12%;
+  }
+
+  .node-renewals {
+    left: 44%;
+    top: 7%;
+  }
+
+  .node-executive {
+    right: 4%;
+    top: 26%;
+  }
+
+  .node-sme {
+    left: 8%;
+    top: 43%;
+  }
+
+  .node-processor {
+    left: 42%;
+    top: 50%;
+    bottom: auto;
+  }
+
+  .node-revenue {
+    left: 10%;
+    bottom: 12%;
+  }
+
+  .node-forecasting {
+    right: 7%;
+    bottom: 6%;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .skill-circle {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+@media (max-width: 850px) {
+  .navbar {
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.9rem;
+  }
+
+  .experience-row {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .experience-row::before {
+    display: none;
+  }
+
+  .experience-logo img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .hero-name {
+    margin-top: 4rem;
+  }
+}
+/* ===== Education Section ===== */
+
+.education-section {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 6rem 8%;
+}
+
+.education-section h2 {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 5rem;
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+}
+
+.education-entry {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+.education-logo-link {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.education-logo {
+  width: 125px;
+  height: 125px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.96);
+  padding: 0.55rem;
+  box-shadow: 0 0 35px rgba(255,255,255,0.16);
+}
+
+.education-copy h3 {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.education-copy h3 a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.education-copy h3 a:hover {
+  color: #86efac;
+  text-decoration: underline;
+}
+
+.education-copy p {
+  color: #d1d5db;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  margin: 0.45rem 0;
+}
+
+.education-copy h4 {
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.education-copy ul {
+  color: #d1d5db;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  padding-left: 1.5rem;
+}
+
+.education-copy li {
+  margin-bottom: 0.65rem;
+}
+
+.education-copy strong {
+  color: #ffffff;
+}
+
+.education-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.22);
+  margin: 3.5rem 0 4rem 160px;
+}
+
+@media (max-width: 850px) {
+  .education-entry {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .education-logo-link {
+    justify-content: center;
+  }
+
+  .education-divider {
+    margin-left: 0;
+  }
+
+  .education-copy ul {
+    text-align: left;
+  }
+}
+/* ===== Scroll Reveal Animations ===== */
+
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease,
+    filter 0.9s ease;
+  will-change: opacity, transform, filter;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Animation types */
+
+.reveal-fade-up {
+  transform: translateY(70px);
+  filter: blur(6px);
+}
+
+.reveal-fade-left {
+  transform: translateX(-90px);
+  filter: blur(6px);
+}
+
+.reveal-fade-right {
+  transform: translateX(90px);
+  filter: blur(6px);
+}
+
+.reveal-zoom {
+  transform: scale(0.88);
+  filter: blur(8px);
+}
+
+.reveal-rotate {
+  transform: translateY(70px) rotateX(12deg);
+  transform-origin: top center;
+  filter: blur(6px);
+}
+
+.reveal-glow {
+  transform: translateY(50px) scale(0.96);
+  filter: blur(8px) brightness(0.7);
+}
+
+.reveal-glow.visible {
+  filter: blur(0) brightness(1);
+}
+
+/* Staggered child animation */
+
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(35px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.reveal-stagger.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.08s; }
+.reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.16s; }
+.reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.24s; }
+.reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.32s; }
+.reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.40s; }
+.reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.48s; }
+/* ===== Analytics System Status ===== */
+
+.system-status {
+  position: absolute;
+  top: 82px;
+  right: 52px;
+
+  width: 245px;
+  padding: 0.85rem 1rem;
+
+  border-radius: 18px;
+  background: rgba(10,10,10,0.72);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+  text-align: left;
+  z-index: 5;
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+
+  color: #86efac;
+
+  margin-bottom: 0.55rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+
+  background: #86efac;
+
+  box-shadow:
+    0 0 12px #86efac;
+
+  animation: pulseDot 1.8s infinite;
+}
+
+.status-item {
+  color: #cbd5e1;
+
+  font-size: 0.82rem;
+
+  padding: 0.22rem 0;
+
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+@keyframes pulseDot {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 0.75;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 950px) {
+  .system-status {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    margin: 0 auto 2rem;
+
+    width: 90%;
+    max-width: 320px;
+  }
+}
