@@ -837,6 +837,9 @@
         <circle class="province-hotspot" cx="500" cy="205" r="30" data-name="Echigo" data-info="Uesugi influence zone. Northern projection corridor." />
         <circle class="province-hotspot" cx="120" cy="425" r="32" data-name="Satsuma" data-info="Shimazu southern base. Strong regional control in Kyushu." />
 
+      <g id="expansionZones"></g>
+      <g id="eventCallouts"></g>
+
         <line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
         <g id="markers"></g>
       </svg>
@@ -1225,47 +1228,84 @@
   const mapStory = document.getElementById("mapStory");
 
   function renderClanRoute() {
-    const clan = clanRoutes[clanSelect.value];
-    const step = Number(yearSlider.value);
-    const visiblePoints = clan.points.slice(0, step + 1);
+  const clan = clanRoutes[clanSelect.value];
+  const profile = clanProfiles[clanSelect.value];
+  const step = Number(yearSlider.value);
+  const visiblePoints = clan.points.slice(0, step + 1);
 
-    markers.innerHTML = "";
-    yearDisplay.textContent = years[step];
-    temporalStatus.textContent = years[step];
-    mapStory.textContent = clan.stories[step];
+  const expansionZones = document.getElementById("expansionZones");
+  const eventCallouts = document.getElementById("eventCallouts");
+  const timelineDots = document.getElementById("timelineDots");
 
-    routeLine.setAttribute("stroke", clan.color);
+  markers.innerHTML = "";
+  expansionZones.innerHTML = "";
+  eventCallouts.innerHTML = "";
+  timelineDots.innerHTML = "";
 
-    if (visiblePoints.length >= 2) {
-      routeLine.setAttribute("x1", visiblePoints[0].x);
-      routeLine.setAttribute("y1", visiblePoints[0].y);
-      routeLine.setAttribute("x2", visiblePoints[visiblePoints.length - 1].x);
-      routeLine.setAttribute("y2", visiblePoints[visiblePoints.length - 1].y);
-    } else {
-      routeLine.setAttribute("x1", 0);
-      routeLine.setAttribute("y1", 0);
-      routeLine.setAttribute("x2", 0);
-      routeLine.setAttribute("y2", 0);
-    }
+  yearDisplay.textContent = years[step];
+  temporalStatus.textContent = years[step];
+  mapStory.textContent = clan.stories[step];
 
-    visiblePoints.forEach((point, i) => {
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      circle.setAttribute("cx", point.x);
-      circle.setAttribute("cy", point.y);
-      circle.setAttribute("r", 11 + i * 2);
-      circle.setAttribute("class", "clan-marker");
-      circle.setAttribute("fill", clan.color);
+  document.getElementById("leaderWatermark").src = profile.image;
+  document.getElementById("leaderWatermark").alt = profile.alt;
 
-      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      label.setAttribute("x", point.x + 18);
-      label.setAttribute("y", point.y + 5);
-      label.setAttribute("class", "marker-label");
-      label.textContent = point.name;
+  routeLine.setAttribute("stroke", clan.color);
 
-      markers.appendChild(circle);
-      markers.appendChild(label);
-    });
+  visiblePoints.forEach((point, i) => {
+    const zone = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    zone.setAttribute("cx", point.x);
+    zone.setAttribute("cy", point.y);
+    zone.setAttribute("r", 34 + i * 20);
+    zone.setAttribute("fill", clan.color);
+    zone.setAttribute("stroke", clan.color);
+    zone.setAttribute("class", i === step ? "expansion-zone active" : "expansion-zone");
+    expansionZones.appendChild(zone);
+  });
+
+  if (visiblePoints.length >= 2) {
+    routeLine.setAttribute("x1", visiblePoints[0].x);
+    routeLine.setAttribute("y1", visiblePoints[0].y);
+    routeLine.setAttribute("x2", visiblePoints[visiblePoints.length - 1].x);
+    routeLine.setAttribute("y2", visiblePoints[visiblePoints.length - 1].y);
+  } else {
+    routeLine.setAttribute("x1", 0);
+    routeLine.setAttribute("y1", 0);
+    routeLine.setAttribute("x2", 0);
+    routeLine.setAttribute("y2", 0);
   }
+
+  visiblePoints.forEach((point, i) => {
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", point.x);
+    circle.setAttribute("cy", point.y);
+    circle.setAttribute("r", 11 + i * 2);
+    circle.setAttribute("class", "clan-marker");
+    circle.setAttribute("fill", clan.color);
+
+    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    label.setAttribute("x", point.x + 18);
+    label.setAttribute("y", point.y + 5);
+    label.setAttribute("class", "marker-label");
+    label.textContent = point.name;
+
+    const yearLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    yearLabel.setAttribute("x", point.x + 18);
+    yearLabel.setAttribute("y", point.y - 16);
+    yearLabel.setAttribute("class", "event-year");
+    yearLabel.textContent = years[i];
+
+    markers.appendChild(circle);
+    markers.appendChild(yearLabel);
+    markers.appendChild(label);
+  });
+
+  years.forEach((yr, i) => {
+    const dot = document.createElement("div");
+    dot.className = i <= step ? "timeline-dot active" : "timeline-dot";
+    dot.innerHTML = `<span></span>${yr}<br>${clan.points[i].name}`;
+    timelineDots.appendChild(dot);
+  });
+}
 
   function renderClanProfile() {
     const profile = clanProfiles[clanSelect.value];
