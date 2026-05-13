@@ -1213,27 +1213,18 @@ h2 {
 
 .system-status {
   position: absolute;
+  top: 82px;
+  right: 52px;
 
-  top: 120px;
-  right: 60px;
-
-  width: 260px;
-
-  padding: 1rem 1.2rem;
+  width: 245px;
+  padding: 0.85rem 1rem;
 
   border-radius: 18px;
-
   background: rgba(10,10,10,0.72);
-
   border: 1px solid rgba(255,255,255,0.08);
-
   backdrop-filter: blur(12px);
-
-  box-shadow:
-    0 12px 35px rgba(0,0,0,0.35);
-
+  box-shadow: 0 12px 35px rgba(0,0,0,0.35);
   text-align: left;
-
   z-index: 5;
 }
 
@@ -1242,12 +1233,13 @@ h2 {
   align-items: center;
   gap: 0.6rem;
 
+  font-size: 0.9rem;
   font-weight: 900;
   letter-spacing: 0.08em;
 
   color: #86efac;
 
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.55rem;
 }
 
 .status-dot {
@@ -1267,9 +1259,9 @@ h2 {
 .status-item {
   color: #cbd5e1;
 
-  font-size: 0.92rem;
+  font-size: 0.82rem;
 
-  padding: 0.3rem 0;
+  padding: 0.22rem 0;
 
   border-top: 1px solid rgba(255,255,255,0.05);
 }
