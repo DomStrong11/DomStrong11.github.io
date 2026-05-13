@@ -330,10 +330,10 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  height: 560px;
+  height: 500px;
   background: transparent;
 }
-
+    
 .expansion-zone {
   opacity: 0.22;
   stroke-width: 2;
@@ -427,11 +427,13 @@
     }
 
     .route-line {
-      stroke-width: 4;
-      stroke-dasharray: 10;
-      filter: drop-shadow(0 0 12px rgba(56,189,248,0.8));
-      animation: dashMove 1.4s linear infinite;
-    }
+  stroke-width: 2;
+  stroke-dasharray: 4 8;
+  opacity: 0.35;
+  filter: none;
+  animation: dashMove 1.8s linear infinite;
+  pointer-events: none;
+}
 
     .marker-label {
       fill: #f8fafc;
@@ -1466,8 +1468,8 @@ for (let i = 0; i < visiblePoints.length - 1; i++) {
 });
 
 visiblePoints.forEach((point, i) => {
-  const startXs = [115, 305, 500, 690];
-  const startY = 470;
+  const startXs = [115, 300, 485, 670];
+  const startY = 445;
 
   const connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
