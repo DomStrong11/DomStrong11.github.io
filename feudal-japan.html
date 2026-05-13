@@ -429,9 +429,8 @@
     .route-line {
   stroke-width: 2;
   stroke-dasharray: 4 8;
-  opacity: 0.35;
+  opacity: 0.22;
   filter: none;
-  animation: dashMove 1.8s linear infinite;
   pointer-events: none;
 }
 
@@ -742,13 +741,6 @@
 #japanMap.zoom-2 { transform: scale(1.055) translate(-14px, -8px); }
 #japanMap.zoom-3 { transform: scale(1.075) translate(-20px, -12px); }
 
-.route-line {
-  stroke-linecap: round;
-  stroke-dasharray: 14;
-  animation:
-    dashMove 1.2s linear infinite,
-    drawRoute 0.9s ease forwards;
-}
 
 @keyframes drawRoute {
   from {
@@ -869,9 +861,18 @@ body.theme-shimazu {
   stroke-width: 3;
   stroke-dasharray: 7 7;
   stroke-linecap: round;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 8px currentColor);
+  opacity: 0.85;
   pointer-events: none;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+    .expansion-path {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.95;
+  pointer-events: none;
+  filter: drop-shadow(0 0 12px currentColor);
 }
 
 .expansion-zone {
@@ -961,6 +962,11 @@ body.theme-shimazu {
     >
 
     <svg id="japanMap" viewBox="0 0 800 520">
+      <defs>
+  <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L9,3 z" fill="#facc15"></path>
+  </marker>
+</defs>
         <path class="japan-land" d="M520 60 C560 110 555 160 530 205 C505 250 520 290 485 335 C450 380 465 430 420 475 C390 505 340 505 320 470 C300 435 335 400 355 360 C375 320 350 275 380 235 C410 195 395 145 430 105 C455 75 485 55 520 60Z"/>
         <path class="japan-land" d="M330 360 C300 390 270 415 235 420 C205 425 185 405 200 380 C215 355 250 345 280 335 C305 325 330 330 330 360Z"/>
         <path class="japan-land" d="M230 430 C190 455 145 465 105 450 C80 440 80 410 110 395 C145 378 190 395 230 430Z"/>
@@ -976,6 +982,7 @@ body.theme-shimazu {
 <g id="timelineConnectors"></g>
 
 <line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
+<g id="mainExpansionPath"></g>
 <g id="markers"></g>
       </svg>
 
@@ -1410,6 +1417,7 @@ function animateMapChange(step) {
   const eventCallouts = document.getElementById("eventCallouts");
   const timelineDots = document.getElementById("timelineDots");
   const timelineConnectors = document.getElementById("timelineConnectors");
+    const mainExpansionPath = document.getElementById("mainExpansionPath");
 const palette = clanPalettes[clanSelect.value];
 
   markers.innerHTML = "";
@@ -1421,6 +1429,7 @@ const palette = clanPalettes[clanSelect.value];
   yearDisplay.textContent = years[step];
   temporalStatus.textContent = years[step];
   mapStory.textContent = clan.stories[step];
+    mainExpansionPath.innerHTML = "";
 
   document.getElementById("leaderWatermark").src = profile.image;
   document.getElementById("leaderWatermark").alt = profile.alt;
@@ -1466,6 +1475,22 @@ for (let i = 0; i < visiblePoints.length - 1; i++) {
 
   markers.appendChild(circle);
 });
+
+if (visiblePoints.length > 1) {
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+  const d = visiblePoints
+    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+    .join(" ");
+
+  path.setAttribute("d", d);
+  path.setAttribute("class", "expansion-path");
+  path.setAttribute("stroke", palette[Math.min(step, palette.length - 1)]);
+  path.style.color = palette[Math.min(step, palette.length - 1)];
+  path.setAttribute("marker-end", "url(#arrowHead)");
+
+  mainExpansionPath.appendChild(path);
+}
 
 visiblePoints.forEach((point, i) => {
   const startXs = [115, 300, 485, 670];
