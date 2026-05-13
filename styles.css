@@ -58,6 +58,24 @@ main {
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
+.linkedin-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+}
+
+.linkedin-icon svg {
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.linkedin-icon:hover svg {
+  transform: scale(1.12);
+  color: #86efac;
+}
+
 .nav-link,
 .dropdown-toggle {
   appearance: none;
