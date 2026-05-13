@@ -294,21 +294,112 @@
     }
 
     .map-wrap {
-      display: grid;
-      grid-template-columns: 1.3fr 0.7fr;
-      gap: 1.5rem;
-      align-items: center;
-    }
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
 
-    #japanMap {
-      width: 100%;
-      min-height: 430px;
-      background:
-        radial-gradient(circle at center, rgba(56,189,248,0.1), transparent 55%),
-        rgba(2,6,23,0.65);
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.18);
-    }
+.map-stage {
+  position: relative;
+  min-height: 560px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(148,163,184,0.22);
+  background:
+    radial-gradient(circle at 65% 45%, rgba(56,189,248,0.12), transparent 35%),
+    rgba(2,6,23,0.72);
+}
+
+.leader-watermark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 48%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18;
+  filter: grayscale(100%) contrast(1.25);
+  mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.7) 48%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, black 0%, rgba(0,0,0,0.7) 48%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+#japanMap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 560px;
+  background: transparent;
+}
+
+.expansion-zone {
+  opacity: 0.22;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 18px currentColor);
+}
+
+.expansion-zone.active {
+  opacity: 0.5;
+}
+
+.event-callout {
+  fill: #f8fafc;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.event-year {
+  fill: #d4af37;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.timeline-strip {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 4;
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(2,6,23,0.82);
+  border: 1px solid rgba(212,175,55,0.25);
+}
+
+.timeline-dots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.timeline-dot {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.timeline-dot span {
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin: 0 auto 0.4rem;
+  border-radius: 50%;
+  background: #334155;
+  border: 2px solid #64748b;
+}
+
+.timeline-dot.active {
+  color: #f8fafc;
+  font-weight: 800;
+}
+
+.timeline-dot.active span {
+  background: #d4af37;
+  border-color: #facc15;
+  box-shadow: 0 0 18px rgba(212,175,55,0.7);
+}
 
     .japan-land {
       fill: rgba(15,23,42,0.95);
