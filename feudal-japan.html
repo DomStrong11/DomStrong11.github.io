@@ -1426,40 +1426,37 @@ for (let i = 0; i < visiblePoints.length - 1; i++) {
 }
 
   visiblePoints.forEach((point, i) => {
-    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle.setAttribute("cx", point.x);
-    circle.setAttribute("cy", point.y);
-    circle.setAttribute("r", 11 + i * 2);
-    circle.setAttribute("class", "clan-marker");
-    circle.setAttribute("fill", clan.color);
 
-    // Dynamic label offsets
-const labelOffsets = [
-  { x: -115, y: -95 }, // Owari / first
-  { x: -140, y: -55 }, // Mino / second
-  { x: -115, y: -15 }, // Kyoto / third
-  { x: -100, y: 25 }   // Central Japan / fourth
-];
+  // Circle marker
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", point.x);
+  circle.setAttribute("cy", point.y);
+  circle.setAttribute("r", 11 + i * 2);
+  circle.setAttribute("class", "clan-marker");
+  circle.setAttribute("fill", clan.color);
 
-const offset = labelOffsets[i] || { x: 20, y: -20 };
+  // Clean stacked label positions
+  const labelX = 90;
+  const labelY = 110 + i * 52;
 
-// Main label
-const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-label.setAttribute("x", point.x + offset.x);
-label.setAttribute("y", point.y + offset.y);
-label.setAttribute("class", "marker-label");
-label.textContent = point.name;
+  // Year
+  const yearLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  yearLabel.setAttribute("x", labelX);
+  yearLabel.setAttribute("y", labelY);
+  yearLabel.setAttribute("class", "event-year");
+  yearLabel.textContent = years[i];
 
-// Year label
-const yearLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-yearLabel.setAttribute("x", point.x + offset.x);
-yearLabel.setAttribute("y", point.y + offset.y - 18);
-yearLabel.setAttribute("class", "event-year");
-yearLabel.textContent = years[i];
+  // Province/location name
+  const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  label.setAttribute("x", labelX);
+  label.setAttribute("y", labelY + 22);
+  label.setAttribute("class", "marker-label");
+  label.textContent = point.name;
 
-    markers.appendChild(circle);
-    markers.appendChild(yearLabel);
-    markers.appendChild(label);
+  markers.appendChild(circle);
+  markers.appendChild(yearLabel);
+  markers.appendChild(label);
+});
   });
 
   years.forEach((yr, i) => {
