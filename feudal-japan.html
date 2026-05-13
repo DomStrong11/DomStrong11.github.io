@@ -1428,17 +1428,41 @@ for (let i = 0; i < visiblePoints.length - 1; i++) {
     circle.setAttribute("class", "clan-marker");
     circle.setAttribute("fill", clan.color);
 
-    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    label.setAttribute("x", point.x + 18);
-    label.setAttribute("y", point.y + 5);
-    label.setAttribute("class", "marker-label");
-    label.textContent = point.name;
+    // Dynamic label offsets
+const labelOffsets = [
+  { x: 22, y: -26 }, // first point
+  { x: -90, y: -34 }, // second point
+  { x: 24, y: 42 }, // third point
+  { x: -70, y: -52 } // fourth point
+];
 
-    const yearLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    yearLabel.setAttribute("x", point.x + 18);
-    yearLabel.setAttribute("y", point.y - 16);
-    yearLabel.setAttribute("class", "event-year");
-    yearLabel.textContent = years[i];
+const offset = labelOffsets[i] || { x: 20, y: -20 };
+
+// Main label
+const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+label.setAttribute("x", point.x + offset.x);
+label.setAttribute("y", point.y + offset.y);
+label.setAttribute("class", "marker-label");
+label.textContent = point.name;
+
+// Year label
+const yearLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+yearLabel.setAttribute("x", point.x + offset.x);
+yearLabel.setAttribute("y", point.y + offset.y - 18);
+yearLabel.setAttribute("class", "event-year");
+yearLabel.textContent = years[i];
+
+// Connector line
+const connector = document.createElementNS("http://www.w3.org/2000/svg", "line");
+connector.setAttribute("x1", point.x);
+connector.setAttribute("y1", point.y);
+connector.setAttribute("x2", point.x + offset.x - 8);
+connector.setAttribute("y2", point.y + offset.y - 6);
+connector.setAttribute("stroke", clan.color);
+connector.setAttribute("stroke-width", "2");
+connector.setAttribute("opacity", "0.7");
+
+markers.appendChild(connector);
 
     markers.appendChild(circle);
     markers.appendChild(yearLabel);
