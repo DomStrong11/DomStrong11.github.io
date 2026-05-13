@@ -709,6 +709,116 @@
       font-size: 0.75rem;
     }
 
+    /* ===== Cinematic Map Motion ===== */
+
+.map-stage {
+  transition:
+    filter 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+#japanMap {
+  transition:
+    transform 0.75s ease,
+    opacity 0.45s ease,
+    filter 0.45s ease;
+  transform-origin: center center;
+}
+
+#japanMap.map-transitioning {
+  opacity: 0.55;
+  filter: blur(2px) brightness(0.85);
+}
+
+#japanMap.zoom-0 { transform: scale(1) translate(0, 0); }
+#japanMap.zoom-1 { transform: scale(1.035) translate(-8px, -4px); }
+#japanMap.zoom-2 { transform: scale(1.055) translate(-14px, -8px); }
+#japanMap.zoom-3 { transform: scale(1.075) translate(-20px, -12px); }
+
+.route-line {
+  stroke-linecap: round;
+  stroke-dasharray: 14;
+  animation:
+    dashMove 1.2s linear infinite,
+    drawRoute 0.9s ease forwards;
+}
+
+@keyframes drawRoute {
+  from {
+    stroke-dashoffset: 140;
+    opacity: 0;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.expansion-zone {
+  animation: territoryReveal 0.75s ease forwards;
+}
+
+@keyframes territoryReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+
+  to {
+    opacity: 0.22;
+    transform: scale(1);
+  }
+}
+
+.expansion-zone.active {
+  animation:
+    territoryReveal 0.75s ease forwards,
+    territoryPulse 3s infinite ease-in-out 0.75s;
+}
+
+/* ===== Clan Theme Glow ===== */
+
+body.theme-oda {
+  --clan-glow: rgba(56,189,248,0.22);
+}
+
+body.theme-tokugawa {
+  --clan-glow: rgba(212,175,55,0.24);
+}
+
+body.theme-takeda {
+  --clan-glow: rgba(239,68,68,0.24);
+}
+
+body.theme-uesugi {
+  --clan-glow: rgba(139,92,246,0.24);
+}
+
+body.theme-shimazu {
+  --clan-glow: rgba(253,186,116,0.24);
+}
+
+.map-panel {
+  box-shadow:
+    0 25px 70px rgba(0,0,0,0.35),
+    0 0 55px var(--clan-glow, rgba(212,175,55,0.12));
+  transition: box-shadow 0.45s ease;
+}
+
+.clan-profile-card,
+.map-story {
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.panel-switching .clan-profile-card,
+.panel-switching .map-story {
+  opacity: 0.35;
+  transform: translateY(8px);
+}
+
     @media (max-width: 1050px) {
       .dashboard,
       .main-grid,
@@ -1227,10 +1337,40 @@
   const routeLine = document.getElementById("routeLine");
   const mapStory = document.getElementById("mapStory");
 
+  function applyClanTheme() {
+  document.body.classList.remove(
+    "theme-oda",
+    "theme-tokugawa",
+    "theme-takeda",
+    "theme-uesugi",
+    "theme-shimazu"
+  );
+
+  document.body.classList.add(`theme-${clanSelect.value}`);
+}
+
+function animateMapChange(step) {
+  const japanMap = document.getElementById("japanMap");
+  const mapPanel = document.querySelector(".map-panel");
+
+  japanMap.classList.add("map-transitioning");
+  mapPanel.classList.add("panel-switching");
+
+  japanMap.classList.remove("zoom-0", "zoom-1", "zoom-2", "zoom-3");
+
+  setTimeout(() => {
+    japanMap.classList.add(`zoom-${step}`);
+    japanMap.classList.remove("map-transitioning");
+    mapPanel.classList.remove("panel-switching");
+  }, 220);
+}
+
   function renderClanRoute() {
   const clan = clanRoutes[clanSelect.value];
   const profile = clanProfiles[clanSelect.value];
   const step = Number(yearSlider.value);
+  applyClanTheme();
+  animateMapChange(step);
   const visiblePoints = clan.points.slice(0, step + 1);
 
   const expansionZones = document.getElementById("expansionZones");
@@ -1262,17 +1402,23 @@
     expansionZones.appendChild(zone);
   });
 
-  if (visiblePoints.length >= 2) {
-    routeLine.setAttribute("x1", visiblePoints[0].x);
-    routeLine.setAttribute("y1", visiblePoints[0].y);
-    routeLine.setAttribute("x2", visiblePoints[visiblePoints.length - 1].x);
-    routeLine.setAttribute("y2", visiblePoints[visiblePoints.length - 1].y);
-  } else {
-    routeLine.setAttribute("x1", 0);
-    routeLine.setAttribute("y1", 0);
-    routeLine.setAttribute("x2", 0);
-    routeLine.setAttribute("y2", 0);
-  }
+  routeLine.style.display = "none";
+
+for (let i = 0; i < visiblePoints.length - 1; i++) {
+  const start = visiblePoints[i];
+  const end = visiblePoints[i + 1];
+
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "line");
+
+  path.setAttribute("x1", start.x);
+  path.setAttribute("y1", start.y);
+  path.setAttribute("x2", end.x);
+  path.setAttribute("y2", end.y);
+  path.setAttribute("stroke", clan.color);
+  path.setAttribute("class", "route-line");
+
+  markers.appendChild(path);
+}
 
   visiblePoints.forEach((point, i) => {
     const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
