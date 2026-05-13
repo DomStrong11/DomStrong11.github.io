@@ -638,6 +638,48 @@ h2 {
     0 0 70px rgba(168,85,247,0.12);
 }
 
+/* ===== Floating Galaxy Nodes ===== */
+
+@keyframes floatNode {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.impact-node {
+  animation: floatNode 6s ease-in-out infinite;
+}
+
+/* stagger movement timing */
+
+.node-renewals {
+  animation-duration: 5s;
+}
+
+.node-executive {
+  animation-duration: 6.5s;
+}
+
+.node-kpi {
+  animation-duration: 7s;
+}
+
+.node-forecasting {
+  animation-duration: 8s;
+}
+
+.node-testing {
+  animation-duration: 9s;
+}
+
 .impact-galaxy-btn {
   display: inline-flex;
   align-items: center;
