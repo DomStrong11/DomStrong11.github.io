@@ -364,8 +364,16 @@ h2 {
   height: 6px;
   border-radius: 50%;
   pointer-events: none;
-  background: radial-gradient(circle, #fff 0%, #86efac 45%, transparent 75%);
-  box-shadow: 0 0 10px rgba(134,239,172,0.9);
+
+  background:
+    radial-gradient(circle,
+    #fff 0%,
+    var(--cursor-glow, #86efac) 45%,
+    transparent 75%);
+
+  box-shadow:
+    0 0 10px var(--cursor-glow, #86efac);
+
   z-index: 99999;
   animation: sparkleFade 650ms ease-out forwards;
 }
@@ -977,7 +985,30 @@ h2 {
   resize();
   animate();
 })();
+const cursorColors = [
+  "#86efac", // green
+  "#38bdf8", // blue
+  "#a78bfa", // purple
+  "#facc15", // gold
+  "#fb7185"  // pink
+];
 
+window.addEventListener("scroll", () => {
+
+  const scrollPercent =
+    window.scrollY /
+    (document.body.scrollHeight - window.innerHeight);
+
+  const colorIndex = Math.min(
+    cursorColors.length - 1,
+    Math.floor(scrollPercent * cursorColors.length)
+  );
+
+  document.documentElement.style.setProperty(
+    "--cursor-glow",
+    cursorColors[colorIndex]
+  );
+});
 document.addEventListener("mousemove", e => {
   const sparkle = document.createElement("span");
   sparkle.className = "cursor-sparkle";
