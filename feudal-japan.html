@@ -433,6 +433,20 @@
       animation: dashMove 1.4s linear infinite;
     }
 
+    .route-backbone {
+  stroke: rgba(250,204,21,0.42);
+
+  stroke-width: 14;
+
+  stroke-linecap: round;
+
+  filter:
+    blur(10px)
+    drop-shadow(0 0 25px rgba(250,204,21,0.7));
+
+  opacity: 0.55;
+}
+
     .marker-label {
       fill: #f8fafc;
       font-size: 14px;
@@ -1407,6 +1421,21 @@ function animateMapChange(step) {
 for (let i = 0; i < visiblePoints.length - 1; i++) {
   const start = visiblePoints[i];
   const end = visiblePoints[i + 1];
+
+  const glowPath = document.createElementNS(
+  "http://www.w3.org/2000/svg",
+  "line"
+);
+
+glowPath.setAttribute("x1", start.x);
+glowPath.setAttribute("y1", start.y);
+
+glowPath.setAttribute("x2", end.x);
+glowPath.setAttribute("y2", end.y);
+
+glowPath.setAttribute("class", "route-backbone");
+
+markers.appendChild(glowPath);
 
   const path = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
