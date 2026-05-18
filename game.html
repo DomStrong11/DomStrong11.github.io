@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Games | Dominique J. Strong</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* ===== Animated Data Arcade Background ===== */
+
+.data-arcade-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(circle at 20% 25%, rgba(56,189,248,0.25), transparent 28%),
+    radial-gradient(circle at 80% 70%, rgba(134,239,172,0.18), transparent 30%),
+    radial-gradient(circle at 50% 50%, rgba(99,102,241,0.20), transparent 35%),
+    #000;
+  animation: bgPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulse {
+  from {
+    filter: hue-rotate(0deg);
+    transform: scale(1);
+  }
+
+  to {
+    filter: hue-rotate(35deg);
+    transform: scale(1.08);
+  }
+}
+
+.data-streams {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.data-streams span {
+  position: absolute;
+  top: -10%;
+  color: rgba(56,189,248,0.45);
+  font-weight: 900;
+  font-size: 1.1rem;
+  animation: dataFall linear infinite;
+  text-shadow: 0 0 14px rgba(56,189,248,0.55);
+}
+
+@keyframes dataFall {
+  from {
+    transform: translateY(-20vh);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(120vh);
+    opacity: 0;
+  }
+}
+
+.arcade-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+  animation: gridSlide 8s linear infinite;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+@keyframes gridSlide {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 84px 84px;
+  }
+}
+
+/* NAV */
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(10px);
+}
+
+.navbar a,
+.music-btn {
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 800;
+  transition: 0.25s;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  padding: 0.75rem 1.1rem;
+  cursor: pointer;
+}
+
+.navbar a:hover,
+.music-btn:hover {
+  color: #38bdf8;
+  background: rgba(56,189,248,0.16);
+}
+
+/* HERO */
+
+.hero {
+  text-align: center;
+  padding: 4rem 1rem 2rem;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  color: #cbd5e1;
+  max-width: 900px;
+  margin: auto;
+  font-size: 1.2rem;
+}
+
+/* GAME CARDS */
+
+.games-grid {
+  width: min(1200px, 92vw);
+  margin: 3rem auto 5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2rem;
+}
+
+.game-card {
+  background: rgba(15,23,42,0.82);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 28px;
+  padding: 2rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  transition: transform 0.25s, border-color 0.25s;
+}
+
+.game-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(56,189,248,0.55);
+}
+
+.game-card h2 {
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+.game-card p {
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+
+.snake {
+  border-top: 5px solid #38bdf8;
+}
+
+.sql {
+  border-top: 5px solid #86efac;
+}
+
+.etl {
+  border-top: 5px solid #facc15;
+}
+
+.play-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.3rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #020617;
+  background: #38bdf8;
+  font-weight: 900;
+}
+
+.play-btn:hover {
+  opacity: 0.9;
+}
+
+/* Blue Cursor Trail */
+
+.cursor-sparkle {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, #38bdf8 45%, transparent 75%);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.95);
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  animation: blueSparkleFade 650ms ease-out forwards;
+}
+
+@keyframes blueSparkleFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -95%) scale(0.12);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="data-arcade-bg"></div>
+
+<div class="data-streams">
+  <span style="left:5%; animation-duration:8s;">SQL</span>
+  <span style="left:14%; animation-duration:11s; animation-delay:1s;">JOIN</span>
+  <span style="left:23%; animation-duration:9s; animation-delay:2s;">KPI</span>
+  <span style="left:32%; animation-duration:12s; animation-delay:0.5s;">ML</span>
+  <span style="left:41%; animation-duration:10s; animation-delay:1.5s;">ETL</span>
+  <span style="left:50%; animation-duration:13s; animation-delay:2.5s;">NULL</span>
+  <span style="left:59%; animation-duration:9s; animation-delay:0.8s;">DASH</span>
+  <span style="left:68%; animation-duration:12s; animation-delay:1.8s;">PY</span>
+  <span style="left:77%; animation-duration:10s; animation-delay:2.8s;">BI</span>
+  <span style="left:86%; animation-duration:14s; animation-delay:0.2s;">A/B</span>
+  <span style="left:94%; animation-duration:8s; animation-delay:1.2s;">🎮</span>
+</div>
+
+<div class="arcade-scanlines"></div>
+
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <button class="music-btn" id="musicToggle">Music: Off</button>
+</nav>
+
+<section class="hero">
+  <h1>Analytics Arcade</h1>
+
+  <p>
+    Interactive analytics-inspired mini games built for my portfolio.
+    Defend dashboards, avoid workflow crashes, and survive bad data.
+  </p>
+</section>
+
+<section class="games-grid">
+
+  <div class="game-card snake">
+    <h2>🐍 Data Snake</h2>
+
+    <p>
+      Collect analytics skills, dashboards, and KPIs while avoiding workflow crashes.
+      A modern analytics-themed version of Snake.
+    </p>
+
+    <a class="play-btn" href="data-snake.html">
+      Play Data Snake
+    </a>
+  </div>
+
+  <div class="game-card sql">
+    <h2>🚀 SQL Invaders</h2>
+
+    <p>
+      Protect the executive dashboard from bad joins, NULL values, KPI drift,
+      broken ETL pipelines, and data chaos.
+    </p>
+
+    <a class="play-btn" href="dashboard-defense.html">
+      Play SQL Invaders
+    </a>
+  </div>
+
+  <div class="game-card etl">
+    <h2>🐦 ETL Hopper</h2>
+
+    <p>
+      Hop a data packet through broken pipelines, NULL columns, bad joins,
+      schema drift, and ETL failures.
+    </p>
+
+    <a class="play-btn" href="etl-hopper.html">
+      Play ETL Hopper
+    </a>
+  </div>
+
+</section>
+
+<script>
+/* Blue cursor trail */
+document.addEventListener("mousemove", e => {
+  const sparkle = document.createElement("span");
+  sparkle.className = "cursor-sparkle";
+  sparkle.style.left = `${e.clientX}px`;
+  sparkle.style.top = `${e.clientY}px`;
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 650);
+});
+
+/* Simple 8-bit style music using Web Audio API */
+let audioContext;
+let musicInterval;
+let isPlaying = false;
+
+const notes = [
+  261.63, 329.63, 392.00, 523.25,
+  392.00, 329.63, 293.66, 392.00
+];
+
+function playTone(freq, duration = 120) {
+  if (!audioContext) return;
+
+  const osc = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  osc.type = "square";
+  osc.frequency.value = freq;
+
+  gain.gain.setValueAtTime(0.045, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration / 1000);
+
+  osc.connect(gain);
+  gain.connect(audioContext.destination);
+
+  osc.start();
+  osc.stop(audioContext.currentTime + duration / 1000);
+}
+
+function startMusic() {
+  audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+
+  let i = 0;
+
+  musicInterval = setInterval(() => {
+    playTone(notes[i % notes.length], 110);
+
+    if (i % 4 === 0) {
+      playTone(notes[(i + 2) % notes.length] / 2, 160);
+    }
+
+    i++;
+  }, 220);
+
+  isPlaying = true;
+  document.getElementById("musicToggle").textContent = "Music: On";
+}
+
+function stopMusic() {
+  clearInterval(musicInterval);
+  isPlaying = false;
+  document.getElementById("musicToggle").textContent = "Music: Off";
+}
+
+document.getElementById("musicToggle").addEventListener("click", () => {
+  if (isPlaying) {
+    stopMusic();
+  } else {
+    startMusic();
+  }
+});
+</script>
+
+</body>
+</html>

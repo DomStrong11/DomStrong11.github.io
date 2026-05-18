@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Invaders | Dominique J. Strong</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #f8fafc;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+  /* ===== Arcade Navbar ===== */
+
+.navbar {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar a {
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 800;
+
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+
+  transition: 0.25s ease;
+}
+
+.navbar a:hover {
+  background: rgba(134,239,172,0.18);
+  transform: translateY(-2px);
+}
+
+.game-wrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.game-panel {
+  width: min(1100px, 96vw);
+  background: rgba(15,23,42,0.82);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 28px;
+  padding: 1rem;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+}
+
+h1 {
+  text-align: center;
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  margin: 0.25rem 0;
+}
+
+.subtitle,
+.hint {
+  text-align: center;
+  color: #cbd5e1;
+  margin: 0.4rem 0 1rem;
+}
+
+.hint strong {
+  color: #86efac;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.stat {
+  background: rgba(2,6,23,0.72);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 0.7rem;
+  text-align: center;
+}
+
+.stat span {
+  display: block;
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.stat strong {
+  color: #86efac;
+  font-size: 1.25rem;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #020617;
+  border-radius: 20px;
+  border: 2px solid rgba(56,189,248,0.35);
+}
+
+.controls {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+button, a {
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: #f8fafc;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover, a:hover {
+  background: rgba(134,239,172,0.18);
+}
+
+@media (max-width: 700px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+  <nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="game.html">Arcade</a>
+</nav>
+
+<main class="game-wrap">
+  <section class="game-panel">
+    <h1>SQL Invaders</h1>
+
+    <p class="subtitle">
+      Defend the data pipeline from bad data, broken joins, KPI drift, and executive dashboard chaos.
+    </p>
+
+    <p class="hint">
+      Move with ← / → or A / D. Press <strong>Space Bar</strong> to shoot SQL queries.
+      Collect <strong>HEALTH</strong>, <strong>POWER</strong>, and <strong>COPY</strong> boosts.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><span>Score</span><strong id="score">0</strong></div>
+      <div class="stat"><span>Best</span><strong id="best">0</strong></div>
+      <div class="stat"><span>Pipeline Health</span><strong id="health">100%</strong></div>
+      <div class="stat"><span>Wave</span><strong id="wave">1</strong></div>
+      <div class="stat"><span>Power-Up</span><strong id="powerStatus">None</strong></div>
+    </div>
+
+    <canvas id="game" width="960" height="520"></canvas>
+ <div class="controls">
+  <button id="restart">Restart Game</button>
+</div>
+  </section>
+</main>
+
+<script>
+window.addEventListener("keydown", e => {
+  if (["ArrowLeft","ArrowRight"," ","a","d","A","D"].includes(e.key)) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const scoreEl = document.getElementById("score");
+const bestEl = document.getElementById("best");
+const healthEl = document.getElementById("health");
+const waveEl = document.getElementById("wave");
+const powerStatusEl = document.getElementById("powerStatus");
+
+let keys = {};
+let score = 0;
+let health = 100;
+let wave = 1;
+let best = Number(localStorage.getItem("sqlInvadersBest") || 0);
+
+let bullets = [];
+let enemies = [];
+let particles = [];
+let powerUps = [];
+let boss = null;
+
+let bossWaveTriggered = false;
+let gameOver = false;
+let frame = 0;
+let animationId;
+
+let powerMode = false;
+let powerTimer = 0;
+let copyMode = false;
+let copyTimer = 0;
+
+bestEl.textContent = best;
+
+const player = {
+  x: canvas.width / 2 - 34,
+  y: canvas.height - 64,
+  w: 68,
+  h: 34,
+  speed: 7,
+  cooldown: 0
+};
+
+const enemyLabels = [
+  "NULL",
+  "DUPES",
+  "BAD JOIN",
+  "DRIFT",
+  "LAG",
+  "BROKEN ETL",
+  "MISSING KPI",
+  "BAD DATE"
+];
+
+const bossLabels = [
+  "MODEL DRIFT BOSS",
+  "BAD DATA PIPELINE",
+  "EXECUTIVE ESCALATION",
+  "REVENUE LEAKAGE"
+];
+
+const powerTypes = ["HEALTH", "POWER", "COPY"];
+
+function reset() {
+  score = 0;
+  health = 100;
+  wave = 1;
+  bullets = [];
+  enemies = [];
+  particles = [];
+  powerUps = [];
+  boss = null;
+  bossWaveTriggered = false;
+  gameOver = false;
+  frame = 0;
+  powerMode = false;
+  powerTimer = 0;
+  copyMode = false;
+  copyTimer = 0;
+  player.x = canvas.width / 2 - player.w / 2;
+
+  updateStats();
+  cancelAnimationFrame(animationId);
+  loop();
+}
+
+function updateStats() {
+  scoreEl.textContent = score;
+  healthEl.textContent = Math.max(0, health) + "%";
+  waveEl.textContent = wave;
+
+  if (copyMode) {
+    powerStatusEl.textContent = "COPY";
+    powerStatusEl.style.color = "#fde047";
+  } else if (powerMode) {
+    powerStatusEl.textContent = "POWER";
+    powerStatusEl.style.color = "#38bdf8";
+  } else if (boss) {
+    powerStatusEl.textContent = "BOSS";
+    powerStatusEl.style.color = "#fb7185";
+  } else {
+    powerStatusEl.textContent = "None";
+    powerStatusEl.style.color = "#86efac";
+  }
+
+  if (score > best) {
+    best = score;
+    localStorage.setItem("sqlInvadersBest", best);
+    bestEl.textContent = best;
+  }
+}
+
+function spawnEnemy() {
+  if (boss) return;
+
+  const label = enemyLabels[Math.floor(Math.random() * enemyLabels.length)];
+
+  enemies.push({
+    x: Math.random() * (canvas.width - 260) + 130,
+    y: -40,
+    w: label.length > 7 ? 120 : 82,
+    h: 34,
+    speed: 0.28 + wave * 0.035 + Math.random() * 0.15,
+    label,
+    hp: label.length > 7 ? 2 : 1
+  });
+}
+
+function spawnPowerUp() {
+  const type = powerTypes[Math.floor(Math.random() * powerTypes.length)];
+
+  powerUps.push({
+    x: Math.random() * (canvas.width - 100) + 40,
+    y: -35,
+    w: 86,
+    h: 32,
+    speed: 0.7,
+    type
+  });
+}
+
+function spawnBoss() {
+  const label = bossLabels[Math.floor(Math.random() * bossLabels.length)];
+
+  boss = {
+    x: canvas.width / 2 - 150,
+    y: 42,
+    w: 300,
+    h: 70,
+    vx: 0.85 + wave * 0.015,
+    label,
+    maxHp: 12 + wave * 2,
+    hp: 12 + wave * 2,
+    attackTimer: 0
+  };
+
+  enemies = [];
+}
+
+function shoot() {
+  if (player.cooldown > 0) return;
+
+  const shots = powerMode ? [-14, 14] : [0];
+
+  shots.forEach(offset => {
+    bullets.push({
+      x: player.x + player.w / 2 - 4 + offset,
+      y: player.y - 12,
+      w: 8,
+      h: 18,
+      speed: 9
+    });
+  });
+
+  if (copyMode) {
+    bullets.push({
+      x: player.x + player.w / 2 - 72,
+      y: player.y - 20,
+      w: 8,
+      h: 18,
+      speed: 9
+    });
+
+    bullets.push({
+      x: player.x + player.w / 2 + 64,
+      y: player.y - 20,
+      w: 8,
+      h: 18,
+      speed: 9
+    });
+  }
+
+  player.cooldown = powerMode ? 9 : 13;
+}
+
+function collide(a, b) {
+  return (
+    a.x < b.x + b.w &&
+    a.x + a.w > b.x &&
+    a.y < b.y + b.h &&
+    a.y + a.h > b.y
+  );
+}
+
+function addParticles(x, y, color) {
+  for (let i = 0; i < 16; i++) {
+    particles.push({
+      x,
+      y,
+      vx: (Math.random() - 0.5) * 5,
+      vy: (Math.random() - 0.5) * 5,
+      life: 24,
+      color
+    });
+  }
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function drawBackground() {
+  ctx.fillStyle = "#020617";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = "rgba(255,255,255,0.045)";
+  ctx.lineWidth = 1;
+
+  for (let x = 0; x < canvas.width; x += 48) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, canvas.height);
+    ctx.stroke();
+  }
+
+  for (let y = 0; y < canvas.height; y += 48) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = "rgba(134,239,172,0.07)";
+  ctx.fillRect(0, canvas.height - 88, canvas.width, 88);
+
+  ctx.fillStyle = "#94a3b8";
+  ctx.font = "bold 12px Arial";
+  ctx.textAlign = "left";
+  ctx.fillText("EXECUTIVE DASHBOARD DEFENSE LINE", 30, canvas.height - 32);
+}
+
+function drawPlayerShip(x, y, label) {
+  ctx.save();
+
+  ctx.shadowColor = "#86efac";
+  ctx.shadowBlur = 20;
+
+  const grad = ctx.createLinearGradient(x, y, x + player.w, y + player.h);
+  grad.addColorStop(0, "#86efac");
+  grad.addColorStop(1, "#38bdf8");
+
+  ctx.fillStyle = grad;
+  roundRect(x, y, player.w, player.h, 12);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 13px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(label, x + player.w / 2, y + player.h / 2);
+
+  ctx.restore();
+}
+
+function drawPlayer() {
+  drawPlayerShip(player.x, player.y, "SQL");
+
+  if (copyMode) {
+    drawPlayerShip(player.x - 72, player.y + 10, "COPY");
+    drawPlayerShip(player.x + 72, player.y + 10, "COPY");
+  }
+}
+
+function drawBullet(b) {
+  ctx.save();
+  ctx.shadowColor = "#38bdf8";
+  ctx.shadowBlur = 14;
+  ctx.fillStyle = "#38bdf8";
+  roundRect(b.x, b.y, b.w, b.h, 5);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawEnemy(e) {
+  ctx.save();
+
+  ctx.shadowColor = "#fb7185";
+  ctx.shadowBlur = 16;
+
+  ctx.fillStyle = e.hp > 1 ? "#f97316" : "#fb7185";
+  roundRect(e.x, e.y, e.w, e.h, 14);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 12px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(e.label, e.x + e.w / 2, e.y + e.h / 2);
+
+  ctx.restore();
+}
+
+function drawPowerUp(p) {
+  ctx.save();
+
+  const color =
+    p.type === "HEALTH" ? "#22c55e" :
+    p.type === "POWER" ? "#38bdf8" :
+    "#fde047";
+
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 18;
+  ctx.fillStyle = color;
+
+  roundRect(p.x, p.y, p.w, p.h, 14);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 12px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(p.type, p.x + p.w / 2, p.y + p.h / 2);
+
+  ctx.restore();
+}
+
+function drawBoss() {
+  if (!boss) return;
+
+  ctx.save();
+
+  ctx.shadowColor = "#f43f5e";
+  ctx.shadowBlur = 25;
+
+  ctx.fillStyle = "#fb7185";
+  roundRect(boss.x, boss.y, boss.w, boss.h, 20);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 18px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(boss.label, boss.x + boss.w / 2, boss.y + boss.h / 2);
+
+  const pct = boss.hp / boss.maxHp;
+
+  ctx.fillStyle = "rgba(255,255,255,0.18)";
+  roundRect(boss.x, boss.y - 18, boss.w, 10, 6);
+  ctx.fill();
+
+  ctx.fillStyle = "#86efac";
+  roundRect(boss.x, boss.y - 18, boss.w * pct, 10, 6);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.globalAlpha = p.life / 24;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+}
+
+function drawGameOver() {
+  ctx.fillStyle = "rgba(0,0,0,0.78)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#f8fafc";
+  ctx.font = "bold 48px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Pipeline Breached", canvas.width / 2, canvas.height / 2 - 35);
+
+  ctx.fillStyle = "#cbd5e1";
+  ctx.font = "20px Arial";
+  ctx.fillText("Restart and defend the dashboard", canvas.width / 2, canvas.height / 2 + 14);
+}
+
+function updateBoss() {
+  if (!boss) return;
+
+  boss.x += boss.vx;
+
+  if (boss.x < 30 || boss.x + boss.w > canvas.width - 30) {
+    boss.vx *= -1;
+  }
+
+  boss.attackTimer++;
+
+  if (boss.attackTimer > 115) {
+    boss.attackTimer = 0;
+
+    enemies.push({
+      x: Math.max(130, Math.min(canvas.width - 230, boss.x + boss.w / 2 - 50)),
+      y: boss.y + boss.h + 20,
+      w: 100,
+      h: 34,
+      speed: 0.75 + wave * 0.025,
+      label: "BAD KPI",
+      hp: 1
+    });
+  }
+}
+
+function updatePowerTimers() {
+  if (powerMode) {
+    powerTimer--;
+    if (powerTimer <= 0) powerMode = false;
+  }
+
+  if (copyMode) {
+    copyTimer--;
+    if (copyTimer <= 0) copyMode = false;
+  }
+}
+
+function update() {
+  frame++;
+
+  if (keys["ArrowLeft"] || keys["a"] || keys["A"]) player.x -= player.speed;
+  if (keys["ArrowRight"] || keys["d"] || keys["D"]) player.x += player.speed;
+  if (keys[" "]) shoot();
+
+  player.x = Math.max(80, Math.min(canvas.width - player.w - 80, player.x));
+
+  if (player.cooldown > 0) player.cooldown--;
+
+  wave = Math.floor(score / 1300) + 1;
+
+  if (wave > 1 && wave % 8 === 0 && !boss && !bossWaveTriggered) {
+    spawnBoss();
+    bossWaveTriggered = true;
+  }
+
+  if (wave % 8 !== 0) {
+    bossWaveTriggered = false;
+  }
+
+  if (!boss && frame % Math.max(72, 170 - wave * 3) === 0) {
+    spawnEnemy();
+  }
+
+  if (frame % 1200 === 0) {
+    spawnPowerUp();
+  }
+
+  updateBoss();
+  updatePowerTimers();
+
+  bullets.forEach(b => b.y -= b.speed);
+  bullets = bullets.filter(b => b.y > -30);
+
+  enemies.forEach(e => e.y += e.speed);
+  powerUps.forEach(p => p.y += p.speed);
+
+  if (boss) {
+    for (let j = bullets.length - 1; j >= 0; j--) {
+      const b = bullets[j];
+
+      if (collide(b, boss)) {
+        bullets.splice(j, 1);
+        boss.hp--;
+        addParticles(b.x, b.y, "#38bdf8");
+
+        if (boss.hp <= 0) {
+          score += 900;
+          addParticles(boss.x + boss.w / 2, boss.y + boss.h / 2, "#86efac");
+          boss = null;
+          wave += 1;
+          bossWaveTriggered = false;
+        }
+
+        break;
+      }
+    }
+  }
+
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i];
+
+    for (let j = bullets.length - 1; j >= 0; j--) {
+      const b = bullets[j];
+
+      if (collide(b, e)) {
+        bullets.splice(j, 1);
+        e.hp--;
+
+        if (e.hp <= 0) {
+          score += e.label.length > 7 ? 80 : 50;
+          addParticles(e.x + e.w / 2, e.y + e.h / 2, "#86efac");
+          enemies.splice(i, 1);
+        }
+
+        break;
+      }
+    }
+  }
+
+  for (let i = powerUps.length - 1; i >= 0; i--) {
+    const p = powerUps[i];
+
+    if (collide(player, p)) {
+      if (p.type === "HEALTH") {
+        health = Math.min(100, health + 25);
+      }
+
+      if (p.type === "POWER") {
+        powerMode = true;
+        powerTimer = 600;
+      }
+
+      if (p.type === "COPY") {
+        copyMode = true;
+        copyTimer = 520;
+      }
+
+      addParticles(p.x + p.w / 2, p.y + p.h / 2, "#fde047");
+      powerUps.splice(i, 1);
+    }
+  }
+
+  enemies = enemies.filter(e => {
+    if (e.y + e.h >= canvas.height - 88) {
+      health -= e.label.length > 7 ? 12 : 8;
+      addParticles(e.x + e.w / 2, e.y + e.h / 2, "#fb7185");
+
+      if (health <= 0) {
+        health = 0;
+        gameOver = true;
+      }
+
+      return false;
+    }
+
+    return true;
+  });
+
+  powerUps = powerUps.filter(p => p.y < canvas.height + 40);
+
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+  });
+
+  particles = particles.filter(p => p.life > 0);
+
+  updateStats();
+}
+
+function draw() {
+  drawBackground();
+  bullets.forEach(drawBullet);
+  enemies.forEach(drawEnemy);
+  powerUps.forEach(drawPowerUp);
+  drawBoss();
+  drawPlayer();
+  drawParticles();
+
+  if (gameOver) drawGameOver();
+}
+
+function loop() {
+  animationId = requestAnimationFrame(loop);
+
+  if (!gameOver) update();
+  draw();
+}
+
+document.addEventListener("keydown", e => keys[e.key] = true);
+document.addEventListener("keyup", e => keys[e.key] = false);
+
+document.getElementById("restart").addEventListener("click", reset);
+
+reset();
+</script>
+
+</body>
+</html>

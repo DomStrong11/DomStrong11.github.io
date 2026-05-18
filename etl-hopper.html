@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETL Hopper | Dominique J. Strong</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+  color: #f8fafc;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.navbar {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar a {
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 800;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  transition: 0.25s ease;
+}
+
+.navbar a:hover {
+  background: rgba(134,239,172,0.18);
+  transform: translateY(-2px);
+}
+
+.game-wrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.game-panel {
+  width: min(1050px, 96vw);
+  background: rgba(15,23,42,0.82);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 28px;
+  padding: 1rem;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+}
+
+h1 {
+  text-align: center;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  margin: 0.25rem 0;
+}
+
+.subtitle,
+.hint {
+  text-align: center;
+  color: #cbd5e1;
+  margin: 0.4rem 0 1rem;
+}
+
+.hint strong {
+  color: #86efac;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.stat {
+  background: rgba(2,6,23,0.72);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 0.7rem;
+  text-align: center;
+}
+
+.stat span {
+  display: block;
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.stat strong {
+  color: #86efac;
+  font-size: 1.25rem;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #020617;
+  border-radius: 20px;
+  border: 2px solid rgba(56,189,248,0.35);
+}
+
+.controls {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+button, .control-link {
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: #f8fafc;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover, .control-link:hover {
+  background: rgba(134,239,172,0.18);
+}
+
+@media (max-width: 700px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="game.html">Arcade</a>
+</nav>
+
+<main class="game-wrap">
+  <section class="game-panel">
+    <h1>ETL Hopper</h1>
+
+    <p class="subtitle">
+      Keep the data packet alive as it hops through broken pipelines, NULL columns, and bad joins.
+    </p>
+
+    <p class="hint">
+      Press <strong>Space Bar</strong>, click, or tap to start and hop. Clear pipelines to deliver clean data.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><span>Score</span><strong id="score">0</strong></div>
+      <div class="stat"><span>Best</span><strong id="best">0</strong></div>
+      <div class="stat"><span>Pipeline Health</span><strong id="health">100%</strong></div>
+      <div class="stat"><span>Status</span><strong id="status">Ready</strong></div>
+    </div>
+
+    <canvas id="game" width="920" height="500"></canvas>
+
+    <div class="controls">
+      <button id="restart">Restart</button>
+    </div>
+  </section>
+</main>
+
+<script>
+window.addEventListener("keydown", e => {
+  if ([" ", "ArrowUp", "w", "W"].includes(e.key)) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const scoreEl = document.getElementById("score");
+const bestEl = document.getElementById("best");
+const healthEl = document.getElementById("health");
+const statusEl = document.getElementById("status");
+
+let best = Number(localStorage.getItem("etlHopperBest") || 0);
+bestEl.textContent = best;
+
+let packet;
+let pipes;
+let particles;
+let score;
+let health;
+let speed;
+let gravity;
+let started;
+let gameOver;
+let frame;
+let animationId;
+
+const obstacleLabels = ["NULL", "BAD JOIN", "DUPES", "BROKEN ETL", "SCHEMA DRIFT", "MISSING KPI"];
+
+function reset() {
+  packet = {
+    x: 170,
+    y: canvas.height / 2,
+    r: 18,
+    vy: 0
+  };
+
+  pipes = [];
+  particles = [];
+  score = 0;
+  health = 100;
+  speed = 1.15;
+  gravity = 0.055;
+  started = false;
+  gameOver = false;
+  frame = 0;
+
+  updateStats();
+  cancelAnimationFrame(animationId);
+  loop();
+}
+
+function hop() {
+  if (gameOver) {
+    reset();
+    return;
+  }
+
+  if (!started) {
+    started = true;
+  }
+
+  packet.vy = -3.2;
+  burst(packet.x, packet.y, "#38bdf8", 8);
+}
+
+function updateStats() {
+  scoreEl.textContent = score;
+  healthEl.textContent = Math.max(0, health) + "%";
+
+  if (!started && !gameOver) {
+    statusEl.textContent = "Ready";
+    statusEl.style.color = "#38bdf8";
+  } else if (health > 70) {
+    statusEl.textContent = "Stable";
+    statusEl.style.color = "#86efac";
+  } else if (health > 35) {
+    statusEl.textContent = "At Risk";
+    statusEl.style.color = "#fde047";
+  } else {
+    statusEl.textContent = "Critical";
+    statusEl.style.color = "#fb7185";
+  }
+
+  if (score > best) {
+    best = score;
+    localStorage.setItem("etlHopperBest", best);
+    bestEl.textContent = best;
+  }
+}
+
+function spawnPipe() {
+  const gap = Math.max(220, 300 - Math.floor(score / 12) * 3);
+
+  const playableHeight = canvas.height - 70;
+  const minPipeHeight = 55;
+  const maxTopHeight = playableHeight - gap - minPipeHeight;
+
+  const topHeight = Math.random() * (maxTopHeight - minPipeHeight) + minPipeHeight;
+
+  const label = obstacleLabels[Math.floor(Math.random() * obstacleLabels.length)];
+
+  pipes.push({
+    x: canvas.width + 30,
+    w: 82,
+    top: topHeight,
+    gap,
+    passed: false,
+    label,
+    hit: false
+  });
+}
+
+function burst(x, y, color, amount = 14) {
+  for (let i = 0; i < amount; i++) {
+    particles.push({
+      x,
+      y,
+      vx: (Math.random() - 0.5) * 4,
+      vy: (Math.random() - 0.5) * 4,
+      life: 24,
+      color
+    });
+  }
+}
+
+function drawBackground() {
+  ctx.fillStyle = "#020617";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = "rgba(255,255,255,0.045)";
+  ctx.lineWidth = 1;
+
+  for (let x = 0; x < canvas.width; x += 46) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, canvas.height);
+    ctx.stroke();
+  }
+
+  for (let y = 0; y < canvas.height; y += 46) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(canvas.width, y);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = "rgba(56,189,248,0.08)";
+  ctx.fillRect(0, canvas.height - 70, canvas.width, 70);
+
+  ctx.fillStyle = "#94a3b8";
+  ctx.font = "bold 12px Arial";
+  ctx.textAlign = "left";
+  ctx.fillText("DATA WAREHOUSE LANDING ZONE", 28, canvas.height - 26);
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function drawPacket() {
+  ctx.save();
+
+  ctx.shadowColor = "#38bdf8";
+  ctx.shadowBlur = 18;
+
+  const grad = ctx.createRadialGradient(packet.x, packet.y, 3, packet.x, packet.y, packet.r);
+  grad.addColorStop(0, "#ffffff");
+  grad.addColorStop(0.45, "#38bdf8");
+  grad.addColorStop(1, "#2563eb");
+
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(packet.x, packet.y, packet.r, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 11px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("ETL", packet.x, packet.y);
+
+  ctx.restore();
+}
+
+function drawPipe(pipe) {
+  ctx.save();
+
+  ctx.shadowColor = pipe.hit ? "#facc15" : "#fb7185";
+  ctx.shadowBlur = 12;
+  ctx.fillStyle = pipe.hit ? "#facc15" : "#fb7185";
+
+  roundRect(pipe.x, 0, pipe.w, pipe.top, 16);
+  ctx.fill();
+
+  const bottomY = pipe.top + pipe.gap;
+  roundRect(pipe.x, bottomY, pipe.w, canvas.height - bottomY - 70, 16);
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "#020617";
+  ctx.font = "bold 12px Arial";
+  ctx.textAlign = "center";
+
+  ctx.save();
+  ctx.translate(pipe.x + pipe.w / 2, Math.max(28, pipe.top / 2));
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText(pipe.label, 0, 0);
+  ctx.restore();
+
+  ctx.save();
+  ctx.translate(pipe.x + pipe.w / 2, bottomY + Math.max(28, (canvas.height - bottomY - 70) / 2));
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText(pipe.label, 0, 0);
+  ctx.restore();
+
+  ctx.restore();
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.globalAlpha = p.life / 24;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+}
+
+function collideCircleRect(circle, rect) {
+  const closestX = Math.max(rect.x, Math.min(circle.x, rect.x + rect.w));
+  const closestY = Math.max(rect.y, Math.min(circle.y, rect.y + rect.h));
+  const dx = circle.x - closestX;
+  const dy = circle.y - closestY;
+  return (dx * dx + dy * dy) < circle.r * circle.r;
+}
+
+function hitPipe(pipe) {
+  const topRect = { x: pipe.x, y: 0, w: pipe.w, h: pipe.top };
+  const bottomY = pipe.top + pipe.gap;
+  const bottomRect = { x: pipe.x, y: bottomY, w: pipe.w, h: canvas.height - bottomY - 70 };
+
+  return collideCircleRect(packet, topRect) || collideCircleRect(packet, bottomRect);
+}
+
+function drawStartOverlay() {
+  if (started || gameOver) return;
+
+  ctx.fillStyle = "rgba(0,0,0,0.45)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#f8fafc";
+  ctx.font = "bold 38px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Press Space to Start", canvas.width / 2, canvas.height / 2 - 15);
+
+  ctx.fillStyle = "#cbd5e1";
+  ctx.font = "18px Arial";
+  ctx.fillText("Click or tap also works", canvas.width / 2, canvas.height / 2 + 25);
+}
+
+function drawGameOver() {
+  ctx.fillStyle = "rgba(0,0,0,0.74)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#f8fafc";
+  ctx.font = "bold 48px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Pipeline Failed", canvas.width / 2, canvas.height / 2 - 30);
+
+  ctx.fillStyle = "#cbd5e1";
+  ctx.font = "20px Arial";
+  ctx.fillText("Press Restart or Space to try again", canvas.width / 2, canvas.height / 2 + 18);
+}
+
+function update() {
+  frame++;
+
+  if (!started) {
+    updateStats();
+    return;
+  }
+
+  packet.vy += gravity;
+  packet.y += packet.vy;
+
+  speed = Math.min(2.4, 1.15 + score * 0.008);
+
+  if (frame > 220 && frame % Math.max(150, 230 - Math.floor(score / 10)) === 0) {
+    spawnPipe();
+  }
+
+  pipes.forEach(pipe => {
+    pipe.x -= speed;
+
+    if (!pipe.passed && pipe.x + pipe.w < packet.x) {
+      pipe.passed = true;
+      score++;
+      burst(packet.x, packet.y, "#86efac", 10);
+    }
+
+    if (!pipe.hit && hitPipe(pipe)) {
+      pipe.hit = true;
+      health -= 12;
+      burst(packet.x, packet.y, "#fb7185", 12);
+      packet.vy = -1.4;
+
+      if (health <= 0) {
+        health = 0;
+        gameOver = true;
+      }
+    }
+  });
+
+  pipes = pipes.filter(pipe => pipe.x + pipe.w > -50);
+
+  if (packet.y - packet.r < 0) {
+    packet.y = packet.r;
+    packet.vy = 0.8;
+  }
+
+  if (packet.y + packet.r > canvas.height - 70) {
+    packet.y = canvas.height - 70 - packet.r;
+    packet.vy = -1.4;
+    health -= 1;
+
+    if (health <= 0) {
+      health = 0;
+      gameOver = true;
+    }
+  }
+
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+  });
+
+  particles = particles.filter(p => p.life > 0);
+
+  updateStats();
+}
+
+function draw() {
+  drawBackground();
+  pipes.forEach(drawPipe);
+  drawPacket();
+  drawParticles();
+  drawStartOverlay();
+
+  if (gameOver) drawGameOver();
+}
+
+function loop() {
+  animationId = requestAnimationFrame(loop);
+
+  if (!gameOver) update();
+  draw();
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === " " || e.key === "ArrowUp" || e.key === "w" || e.key === "W") {
+    hop();
+  }
+});
+
+canvas.addEventListener("click", hop);
+canvas.addEventListener("touchstart", e => {
+  e.preventDefault();
+  hop();
+});
+
+document.getElementById("restart").addEventListener("click", reset);
+
+reset();
+</script>
+
+</body>
+</html>

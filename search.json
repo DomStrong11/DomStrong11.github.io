@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "Contact Me",
+    "section": "",
+    "text": "📬 Get in Touch\nI am always open to connecting about analytics and data.\nFeel free to reach out anytime!\n\n\n✉️ Email: DominiqueJovonStrong@gmail.com\n💼 LinkedIn: linkedin.com/in/dominiquestrong"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -49,13 +56,6 @@
     "text": "Beyond Analytics\nBefore my analytics career, I also worked as a Lead Tutor in Mathematics and STEM subjects, helping students build confidence in algebra, calculus, statistics, and physics. That experience still shapes how I communicate today: break complex problems into simple, structured, actionable steps."
   },
   {
-    "objectID": "contact.html",
-    "href": "contact.html",
-    "title": "Contact Me",
-    "section": "",
-    "text": "📬 Get in Touch\nI am always open to connecting about analytics and data.\nFeel free to reach out anytime!\n\n\n✉️ Email: DominiqueJovonStrong@gmail.com\n💼 LinkedIn: linkedin.com/in/dominiquestrong"
-  },
-  {
     "objectID": "cv.html",
     "href": "cv.html",
     "title": "Curriculum Vitae",
@@ -68,6 +68,20 @@
     "title": "Curriculum Vitae",
     "section": "",
     "text": "Download a copy: Resume (PDF)"
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "California State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
+  },
+  {
+    "objectID": "projects.html#academic-achievements",
+    "href": "projects.html#academic-achievements",
+    "title": "Projects",
+    "section": "",
+    "text": "California State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
   },
   {
     "objectID": "index.html",
@@ -124,19 +138,5 @@
     "title": "Dominique J. Strong",
     "section": "",
     "text": "I’m interested in analytics, business intelligence, product analytics, machine learning, and strategy roles where data directly influences business decisions.\nLinkedIn GitHub Resume"
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "California State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
-  },
-  {
-    "objectID": "projects.html#academic-achievements",
-    "href": "projects.html#academic-achievements",
-    "title": "Projects",
-    "section": "",
-    "text": "California State University, East Bay\nBachelor of Science in Industrial Engineering\nMinor in Mathematics — Graduated 2017\n\n\n\nBoston University Metropolitan College\nMaster of Science in Applied Business Analytics\nIn Progress — Expected 2026"
   }
 ]
