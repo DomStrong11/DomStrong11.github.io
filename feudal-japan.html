@@ -330,10 +330,10 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  height: 560px;
+  height: 500px;
   background: transparent;
 }
-
+    
 .expansion-zone {
   opacity: 0.22;
   stroke-width: 2;
@@ -427,32 +427,24 @@
     }
 
     .route-line {
-      stroke-width: 4;
-      stroke-dasharray: 10;
-      filter: drop-shadow(0 0 12px rgba(56,189,248,0.8));
-      animation: dashMove 1.4s linear infinite;
-    }
-
-    .route-backbone {
-  stroke: rgba(250,204,21,0.42);
-
-  stroke-width: 14;
-
-  stroke-linecap: round;
-
-  filter:
-    blur(10px)
-    drop-shadow(0 0 25px rgba(250,204,21,0.7));
-
-  opacity: 0.55;
+  stroke-width: 2;
+  stroke-dasharray: 4 8;
+  opacity: 0.22;
+  filter: none;
+  pointer-events: none;
 }
 
     .marker-label {
       fill: #f8fafc;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.04em;
     }
+    .event-year {
+  fill: #d4af37;
+  font-size: 13px;
+  font-weight: 900;
+}
 
     @keyframes pulseMarker {
       0%, 100% { opacity: 0.85; transform: scale(1); }
@@ -749,13 +741,6 @@
 #japanMap.zoom-2 { transform: scale(1.055) translate(-14px, -8px); }
 #japanMap.zoom-3 { transform: scale(1.075) translate(-20px, -12px); }
 
-.route-line {
-  stroke-linecap: round;
-  stroke-dasharray: 14;
-  animation:
-    dashMove 1.2s linear infinite,
-    drawRoute 0.9s ease forwards;
-}
 
 @keyframes drawRoute {
   from {
@@ -871,6 +856,35 @@ body.theme-shimazu {
         margin: 0 auto;
       }
     }
+  .timeline-connector {
+  fill: none;
+  stroke-width: 3;
+  stroke-dasharray: 7 7;
+  stroke-linecap: round;
+  opacity: 0.85;
+  pointer-events: none;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+    .expansion-path {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.98;
+  pointer-events: none;
+
+  filter:
+    drop-shadow(0 0 6px rgba(253,224,71,0.7))
+    drop-shadow(0 0 18px rgba(250,204,21,0.55));
+}
+
+.expansion-zone {
+  pointer-events: none;
+}
+
+.clan-marker {
+  pointer-events: auto;
+}
   </style>
 </head>
 
@@ -951,6 +965,11 @@ body.theme-shimazu {
     >
 
     <svg id="japanMap" viewBox="0 0 800 520">
+      <defs>
+  <marker id="arrowHead" markerWidth="5" markerHeight="5" refX="4" refY="1.8" orient="auto">
+  <path d="M0,0 L0,3.6 L5,1.8 z" fill="#facc15"></path>
+</marker>
+</defs>
         <path class="japan-land" d="M520 60 C560 110 555 160 530 205 C505 250 520 290 485 335 C450 380 465 430 420 475 C390 505 340 505 320 470 C300 435 335 400 355 360 C375 320 350 275 380 235 C410 195 395 145 430 105 C455 75 485 55 520 60Z"/>
         <path class="japan-land" d="M330 360 C300 390 270 415 235 420 C205 425 185 405 200 380 C215 355 250 345 280 335 C305 325 330 330 330 360Z"/>
         <path class="japan-land" d="M230 430 C190 455 145 465 105 450 C80 440 80 410 110 395 C145 378 190 395 230 430Z"/>
@@ -961,11 +980,13 @@ body.theme-shimazu {
         <circle class="province-hotspot" cx="500" cy="205" r="30" data-name="Echigo" data-info="Uesugi influence zone. Northern projection corridor." />
         <circle class="province-hotspot" cx="120" cy="425" r="32" data-name="Satsuma" data-info="Shimazu southern base. Strong regional control in Kyushu." />
 
-      <g id="expansionZones"></g>
-      <g id="eventCallouts"></g>
+     <g id="expansionZones"></g>
+<g id="eventCallouts"></g>
+<g id="timelineConnectors"></g>
 
-        <line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
-        <g id="markers"></g>
+<line id="routeLine" class="route-line" x1="0" y1="0" x2="0" y2="0"></line>
+<g id="mainExpansionPath"></g>
+<g id="markers"></g>
       </svg>
 
         <div class="timeline-strip">
@@ -1343,6 +1364,14 @@ body.theme-shimazu {
     }
   };
 
+  const clanPalettes = {
+  oda: ["#bae6fd", "#7dd3fc", "#38bdf8", "#0ea5e9"],
+  tokugawa: ["#fde68a", "#facc15", "#d4af37", "#b45309"],
+  takeda: ["#fecaca", "#f87171", "#ef4444", "#b91c1c"],
+  uesugi: ["#ddd6fe", "#c4b5fd", "#8b5cf6", "#6d28d9"],
+  shimazu: ["#fed7aa", "#fdba74", "#f97316", "#c2410c"]
+};
+
   const clanSelect = document.getElementById("clanSelect");
   const yearSlider = document.getElementById("yearSlider");
   const yearDisplay = document.getElementById("yearDisplay");
@@ -1390,15 +1419,20 @@ function animateMapChange(step) {
   const expansionZones = document.getElementById("expansionZones");
   const eventCallouts = document.getElementById("eventCallouts");
   const timelineDots = document.getElementById("timelineDots");
+  const timelineConnectors = document.getElementById("timelineConnectors");
+    const mainExpansionPath = document.getElementById("mainExpansionPath");
+const palette = clanPalettes[clanSelect.value];
 
   markers.innerHTML = "";
   expansionZones.innerHTML = "";
   eventCallouts.innerHTML = "";
   timelineDots.innerHTML = "";
+  timelineConnectors.innerHTML = "";
 
   yearDisplay.textContent = years[step];
   temporalStatus.textContent = years[step];
   mapStory.textContent = clan.stories[step];
+    mainExpansionPath.innerHTML = "";
 
   document.getElementById("leaderWatermark").src = profile.image;
   document.getElementById("leaderWatermark").alt = profile.alt;
@@ -1422,21 +1456,6 @@ for (let i = 0; i < visiblePoints.length - 1; i++) {
   const start = visiblePoints[i];
   const end = visiblePoints[i + 1];
 
-  const glowPath = document.createElementNS(
-  "http://www.w3.org/2000/svg",
-  "line"
-);
-
-glowPath.setAttribute("x1", start.x);
-glowPath.setAttribute("y1", start.y);
-
-glowPath.setAttribute("x2", end.x);
-glowPath.setAttribute("y2", end.y);
-
-glowPath.setAttribute("class", "route-backbone");
-
-markers.appendChild(glowPath);
-
   const path = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
   path.setAttribute("x1", start.x);
@@ -1449,37 +1468,60 @@ markers.appendChild(glowPath);
   markers.appendChild(path);
 }
 
-  visiblePoints.forEach((point, i) => {
-    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    circle.setAttribute("cx", point.x);
-    circle.setAttribute("cy", point.y);
-    circle.setAttribute("r", 11 + i * 2);
-    circle.setAttribute("class", "clan-marker");
-    circle.setAttribute("fill", clan.color);
+ visiblePoints.forEach((point, i) => {
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", point.x);
+  circle.setAttribute("cy", point.y);
+  circle.setAttribute("r", 11 + i * 2);
+  circle.setAttribute("class", "clan-marker");
+  circle.setAttribute("fill", palette[i]);
 
-    const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    label.setAttribute("x", point.x + 18);
-    label.setAttribute("y", point.y + 5);
-    label.setAttribute("class", "marker-label");
-    label.textContent = point.name;
+  markers.appendChild(circle);
+});
 
-    const yearLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    yearLabel.setAttribute("x", point.x + 18);
-    yearLabel.setAttribute("y", point.y - 16);
-    yearLabel.setAttribute("class", "event-year");
-    yearLabel.textContent = years[i];
+if (visiblePoints.length > 1) {
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
-    markers.appendChild(circle);
-    markers.appendChild(yearLabel);
-    markers.appendChild(label);
-  });
+  const d = visiblePoints
+    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+    .join(" ");
 
-  years.forEach((yr, i) => {
-    const dot = document.createElement("div");
-    dot.className = i <= step ? "timeline-dot active" : "timeline-dot";
-    dot.innerHTML = `<span></span>${yr}<br>${clan.points[i].name}`;
-    timelineDots.appendChild(dot);
-  });
+  path.setAttribute("d", d);
+  path.setAttribute("class", "expansion-path");
+  path.setAttribute("stroke", palette[Math.min(step, palette.length - 1)]);
+  path.style.color = palette[Math.min(step, palette.length - 1)];
+  path.setAttribute("marker-end", "url(#arrowHead)");
+
+  mainExpansionPath.appendChild(path);
+}
+
+visiblePoints.forEach((point, i) => {
+  const startXs = [115, 300, 485, 670];
+  const startY = 445;
+
+  const connector = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+  connector.setAttribute(
+    "d",
+    `M ${startXs[i]} ${startY} Q ${(startXs[i] + point.x) / 2} ${Math.min(startY, point.y) - 90} ${point.x} ${point.y}`
+  );
+
+  connector.setAttribute("class", "timeline-connector");
+  connector.setAttribute("stroke", palette[i]);
+  connector.style.color = palette[i];
+
+  timelineConnectors.appendChild(connector);
+});
+
+years.forEach((yr, i) => {
+  const dot = document.createElement("div");
+  dot.className = i <= step ? "timeline-dot active" : "timeline-dot";
+  dot.innerHTML = `
+    <span style="background:${palette[i]}; border-color:${palette[i]}; box-shadow:0 0 16px ${palette[i]};"></span>
+    ${yr}<br>${clan.points[i].name}
+  `;
+  timelineDots.appendChild(dot);
+});
 }
 
   function renderClanProfile() {
