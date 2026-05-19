@@ -364,8 +364,16 @@ h2 {
   height: 6px;
   border-radius: 50%;
   pointer-events: none;
-  background: radial-gradient(circle, #fff 0%, #86efac 45%, transparent 75%);
-  box-shadow: 0 0 10px rgba(134,239,172,0.9);
+
+  background:
+    radial-gradient(circle,
+    #fff 0%,
+    var(--cursor-glow, #86efac) 45%,
+    transparent 75%);
+
+  box-shadow:
+    0 0 10px var(--cursor-glow, #86efac);
+
   z-index: 99999;
   animation: sparkleFade 650ms ease-out forwards;
 }
@@ -608,9 +616,9 @@ h2 {
     <summary class="nav-link dropdown-toggle">Labs ▾</summary>
 
     <div class="dropdown-menu">
-      <a href="game.html">Games Arcade</a>
-      <a href="feudal-japan.html">Feudal Japan Analytics</a>
       <a href="data-galaxy.html">Impact Galaxy</a>
+      <a href="feudal-japan.html">Feudal Japan Analytics</a>
+      <a href="game.html">Games Arcade</a>
     </div>
   </details>
 </nav>
@@ -755,12 +763,31 @@ h2 {
     </p>
 
     <div class="impact-list">
-      <div><span>+50bps</span><p>Retention lift since Nov. 2025</p></div>
-      <div><span>CMO / VP</span><p>Monthly executive forecast reviews</p></div>
-      <div><span>SME</span><p>Membership analytics subject matter expert</p></div>
-      <div><span>ML</span><p>Forecasting and churn risk modeling</p></div>
-      <div><span>A/B</span><p>Campaign lift and experimentation</p></div>
-    </div>
+  <div>
+    <span>+50bps</span>
+    <p>Retention lift since Nov. 2025, supported by renewal-risk analysis, KPI tracking, and targeted retention strategy.</p>
+  </div>
+
+  <div>
+    <span>CMO / VP</span>
+    <p>Monthly executive forecast reviews that translate membership trends into leadership-ready decisions.</p>
+  </div>
+
+  <div>
+    <span>SME</span>
+    <p>Membership analytics subject matter expert, connecting member behavior, operational drivers, and business strategy.</p>
+  </div>
+
+  <div>
+    <span>ML & Forecasting</span>
+    <p>Forecasting and churn-risk modeling to anticipate renewal behavior and support planning.</p>
+  </div>
+
+  <div>
+    <span>A/B</span>
+    <p>Campaign lift and experimentation using test/control analysis to measure outreach impact.</p>
+  </div>
+</div>
 
     <a href="data-galaxy.html" class="impact-galaxy-btn">
       🚀 Enter Impact Galaxy →
@@ -958,7 +985,30 @@ h2 {
   resize();
   animate();
 })();
+const cursorColors = [
+  "#86efac", // green
+  "#38bdf8", // blue
+  "#a78bfa", // purple
+  "#facc15", // gold
+  "#fb7185"  // pink
+];
 
+window.addEventListener("scroll", () => {
+
+  const scrollPercent =
+    window.scrollY /
+    (document.body.scrollHeight - window.innerHeight);
+
+  const colorIndex = Math.min(
+    cursorColors.length - 1,
+    Math.floor(scrollPercent * cursorColors.length)
+  );
+
+  document.documentElement.style.setProperty(
+    "--cursor-glow",
+    cursorColors[colorIndex]
+  );
+});
 document.addEventListener("mousemove", e => {
   const sparkle = document.createElement("span");
   sparkle.className = "cursor-sparkle";
