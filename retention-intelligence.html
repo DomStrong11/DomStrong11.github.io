@@ -432,54 +432,108 @@ section {
 }
 
 .forecast-visual {
-  height: 360px;
+  min-height: 420px;
   border-radius: 20px;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.04), transparent),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 90px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 70px);
+    rgba(2,6,23,0.58);
   position: relative;
   overflow: hidden;
+  padding: 1rem;
 }
 
-.forecast-line {
+.chart-legend {
   position: absolute;
-  left: 8%;
-  right: 8%;
-  bottom: 32%;
-  height: 130px;
+  top: 1rem;
+  left: 1.2rem;
+  z-index: 3;
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
-.forecast-line svg {
+.chart-legend div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.legend-dot {
+  width: 28px;
+  height: 4px;
+  display: inline-block;
+  border-radius: 999px;
+}
+
+.legend-dot.actual {
+  background: #86efac;
+  box-shadow: 0 0 10px rgba(134,239,172,0.8);
+}
+
+.legend-dot.baseline {
+  background: #38bdf8;
+  opacity: 0.75;
+}
+
+.legend-band {
+  width: 28px;
+  height: 12px;
+  display: inline-block;
+  border-radius: 4px;
+  background: rgba(134,239,172,0.16);
+  border: 1px solid rgba(134,239,172,0.28);
+}
+
+.forecast-svg {
   width: 100%;
   height: 100%;
-  overflow: visible;
+  min-height: 380px;
 }
 
-.risk-band {
-  position: absolute;
-  left: 8%;
-  right: 8%;
-  bottom: 28%;
-  height: 150px;
-  background: linear-gradient(180deg, rgba(134,239,172,0.15), rgba(56,189,248,0.04));
-  clip-path: polygon(0 56%, 18% 40%, 37% 50%, 56% 28%, 76% 44%, 100% 22%, 100% 100%, 0 100%);
-  opacity: 0.9;
+.grid-lines line {
+  stroke: rgba(255,255,255,0.08);
+  stroke-width: 1;
 }
 
-.forecast-copy {
-  color: #cbd5e1;
-  line-height: 1.7;
-  margin-top: 1.5rem;
-  font-size: 1.05rem;
+.risk-area {
+  fill: rgba(134,239,172,0.13);
 }
 
-.axis-label {
-  position: absolute;
-  bottom: 1rem;
-  color: #94a3b8;
-  font-size: 0.8rem;
+.baseline-line {
+  fill: none;
+  stroke: #38bdf8;
+  stroke-width: 3;
+  stroke-dasharray: 12 12;
+  opacity: 0.75;
+}
+
+.forecast-main-line {
+  fill: none;
+  stroke: #86efac;
+  stroke-width: 6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 12px rgba(134,239,172,0.75));
+}
+
+.forecast-point {
+  fill: #86efac;
+  stroke: #f8fafc;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 10px rgba(134,239,172,0.8));
+}
+
+.forecast-point.future {
+  fill: #facc15;
+}
+
+.axis-label-svg {
+  fill: #cbd5e1;
+  font-size: 20px;
   font-weight: 900;
+  text-anchor: middle;
 }
 
 .axis-label:nth-of-type(1) { left: 8%; }
@@ -817,29 +871,53 @@ section {
         </div>
       </div>
 
-      <div class="forecast-visual">
-        <div class="risk-band"></div>
-        <div class="forecast-line">
-          <svg viewBox="0 0 1000 220" preserveAspectRatio="none">
-            <path d="M0 150 C130 120 190 165 300 130 C420 90 500 115 610 72 C760 18 840 80 1000 40"
-                  fill="none"
-                  stroke="#86efac"
-                  stroke-width="8"
-                  stroke-linecap="round"
-                  filter="drop-shadow(0 0 14px rgba(134,239,172,.75))" />
-            <path d="M0 185 C130 150 190 190 300 160 C420 130 500 150 610 110 C760 70 840 120 1000 90"
-                  fill="none"
-                  stroke="#38bdf8"
-                  stroke-width="3"
-                  stroke-dasharray="14 12"
-                  opacity=".75" />
-          </svg>
-        </div>
-        <div class="axis-label">Month 1</div>
-        <div class="axis-label">Month 2</div>
-        <div class="axis-label">Month 3</div>
-        <div class="axis-label">Future</div>
-      </div>
+     <div class="forecast-visual">
+  <div class="chart-legend">
+    <div><span class="legend-dot actual"></span> Forecast Trend</div>
+    <div><span class="legend-dot baseline"></span> Baseline / Prior Signal</div>
+    <div><span class="legend-band"></span> Risk Range</div>
+  </div>
+
+  <svg class="forecast-svg" viewBox="0 0 1000 360" preserveAspectRatio="none">
+    <!-- Grid -->
+    <g class="grid-lines">
+      <line x1="80" y1="60" x2="930" y2="60" />
+      <line x1="80" y1="130" x2="930" y2="130" />
+      <line x1="80" y1="200" x2="930" y2="200" />
+      <line x1="80" y1="270" x2="930" y2="270" />
+    </g>
+
+    <!-- Risk band -->
+    <path
+      class="risk-area"
+      d="M80 215 C220 190 310 205 430 175 C570 140 680 155 790 135 C860 125 900 110 930 100 L930 270 L80 270 Z"
+    />
+
+    <!-- Baseline -->
+    <path
+      class="baseline-line"
+      d="M80 230 C220 210 310 220 430 195 C570 165 680 175 790 170 C860 168 900 160 930 155"
+    />
+
+    <!-- Forecast trend -->
+    <path
+      class="forecast-main-line"
+      d="M80 210 C220 195 310 205 430 180 C570 145 680 150 790 148 C860 147 900 140 930 132"
+    />
+
+    <!-- Points -->
+    <circle class="forecast-point" cx="80" cy="210" r="7" />
+    <circle class="forecast-point" cx="360" cy="190" r="7" />
+    <circle class="forecast-point" cx="650" cy="150" r="7" />
+    <circle class="forecast-point future" cx="930" cy="132" r="8" />
+
+    <!-- X labels -->
+    <text class="axis-label-svg" x="80" y="330">Month 1</text>
+    <text class="axis-label-svg" x="360" y="330">Month 2</text>
+    <text class="axis-label-svg" x="650" y="330">Month 3</text>
+    <text class="axis-label-svg" x="930" y="330">Future</text>
+  </svg>
+</div>
 
       <p class="forecast-copy" id="forecastCopy">
         Month 1 focuses on near-term known exposure, current signals, and recent renewal behavior.
