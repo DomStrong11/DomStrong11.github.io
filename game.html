@@ -15,6 +15,83 @@ body {
   overflow-x: hidden;
 }
 
+.main-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 18px 36px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.nav-logo,
+.nav-links a,
+.nav-dropdown summary {
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.nav-logo {
+  color: #86efac;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.nav-links a,
+.nav-dropdown summary {
+  padding: 10px 14px;
+  border-radius: 999px;
+}
+
+.nav-links a:hover,
+.nav-dropdown summary:hover {
+  color: #86efac;
+  background: rgba(134,239,172,0.08);
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown summary {
+  list-style: none;
+}
+
+.nav-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  min-width: 230px;
+  padding: 0.7rem;
+  border-radius: 16px;
+  background: rgba(3, 7, 18, 0.96);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 55px rgba(0,0,0,0.45);
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.8rem 1rem;
+}
+
 /* ===== Animated Data Arcade Background ===== */
 
 .data-arcade-bg {
