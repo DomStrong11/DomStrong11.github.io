@@ -90,63 +90,70 @@
     /* ===== Shared Navbar ===== */
 
 .main-navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 9999;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   padding: 16px 28px;
-  margin-bottom: 2rem;
-
-  backdrop-filter: blur(18px);
-  background: rgba(2, 6, 23, 0.78);
-
-  border-bottom: 1px solid rgba(212,175,55,0.22);
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-.nav-logo a {
-  color: #d4af37;
+.nav-logo,
+.nav-links a,
+.nav-dropdown summary {
+  color: #f8fafc;
   text-decoration: none;
   font-weight: 900;
-  letter-spacing: 0.14em;
-  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.nav-logo {
+  color: #86efac;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.6rem;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
 .nav-links a,
 .nav-dropdown summary {
-  color: #f8fafc;
-  text-decoration: none;
-
-  padding: 9px 12px;
+  padding: 9px 10px;
   border-radius: 999px;
-
+  white-space: nowrap;
   font-size: 0.9rem;
-  font-weight: 700;
-
-  cursor: pointer;
-  list-style: none;
-
-  transition: all 0.25s ease;
 }
 
 .nav-links a:hover,
-.nav-dropdown summary:hover,
-.nav-links a.active {
-  background: rgba(212,175,55,0.14);
-  color: #d4af37;
+.nav-dropdown summary:hover {
+  color: #86efac;
+  background: rgba(134,239,172,0.08);
+}
+
+.linkedin-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-dropdown {
   position: relative;
+}
+
+.nav-dropdown summary {
+  list-style: none;
 }
 
 .nav-dropdown summary::-webkit-details-marker {
@@ -157,38 +164,26 @@
   position: absolute;
   top: 120%;
   right: 0;
-
-  min-width: 220px;
-
-  background: rgba(2,6,23,0.95);
-  border: 1px solid rgba(212,175,55,0.2);
-
-  border-radius: 14px;
-  padding: 0.6rem;
-
-  display: none;
-
-  box-shadow: 0 20px 45px rgba(0,0,0,0.4);
-}
-
-.nav-dropdown:hover .dropdown-menu {
-  display: block;
+  min-width: 285px;
+  padding: 0.8rem;
+  border-radius: 16px;
+  background: rgba(3, 7, 18, 0.96);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 20px 55px rgba(0,0,0,0.45);
+  overflow: hidden;
 }
 
 .dropdown-menu a {
   display: block;
-  margin-bottom: 0.35rem;
-}
-
-.dropdown-menu a:last-child {
-  margin-bottom: 0;
+  padding: 0.8rem 1rem;
+  white-space: nowrap;
 }
 
     .page {
-      padding: 2rem 4%;
-      position: relative;
-      z-index: 2;
-    }
+  padding: 6.5rem 4% 2rem;
+  position: relative;
+  z-index: 2;
+}
 
     .hero {
       border-bottom: 1px solid rgba(212,175,55,0.35);
@@ -971,31 +966,42 @@ body.theme-shimazu {
 
 <canvas id="emberCanvas"></canvas>
 
-<div class="page">
-
   <nav class="main-navbar">
-  <div class="nav-logo">
-    <a href="index.html">DOM STRONG</a>
-  </div>
+
+  <a href="index.html" class="nav-logo">
+    DOM STRONG
+  </a>
 
   <div class="nav-links">
     <a href="index.html">Home</a>
-    <a href="arcade.html">Arcade</a>
-    <a href="feudal-japan.html" class="active">Feudal Japan</a>
-    <a href="labs.html">Labs</a>
+    <a href="data-galaxy.html">Impact Galaxy</a>
+    <a href="retention-intelligence.html">Retention Intelligence</a>
 
-    <div class="nav-dropdown">
-      <summary>Projects</summary>
+    <details class="nav-dropdown">
+      <summary>Projects ▾</summary>
 
       <div class="dropdown-menu">
-        <a href="retention-intelligence.html">Retention Intelligence</a>
-        <a href="feudal-japan.html">Feudal Japan</a>
-        <a href="sql-invaders.html">SQL Invaders</a>
-        <a href="etl-hopper.html">ETL Hopper</a>
+        <a href="feudal-japan.html">Feudal Japan Intelligence</a>
+        <a href="game.html">Arcade Lab</a>
       </div>
-    </div>
+    </details>
+
+    <a 
+      href="https://www.linkedin.com/in/dominique-strong-ba3847124/" 
+      class="linkedin-icon"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="LinkedIn"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5 1.11 1 2.49 1s2.49 1.12 2.49 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.53-1 1.82-2.2 3.75-2.2 4.01 0 4.75 2.64 4.75 6.07V24h-4v-7.1c0-1.7-.03-3.88-2.37-3.88-2.37 0-2.73 1.85-2.73 3.76V24h-4V8z"/>
+      </svg>
+    </a>
   </div>
+
 </nav>
+
+<div class="page">
 
   <header class="hero">
     <div class="eyebrow">Sengoku Diagnostic System</div>
