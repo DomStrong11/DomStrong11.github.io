@@ -474,6 +474,133 @@ h2 {
     margin-left: auto;
     margin-right: auto;
   }
+/* ===== IMPACT CONSTELLATION ===== */
+
+.impact-command-section {
+  position: relative;
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 4rem;
+  align-items: center;
+
+  min-height: 100vh;
+
+  background:
+    radial-gradient(circle at left center,
+      rgba(134,239,172,0.08),
+      transparent 40%),
+
+    radial-gradient(circle at right center,
+      rgba(56,189,248,0.08),
+      transparent 40%);
+
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+#impact-stars-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.impact-command-copy,
+.impact-orbit {
+  position: relative;
+  z-index: 2;
+}
+
+.impact-tag {
+  color: #86efac;
+  letter-spacing: 0.28rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.impact-command-copy h2 {
+  text-align: left;
+  font-size: clamp(4rem, 7vw, 7rem);
+  line-height: 0.9;
+  margin-bottom: 1.5rem;
+  text-decoration: none;
+}
+
+.impact-command-copy h2::after {
+  content: "";
+  display: block;
+  width: 180px;
+  height: 4px;
+  background: #86efac;
+  margin-top: 1rem;
+}
+
+.impact-subtitle {
+  max-width: 560px;
+  color: #e5e7eb;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  margin-bottom: 3rem;
+}
+
+.impact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.impact-list div {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.impact-list span {
+  color: #86efac;
+  font-size: 1.15rem;
+  font-weight: 900;
+
+  white-space: nowrap;
+}
+
+.impact-list p {
+  margin: 0;
+  color: #e5e7eb;
+  line-height: 1.5;
+}
+
+.impact-galaxy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  margin-top: 3rem;
+  padding: 1.2rem 1.8rem;
+
+  border-radius: 999px;
+
+  background: #a7f3b0;
+  color: #020617;
+
+  text-decoration: none;
+  font-weight: 900;
+
+  box-shadow:
+    0 0 35px rgba(134,239,172,0.25);
+
+  transition: all 0.3s ease;
+}
+
+.impact-galaxy-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+}
 }
 .skills-section {
   min-height: 100vh;
