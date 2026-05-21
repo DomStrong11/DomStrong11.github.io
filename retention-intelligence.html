@@ -123,37 +123,37 @@ body {
     #000;
 }
 
-.navbar {
+.main-navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
+
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 18px;
-  padding: 20px 30px;
-  background: rgba(0, 0, 0, 0.68);
+
+  padding: 16px 28px;
+  background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-.nav-link {
-  color: #f8fafc;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  padding: 12px 18px;
-  border-radius: 999px;
-  transition: all 0.25s ease;
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
-.nav-link:hover {
-  color: var(--green);
-  background: rgba(134,239,172,0.08);
-  transform: translateY(-2px);
+.nav-links a,
+.nav-dropdown summary {
+  padding: 9px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 0.9rem;
 }
 
 .hero {
