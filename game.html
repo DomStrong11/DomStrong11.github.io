@@ -82,17 +82,18 @@ body {
   position: absolute;
   top: 120%;
   right: 0;
-  min-width: 230px;
-  padding: 0.7rem;
+  min-width: 285px;
+  padding: 0.8rem;
   border-radius: 16px;
   background: rgba(3, 7, 18, 0.96);
   border: 1px solid rgba(255,255,255,0.12);
   box-shadow: 0 20px 55px rgba(0,0,0,0.45);
+  overflow: hidden;
 }
-
 .dropdown-menu a {
   display: block;
   padding: 0.8rem 1rem;
+  white-space: nowrap;
 }
 
 /* ===== Animated Data Arcade Background ===== */
@@ -176,39 +177,6 @@ body {
   to {
     background-position: 84px 84px;
   }
-}
-
-/* NAV */
-
-.navbar {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  padding: 1.2rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(0,0,0,0.72);
-  backdrop-filter: blur(10px);
-}
-
-.navbar a,
-.music-btn {
-  color: #f8fafc;
-  text-decoration: none;
-  font-weight: 800;
-  transition: 0.25s;
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(255,255,255,0.08);
-  border-radius: 999px;
-  padding: 0.75rem 1.1rem;
-  cursor: pointer;
-}
-
-.navbar a:hover,
-.music-btn:hover {
-  color: #38bdf8;
-  background: rgba(56,189,248,0.16);
 }
 
 /* HERO */
