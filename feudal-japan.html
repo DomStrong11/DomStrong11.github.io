@@ -87,36 +87,107 @@
       50% { transform: scale(1.08); opacity: 1; }
     }
 
+    /* ===== Shared Navbar ===== */
+
+.main-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 28px;
+  margin-bottom: 2rem;
+
+  backdrop-filter: blur(18px);
+  background: rgba(2, 6, 23, 0.78);
+
+  border-bottom: 1px solid rgba(212,175,55,0.22);
+}
+
+.nav-logo a {
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  font-size: 0.95rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.nav-links a,
+.nav-dropdown summary {
+  color: #f8fafc;
+  text-decoration: none;
+
+  padding: 9px 12px;
+  border-radius: 999px;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+
+  cursor: pointer;
+  list-style: none;
+
+  transition: all 0.25s ease;
+}
+
+.nav-links a:hover,
+.nav-dropdown summary:hover,
+.nav-links a.active {
+  background: rgba(212,175,55,0.14);
+  color: #d4af37;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+
+  min-width: 220px;
+
+  background: rgba(2,6,23,0.95);
+  border: 1px solid rgba(212,175,55,0.2);
+
+  border-radius: 14px;
+  padding: 0.6rem;
+
+  display: none;
+
+  box-shadow: 0 20px 45px rgba(0,0,0,0.4);
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.dropdown-menu a:last-child {
+  margin-bottom: 0;
+}
+
     .page {
       padding: 2rem 4%;
       position: relative;
       z-index: 2;
-    }
-
-    .top-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 3rem;
-      gap: 1rem;
-    }
-
-    .top-nav a,
-    .brand {
-      color: #f8fafc;
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-    }
-
-    .top-nav a:hover {
-      color: #d4af37;
-    }
-
-    .brand {
-      color: #d4af37;
     }
 
     .hero {
@@ -902,10 +973,29 @@ body.theme-shimazu {
 
 <div class="page">
 
-  <nav class="top-nav">
-    <a href="index.html">← Back to Portfolio</a>
-    <div class="brand">DOM STRONG ANALYTICS LAB</div>
-  </nav>
+  <nav class="main-navbar">
+  <div class="nav-logo">
+    <a href="index.html">DOM STRONG</a>
+  </div>
+
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="arcade.html">Arcade</a>
+    <a href="feudal-japan.html" class="active">Feudal Japan</a>
+    <a href="labs.html">Labs</a>
+
+    <div class="nav-dropdown">
+      <summary>Projects</summary>
+
+      <div class="dropdown-menu">
+        <a href="retention-intelligence.html">Retention Intelligence</a>
+        <a href="feudal-japan.html">Feudal Japan</a>
+        <a href="sql-invaders.html">SQL Invaders</a>
+        <a href="etl-hopper.html">ETL Hopper</a>
+      </div>
+    </div>
+  </div>
+</nav>
 
   <header class="hero">
     <div class="eyebrow">Sengoku Diagnostic System</div>
