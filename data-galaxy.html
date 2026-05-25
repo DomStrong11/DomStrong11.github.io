@@ -235,6 +235,65 @@ body {
   pointer-events: auto;
 }
 
+  .galaxy-switcher {
+  position: absolute;
+  top: 92px;
+  left: 35px;
+  z-index: 6;
+  display: flex;
+  gap: 0.55rem;
+  pointer-events: auto;
+}
+
+.galaxy-tab {
+  border: 1px solid rgba(134,239,172,0.28);
+  background: rgba(3,7,18,0.78);
+  color: #f8fafc;
+  padding: 0.6rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+
+.galaxy-tab.active,
+.galaxy-tab:hover {
+  background: #86efac;
+  color: #020617;
+}
+
+.galaxy-page.switching #galaxy-canvas,
+.galaxy-page.switching .galaxy-title,
+.galaxy-page.switching .info-panel,
+.galaxy-page.switching .hire-sun {
+  opacity: 0.25;
+  filter: blur(8px);
+  transform: scale(0.96);
+}
+
+#galaxy-canvas,
+.galaxy-title,
+.info-panel,
+.hire-sun {
+  transition:
+    opacity 0.55s ease,
+    filter 0.55s ease,
+    transform 0.55s ease;
+}
+
+.galaxy-page.galaxy-aaa::before {
+  background:
+    radial-gradient(ellipse at 9% 72%, rgba(134,239,172,0.42), transparent 32%),
+    radial-gradient(ellipse at 86% 72%, rgba(168,85,247,0.34), transparent 34%),
+    radial-gradient(ellipse at 48% 96%, rgba(56,189,248,0.24), transparent 38%);
+}
+
+.galaxy-page.galaxy-kaiser::before {
+  background:
+    radial-gradient(ellipse at 12% 70%, rgba(96,165,250,0.42), transparent 34%),
+    radial-gradient(ellipse at 84% 72%, rgba(14,165,233,0.32), transparent 34%),
+    radial-gradient(ellipse at 48% 92%, rgba(59,130,246,0.24), transparent 38%);
+}
 .mode-btn {
   border: 1px solid rgba(134,239,172,0.25);
   background: rgba(3,7,18,0.72);
@@ -429,7 +488,7 @@ body {
 
 </nav>
 
-<main class="galaxy-page">
+<main class="galaxy-page galaxy-aaa" id="galaxyPage">
   <div class="cosmic-planet"></div>
 
   <div class="hire-sun" id="hireSun">
@@ -439,6 +498,11 @@ body {
   </div>
 
   <canvas id="galaxy-canvas"></canvas>
+
+  <div class="galaxy-switcher">
+  <button class="galaxy-tab active" data-galaxy="aaa">AAA Galaxy</button>
+  <button class="galaxy-tab" data-galaxy="kaiser">Kaiser Galaxy</button>
+</div>
 
   <div class="mode-switcher">
     <button class="mode-btn active" data-mode="executive">Executive</button>
@@ -469,6 +533,11 @@ const infoPanel = document.getElementById("infoPanel");
 const hireSun = document.getElementById("hireSun");
 const modeButtons = document.querySelectorAll(".mode-btn");
 
+  const galaxyPage = document.getElementById("galaxyPage");
+const galaxyTabs = document.querySelectorAll(".galaxy-tab");
+const galaxyTitle = document.querySelector(".galaxy-title h1");
+const galaxySubtitle = document.querySelector(".galaxy-title p");
+
 let width;
 let height;
 let currentMode = "executive";
@@ -489,107 +558,235 @@ const modeCopy = {
   }
 };
 
-const nodes = [
-  {
-    label: "AAA Analytics Scale",
-    icon: "▥",
-    x: 0.11,
-    y: 0.53,
-    r: 54,
-    color: "#ef4444",
-    text: "Analytics work supporting membership, sales, billing, product, and retention performance across a large multi-state organization."
+const galaxyData = {
+  aaa: {
+    title: "AAA Impact Galaxy",
+    subtitle: "Membership retention, forecasting, KPI systems, experimentation, and executive decision support.",
+    defaultPanel: `
+      <h2>AAA Analytics Galaxy</h2>
+      <p>
+        This universe highlights my highest-impact analytics work: retention strategy,
+        executive forecasting, enterprise KPI systems, experimentation, and measurable
+        business outcomes across a large membership organization.
+      </p>
+    `,
+    nodes: [
+      {
+        label: "AAA Analytics Scale",
+        icon: "▥",
+        x: 0.11,
+        y: 0.53,
+        r: 54,
+        color: "#ef4444",
+        text: "Analytics work supporting membership, sales, billing, product, and retention performance across a large multi-state organization."
+      },
+      {
+        label: "Enterprise KPI System",
+        icon: "◴",
+        x: 0.25,
+        y: 0.63,
+        r: 56,
+        color: "#38bdf8",
+        text: "Created enterprise-level retention KPIs used by executive leadership to monitor performance and guide business decisions."
+      },
+      {
+        label: "A/B Testing Program",
+        icon: "⌁",
+        x: 0.15,
+        y: 0.78,
+        r: 50,
+        color: "#a78bfa",
+        text: "Measured campaign performance using treatment/control logic to estimate incremental renewal lift and business value."
+      },
+      {
+        label: "Retention Strategy",
+        icon: "◎",
+        x: 0.34,
+        y: 0.43,
+        r: 52,
+        color: "#fb7185",
+        text: "Led retention analytics efforts by identifying payment-processing and operational friction points contributing to member attrition."
+      },
+      {
+        label: "+50bps Retention",
+        icon: "↗",
+        x: 0.49,
+        y: 0.50,
+        r: 62,
+        color: "#86efac",
+        text: "Helped drive a record-breaking retention improvement since Nov. 2025 through analytics, KPI monitoring, and strategic intervention support."
+      },
+      {
+        label: "Churn Forecasting Engine",
+        icon: "⌁",
+        x: 0.46,
+        y: 0.73,
+        r: 56,
+        color: "#f97316",
+        text: "Built forecasting models using renewal timing, payment behavior, tenure, and retention signals to estimate future churn risk."
+      },
+      {
+        label: "$ Revenue Impact",
+        icon: "$",
+        x: 0.62,
+        y: 0.60,
+        r: 68,
+        color: "#fde047",
+        text: "Connected retention improvement to incremental revenue impact, improved member continuity, and business performance recovery."
+      },
+      {
+        label: "Machine Learning Systems",
+        icon: "⚙",
+        x: 0.67,
+        y: 0.80,
+        r: 54,
+        color: "#0ea5e9",
+        text: "Developed predictive modeling workflows using Python, Random Forest, logistic regression, calibration logic, and model evaluation."
+      },
+      {
+        label: "Executive Reporting",
+        icon: "▤",
+        x: 0.74,
+        y: 0.42,
+        r: 56,
+        color: "#22c55e",
+        text: "Present monthly to Directors, VP, and CMO on trends, patterns, forecasts, and insights that directly support business strategy."
+      }
+    ],
+    pairs: [[0,1],[0,3],[1,2],[1,4],[1,5],[3,4],[4,5],[4,6],[4,8],[5,7],[5,6],[6,8],[6,7]],
+    storyPath: [3,1,5,4,6,8]
   },
-  {
-    label: "Enterprise KPI System",
-    icon: "◴",
-    x: 0.25,
-    y: 0.63,
-    r: 56,
-    color: "#38bdf8",
-    text: "Created enterprise-level retention KPIs used by executive leadership to monitor performance and guide business decisions."
-  },
-  {
-    label: "A/B Testing Program",
-    icon: "⌁",
-    x: 0.15,
-    y: 0.78,
-    r: 50,
-    color: "#a78bfa",
-    text: "Measured campaign performance using treatment/control logic to estimate incremental renewal lift and business value."
-  },
-  {
-    label: "Retention Strategy",
-    icon: "◎",
-    x: 0.34,
-    y: 0.43,
-    r: 52,
-    color: "#fb7185",
-    text: "Supported retention strategy by identifying customer risk patterns, renewal timing issues, and operational improvement opportunities."
-  },
-  {
-    label: "+75K Renewals",
-    icon: "↗",
-    x: 0.49,
-    y: 0.50,
-    r: 62,
-    color: "#86efac",
-    text: "Helped reverse a long-term retention decline through KPI strategy, forecasting, experimentation, and operational analytics."
-  },
-  {
-    label: "Churn Forecasting Engine",
-    icon: "⌁",
-    x: 0.46,
-    y: 0.73,
-    r: 56,
-    color: "#f97316",
-    text: "Built forecasting models using renewal timing, payment behavior, customer tenure, and retention signals to estimate future churn."
-  },
-  {
-    label: "~$6M Revenue Impact",
-    icon: "$",
-    x: 0.62,
-    y: 0.60,
-    r: 68,
-    color: "#fde047",
-    text: "Estimated incremental revenue impact connected to improved retention performance and renewal growth."
-  },
-  {
-    label: "Machine Learning Systems",
-    icon: "⚙",
-    x: 0.67,
-    y: 0.80,
-    r: 54,
-    color: "#0ea5e9",
-    text: "Developed predictive modeling workflows using Python, Random Forest, logistic regression, calibration logic, and model evaluation."
-  },
-  {
-    label: "Executive Reporting",
-    icon: "▤",
-    x: 0.74,
-    y: 0.42,
-    r: 56,
-    color: "#22c55e",
-    text: "Translated complex data into clear executive-ready insights, dashboards, and leadership presentations."
+
+  kaiser: {
+    title: "Kaiser Operations Galaxy",
+    subtitle: "Operations risk, facilities analytics, KPI reporting, process improvement, and cross-functional decision support.",
+    defaultPanel: `
+      <h2>Kaiser Analytics Galaxy</h2>
+      <p>
+        This universe highlights my healthcare operations analytics experience:
+        facilities reporting, operational risk management, process improvement,
+        performance tracking, and cross-functional analytics support.
+      </p>
+    `,
+    nodes: [
+      {
+        label: "Healthcare Operations",
+        icon: "✚",
+        x: 0.12,
+        y: 0.55,
+        r: 56,
+        color: "#60a5fa",
+        text: "Supported healthcare operations analytics focused on facilities, risk, operational performance, and process visibility."
+      },
+      {
+        label: "Facilities Analytics",
+        icon: "▦",
+        x: 0.27,
+        y: 0.62,
+        r: 58,
+        color: "#38bdf8",
+        text: "Built analytics views and reporting structures to help teams monitor facilities-related performance and operational activity."
+      },
+      {
+        label: "Risk Monitoring",
+        icon: "⚠",
+        x: 0.17,
+        y: 0.78,
+        r: 52,
+        color: "#f59e0b",
+        text: "Supported operations risk management through reporting, tracking, and analysis of risk-related operational indicators."
+      },
+      {
+        label: "Process Improvement",
+        icon: "↻",
+        x: 0.36,
+        y: 0.42,
+        r: 54,
+        color: "#93c5fd",
+        text: "Used analytics to identify workflow gaps, process inefficiencies, and opportunities to improve operational execution."
+      },
+      {
+        label: "KPI Reporting",
+        icon: "◷",
+        x: 0.50,
+        y: 0.51,
+        r: 62,
+        color: "#7dd3fc",
+        text: "Developed KPI reporting to help operational leaders understand performance, trends, and areas needing attention."
+      },
+      {
+        label: "Cross Functional Support",
+        icon: "◇",
+        x: 0.47,
+        y: 0.74,
+        r: 58,
+        color: "#818cf8",
+        text: "Partnered with operational teams and stakeholders to translate business questions into structured analytics outputs."
+      },
+      {
+        label: "Executive Dashboards",
+        icon: "▤",
+        x: 0.64,
+        y: 0.61,
+        r: 64,
+        color: "#22d3ee",
+        text: "Created dashboard-style reporting designed to support leadership visibility, issue tracking, and decision-making."
+      },
+      {
+        label: "Workflow Optimization",
+        icon: "⚙",
+        x: 0.69,
+        y: 0.79,
+        r: 54,
+        color: "#3b82f6",
+        text: "Improved recurring reporting workflows, standardized analysis, and helped make operational data easier to use."
+      },
+      {
+        label: "Operational Insight",
+        icon: "◎",
+        x: 0.75,
+        y: 0.42,
+        r: 56,
+        color: "#0ea5e9",
+        text: "Translated complex operational data into clear insights that helped teams understand what was happening and why."
+      }
+    ],
+    pairs: [[0,1],[0,3],[1,2],[1,4],[1,5],[3,4],[4,5],[4,6],[4,8],[5,7],[5,6],[6,8],[6,7]],
+    storyPath: [0,1,4,6,8]
   }
-];
+};
 
-const pairs = [
-  [0, 1],
-  [0, 3],
-  [1, 2],
-  [1, 4],
-  [1, 5],
-  [3, 4],
-  [4, 5],
-  [4, 6],
-  [4, 8],
-  [5, 7],
-  [5, 6],
-  [6, 8],
-  [6, 7]
-];
+let activeGalaxy = "aaa";
+let nodes = galaxyData.aaa.nodes;
+let pairs = galaxyData.aaa.pairs;
+let storyPath = galaxyData.aaa.storyPath;
 
-const storyPath = [3, 1, 5, 4, 6, 8];
+function loadGalaxy(galaxyName) {
+  activeGalaxy = galaxyName;
+
+  galaxyPage.classList.add("switching");
+
+  setTimeout(() => {
+    const data = galaxyData[galaxyName];
+
+    nodes = data.nodes;
+    pairs = data.pairs;
+    storyPath = data.storyPath;
+
+    galaxyTitle.textContent = data.title;
+    galaxySubtitle.textContent = data.subtitle;
+    infoPanel.innerHTML = data.defaultPanel;
+
+    galaxyPage.classList.remove("galaxy-aaa", "galaxy-kaiser");
+    galaxyPage.classList.add(`galaxy-${galaxyName}`);
+
+    galaxyTabs.forEach(tab => {
+      tab.classList.toggle("active", tab.dataset.galaxy === galaxyName);
+    });
+
+    galaxyPage.classList.remove("switching");
+  }, 420);
+}
 
 const stars = Array.from({ length: 390 }, () => ({
   x: Math.random(),
@@ -911,6 +1108,12 @@ modeButtons.forEach(button => {
 });
 
 window.addEventListener("resize", resize);
+
+galaxyTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    loadGalaxy(tab.dataset.galaxy);
+  });
+});
 
 resize();
 animate();
